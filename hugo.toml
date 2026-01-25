@@ -64,8 +64,9 @@ enableEmoji = true
     iconHeight = 35
 
   # Home page info mode
-  homeInfoParams.Title = "Welcome to byMAR.CO Blog 👋"
-  homeInfoParams.Content = "A personal blog about software engineering, DevOps, cloud infrastructure, and technology. Follow along as I share my learnings and experiences."
+  [params.homeInfoParams]
+    Title = "Welcome to byMAR.CO Engineering Blog 👋"
+    Content = "I share learnings, experience and ramblings on modern AI developments. The posts are issued as concepts where a local LLM agent then performs further analysis and research for a comprehensive review of the initial thought."
 
   # Show reading time
   ShowReadingTime = true
