@@ -1,0 +1,73 @@
+name: Hugo Build and Deploy for Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build Hugo site for production
+        run: hugo --minify
+        env:
+          HUGO_ENV: production
+
+      - name: Validate build output
+        run: |
+          # Check that public directory exists and has content
+          if [ ! -d "public" ]; then
+            echo "Error: public directory does not exist"
+            exit 1
+          fi
+          
+          # Check for index.html
+          if [ ! -f "public/index.html" ]; then
+            echo "Error: public/index.html does not exist"
+            exit 1
+          fi
+          
+          # Check for search index (PaperMod feature)
+          if [ -f "public/index.json" ]; then
+            echo "Search index generated successfully"
+          fi
+          
+          # Count generated files
+          FILE_COUNT=$(find public -type f | wc -l)
+          echo "Build successful! Generated $FILE_COUNT files"
+
+      # Upload to S3
+      - name: Sync to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_VITE_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-east-1'
+          SOURCE_DIR: 'public'
+
+      # Invalidate CloudFront cache
+      - name: Invalidate CloudFront cache
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: '/*'
+          AWS_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

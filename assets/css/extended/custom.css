@@ -1,0 +1,90 @@
+/* ================================================
+   BYMAR.CO Custom Styles for PaperMod
+   ================================================ */
+
+/* Typography - Fira Sans for titles, Fira Code for content */
+:root {
+    --main-width: 760px;
+    --font-titles: 'Fira Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-content: 'Fira Code', 'SF Mono', Monaco, Consolas, monospace;
+}
+
+/* Base font - Fira Code for content */
+body {
+    font-family: var(--font-content);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* Titles and headings - Fira Sans */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.post-title,
+.home-info .entry-header,
+.logo {
+    font-family: var(--font-titles);
+    font-weight: 600;
+}
+
+/* Post title sizing */
+.post-title {
+    font-size: 2.4rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.3rem;
+}
+
+/* Improve post content readability */
+.post-content {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* Enhanced home info section */
+.home-info .entry-content {
+    font-size: 1rem;
+}
+
+/* Code blocks - ensure Fira Code */
+.highlight pre code,
+code {
+    font-family: var(--font-content);
+    font-size: 0.9rem;
+}
+
+/* Navigation and UI elements - Fira Sans */
+.menu,
+nav,
+.footer,
+.post-meta,
+.breadcrumbs {
+    font-family: var(--font-titles);
+}
+
+/* Improved list styling */
+.post-content ul,
+.post-content ol {
+    font-size: 1rem;
+}
+
+/* Better spacing for paragraphs */
+.post-content p {
+    margin-bottom: 1.25rem;
+}

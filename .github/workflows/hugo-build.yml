@@ -1,0 +1,56 @@
+name: Hugo Build and Validate
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build Hugo site
+        run: hugo --minify
+
+      - name: Validate build output
+        run: |
+          # Check that public directory exists and has content
+          if [ ! -d "public" ]; then
+            echo "Error: public directory does not exist"
+            exit 1
+          fi
+          
+          # Check for index.html
+          if [ ! -f "public/index.html" ]; then
+            echo "Error: public/index.html does not exist"
+            exit 1
+          fi
+          
+          # Check for search index (PaperMod feature)
+          if [ -f "public/index.json" ]; then
+            echo "Search index generated successfully"
+          fi
+          
+          # Count generated files
+          FILE_COUNT=$(find public -type f | wc -l)
+          echo "Build successful! Generated $FILE_COUNT files"
+          
+          # List generated structure
+          echo "Generated structure:"
+          find public -type f -name "*.html" | head -20
