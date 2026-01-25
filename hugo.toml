@@ -1,4 +1,4 @@
-baseURL = 'https://bymar.co/'
+baseURL = 'https://blog.bymar.co/'
 languageCode = 'en-us'
 title = 'blog.byMAR.CO'
 theme = 'hugo-PaperMod'
@@ -55,7 +55,7 @@ enableEmoji = true
   title = 'byMAR.CO'
   description = "bYMAR.CO AI Ramblings"
   author = 'Marco'
-  keywords = ["software engineering", "devops", "cloud", "technology", "AI", "blog"]
+  keywords = ["software engineering", "cloud", "technology", "AI", "artificial intelligence", "agents", "blog"]
 
   # Site logo (replace logo.png with your actual logo)
   [params.label]
