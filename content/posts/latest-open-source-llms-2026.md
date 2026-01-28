@@ -1,3 +1,46 @@
+---
+title: "The State of Open Source LLMs in 2026: Latest Releases and Technical Guide"
+date: 2026-01-28T00:00:00-05:00
+draft: false
+description: "A comprehensive guide to the latest open-source large language models released in 2026, including DeepSeek-R1, GLM-4.7-Flash, Qwen3, Kimi K2.5, Llama 3.3, Mistral Large 3, Olmo 3, and NVIDIA Orchestrator-8B."
+summary: "Explore the most significant open-source LLM releases of 2026 with detailed technical specifications, GPU requirements, and practical setup guides for running these models locally."
+tags:
+- ai
+- llm
+- open-source
+- machine-learning
+- deepseek
+- qwen
+- llama
+- mistral
+- gpu
+- inference
+categories:
+- ai-tools
+- technical-guides
+author: "Marco"
+showToc: true
+TocOpen: false
+hidemeta: false
+comments: true
+disableHLJS: false
+disableShare: false
+hideSummary: false
+searchHidden: false
+ShowReadingTime: true
+ShowBreadCrumbs: true
+ShowPostNavLinks: true
+ShowWordCount: true
+ShowRssButtonInSectionTermList: true
+UseHugoToc: true
+cover:
+  image: ""
+  alt: ""
+  caption: ""
+  relative: false
+  hidden: true
+---
+
 # The State of Open Source LLMs in 2026: Latest Releases and Technical Guide
 
 *Published: January 28, 2026*
