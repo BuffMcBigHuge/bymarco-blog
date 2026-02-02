@@ -35,7 +35,7 @@ cover:
   alt: ""
   caption: ""
   relative: false
-  hidden: true
+  hidden: false
 ---
 
 The Clawdbot → MoltBot → OpenClaw story is moving fast, but the *real* indicator that this whole wave is maturing isn’t another “look, my agent booked my flight” demo.
