@@ -118,6 +118,16 @@ There’s also momentum toward native app integration (Swift ports):
 
 - <https://x.com/Prince_Canuma/status/2019871443413287047>
 
+### Voxtral ("voxel") and the new class of speech-native models
+
+Quick note because people keep mixing terminology: a lot of what I’ve seen recently isn’t “voxel TTS” — it’s **Voxtral**, which shows up in the same local-voice conversations as Parakeet.
+
+One field report claims **Parakeet TDT 0.6B** is “80–130× faster” and **Voxtral 3B via MLX** is “9× faster” on an M4 Pro.
+
+- <https://x.com/tombielecki/status/2019556099167514676>
+
+Treat these as *directional signals*, not gospel. The important point is that we’re getting more speech-native models that are competitive **locally**, which changes the economics of always-on voice.
+
 ### The pattern that keeps winning
 
 If you’re building for consumers (or anything always-on), the architecture that keeps showing up is:
