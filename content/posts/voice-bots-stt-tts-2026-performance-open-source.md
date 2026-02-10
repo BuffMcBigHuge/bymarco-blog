@@ -72,8 +72,9 @@ The easiest way to spot who’s serious about voice agents: they’re talking ab
 
 There’s a concrete pattern floating around right now: instrument a classic **STT → agent → TTS** pipeline with OpenTelemetry, ship spans like `stt/llm/tts/turn/conversation`, attach turn audio, and debug turn-by-turn in LangSmith.
 
-- LangChain writeup / demo: <https://x.com/LangChain/status/2019846811997942219>
-- JP thread with implementation details: <https://x.com/LangChainJP/status/2020143039943934012>
+{{< linkcard url="https://x.com/LangChain/status/2019846811997942219" title="LangChain: Debug voice agents with LangSmith tracing (Pipecat)" site="X" >}}
+
+{{< linkcard url="https://x.com/LangChainJP/status/2020143039943934012" title="LangChainJP: Turn-level tracing spans for STT/LLM/TTS (Pipecat + OTel)" site="X" >}}
 
 That’s the right direction. If you can’t trace turn-level latency, endpointing decisions, and TTS TTFA, you’re debugging a distributed system by vibes.
 
