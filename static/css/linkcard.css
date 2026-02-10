@@ -68,4 +68,8 @@
   text-overflow:ellipsis;
 }
 
+.oc-linkcard__author{
+  font-weight:600;
+}
+
 .oc-linkcard__dot{ margin: 0 6px; }

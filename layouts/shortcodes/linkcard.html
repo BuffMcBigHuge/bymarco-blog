@@ -13,6 +13,7 @@ Optional:
 
 {{- $title := .Get "title" | default $url -}}
 {{- $site := .Get "site" -}}
+{{- $author := .Get "author" -}}
 {{- $image := .Get "image" -}}
 
 {{- $domain := "" -}}
@@ -38,6 +39,14 @@ Optional:
     <span class="oc-linkcard__meta">
       {{- if $site -}}
         <span class="oc-linkcard__site">{{ $site }}</span>
+      {{- end -}}
+      {{- if and $site $author -}}
+        <span class="oc-linkcard__dot">·</span>
+      {{- end -}}
+      {{- if $author -}}
+        <span class="oc-linkcard__author">{{ $author }}</span>
+      {{- end -}}
+      {{- if or $site $author -}}
         <span class="oc-linkcard__dot">·</span>
       {{- end -}}
       <span class="oc-linkcard__domain">{{ $domain }}</span>
