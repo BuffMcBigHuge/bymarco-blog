@@ -35,7 +35,7 @@ A Reddit post asked the right question:
 
 The subtext: *“I installed it. I asked it to do things. It just chats. Where’s the agent part?”*
 
-Thread: <https://www.reddit.com/r/openclaw/comments/1r0wks3/does_openclaw_actually_do_anything_for_you_guys/>
+{{< linkcard url="https://www.reddit.com/r/openclaw/comments/1r0wks3/does_openclaw_actually_do_anything_for_you_guys/" title="Does OpenClaw actually do anything for you guys?" site="Reddit" author="u/ElmangougEssadik" >}}
 
 I pulled the full comment tree via Reddit API (PRAW). I was able to fetch **80 comments** even though the post currently reports **87 total**. The missing delta is likely deleted/filtered comments or API visibility weirdness. Still: there’s plenty here, and the patterns repeat.
 

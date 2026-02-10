@@ -80,17 +80,17 @@ That’s the right direction. If you can’t trace turn-level latency, endpointi
 
 Also worth calling out: Pipecat is getting “bus-like.” Example: **Pipecat MCP server** working with local STT (Whisper) and local TTS (Kokoro).
 
-- <https://x.com/aconchillo/status/2017071189618028861>
+{{< linkcard url="https://x.com/aconchillo/status/2017071189618028861" title="Pipecat MCP server works with local Whisper STT + Kokoro TTS" site="X" author="@aconchillo" >}}
 
 And Pipecat has a growing ecosystem of clients and templates (Android demo client, etc.):
 
-- <https://x.com/kwindla/status/2012299937875431449>
+{{< linkcard url="https://x.com/kwindla/status/2012299937875431449" title="Pipecat Android demo client + simple chatbot example" site="X" author="@kwindla" >}}
 
 ### Reality check (what breaks after the demo)
 
 A builder story I like because it’s honest: audio leakage, thread scheduling, and the fact that 100–200ms of coordination delay is enough for a couple words to leak through.
 
-- <https://x.com/getpy/status/2020862419405586898>
+{{< linkcard url="https://x.com/getpy/status/2020862419405586898" title="Builder report: full-duplex voice bot w/ Pipecat + Faster-Whisper + Kokoro (leakage + barge-in pain)" site="X" author="@getpy" >}}
 
 This is the part that separates “cool demo” from “shippable product.”
 
@@ -105,7 +105,7 @@ Right now, Parakeet on Apple Silicon via MLX is getting real-world traction as:
 
 A crisp example: cloud STT for general use + Parakeet MLX streaming locally on Apple Silicon.
 
-- <https://x.com/jjack_arturo/status/2020821855817400439>
+{{< linkcard url="https://x.com/jjack_arturo/status/2020821855817400439" title="Field report: Deepgram Nova-3 + Parakeet MLX streaming local fallback" site="X" author="@jjack_arturo" >}}
 
 Some specific Parakeet signals worth noting (treat as field reports, then benchmark yourself):
 
@@ -113,11 +113,11 @@ Some specific Parakeet signals worth noting (treat as field reports, then benchm
 - v3 supports **~25 languages**
 - “native audio length” around **24 minutes** (vs Whisper-style 30s chunking)
 
-- <https://x.com/Freerunnering/status/2011044429067665573>
+{{< linkcard url="https://x.com/Freerunnering/status/2011044429067665573" title="Parakeet v3: speed vs Whisper, 25 languages, longer native audio lengths (field report)" site="X" author="@Freerunnering" >}}
 
 There’s also momentum toward native app integration (Swift ports):
 
-- <https://x.com/Prince_Canuma/status/2019871443413287047>
+{{< linkcard url="https://x.com/Prince_Canuma/status/2019871443413287047" title="Parakeet → Swift: port to native Mac/iOS apps" site="X" author="@Prince_Canuma" >}}
 
 ### Voxtral ("voxel") and the new class of speech-native models
 
@@ -125,7 +125,7 @@ Quick note because people keep mixing terminology: a lot of what I’ve seen rec
 
 One field report claims **Parakeet TDT 0.6B** is “80–130× faster” and **Voxtral 3B via MLX** is “9× faster” on an M4 Pro.
 
-- <https://x.com/tombielecki/status/2019556099167514676>
+{{< linkcard url="https://x.com/tombielecki/status/2019556099167514676" title="MLX speed notes: Parakeet TDT 0.6B and Voxtral 3B (field report)" site="X" author="@tombielecki" >}}
 
 Treat these as *directional signals*, not gospel. The important point is that we’re getting more speech-native models that are competitive **locally**, which changes the economics of always-on voice.
 
@@ -152,7 +152,7 @@ Don’t pretend endpointing is a single silence threshold. Treat it like a polic
 
 One modern “plumbing” update that’s directly relevant here: Speechmatics talking about a **ForceEndOfUtterance** mechanism to finalize transcripts in <250ms, available in Pipecat.
 
-- <https://x.com/Speechmatics/status/2018674274089787793>
+{{< linkcard url="https://x.com/Speechmatics/status/2018674274089787793" title="Speechmatics: ForceEndOfUtterance for <250ms finalization (Pipecat support)" site="X" author="@Speechmatics" >}}
 
 This is a good example of why “STT” isn’t just WER anymore.
 
@@ -173,7 +173,7 @@ This is a very “2026” set of claims to evaluate:
 - cloud + on-prem
 - and availability across LiveKit/Pipecat/Telnyx/etc.
 
-- <https://x.com/lilyjclifford/status/2019097874496438477>
+{{< linkcard url="https://x.com/lilyjclifford/status/2019097874496438477" title="Arcana v3 TTS: latency, timestamps, concurrency (shipping integrations)" site="X" author="@lilyjclifford" >}}
 
 Even if you’re open-source biased, this matters because it sets the bar for what a production TTS provider is optimizing for.
 
@@ -186,7 +186,7 @@ This is getting passed around as a “DeepSeek moment” for voice:
 - 5s voice cloning
 - paralinguistic tags (expressivity)
 
-- <https://x.com/DailyDoseOfDS_/status/2020429944195871199>
+{{< linkcard url="https://x.com/DailyDoseOfDS_/status/2020429944195871199" title="Chatterbox Turbo: MIT-licensed open-source TTS hype thread (benchmark it)" site="X" author="@DailyDoseOfDS_" >}}
 
 I’m not going to repeat the hype. The right response is: **benchmark it like an engineer**.
 
@@ -201,8 +201,8 @@ Measure:
 
 Two projects that look like “real open releases” (not just a paper repo) because they’re being adopted and productized:
 
-- Qwen3‑TTS (open-weight family): <https://www.reddit.com/r/LocalLLaMA/comments/1qjul5t/qwen_have_opensourced_the_full_family_of_qwen3tts/>
-- CosyVoice ecosystem + ports: <https://x.com/psk90_ai/status/2012052652520325461>
+{{< linkcard url="https://www.reddit.com/r/LocalLLaMA/comments/1qjul5t/qwen_have_opensourced_the_full_family_of_qwen3tts/" title="Qwen3‑TTS: open-sourced family release (LocalLLaMA thread)" site="Reddit" author="u/Nunki08" >}}
+{{< linkcard url="https://x.com/psk90_ai/status/2012052652520325461" title="CosyVoice ONNX/edge port signal (ecosystem productization)" site="X" author="@psk90_ai" >}}
 
 ## The workflow: how to build a voice agent that doesn’t collapse under real users
 
