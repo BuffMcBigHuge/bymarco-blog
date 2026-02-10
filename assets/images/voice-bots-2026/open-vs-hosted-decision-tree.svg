@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Decision tree: open-source vs hosted voice stack">
+  <defs>
+    <style>
+      .title{font:700 26px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; fill:#111}
+      .small{font:500 13px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; fill:#333}
+      .label{font:600 15px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; fill:#111}
+      .box{rx:14; ry:14; fill:#fff; stroke:#111; stroke-width:2}
+      .choice{fill:#f6f7ff; stroke:#2b3cff}
+      .oss{fill:#f2fff6; stroke:#0d7a2a}
+      .host{fill:#fff7ef; stroke:#b35a00}
+      .arrow{stroke:#111; stroke-width:3; fill:none; marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#111"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="52" class="title">Open-source vs hosted (pick based on latency + ops, not vibes)</text>
+  <text x="40" y="80" class="small">Most teams end up hybrid: local STT first, cloud fallback; open TTS where it’s stable.</text>
+
+  <rect x="460" y="120" width="280" height="70" class="box choice"/>
+  <text x="600" y="160" text-anchor="middle" class="label">Do you need on-device/privacy?</text>
+
+  <rect x="160" y="250" width="280" height="70" class="box oss"/>
+  <text x="300" y="290" text-anchor="middle" class="label">Local-first STT</text>
+
+  <rect x="760" y="250" width="280" height="70" class="box host"/>
+  <text x="900" y="290" text-anchor="middle" class="label">Hosted STT/TTS</text>
+
+  <rect x="80" y="380" width="440" height="90" class="box oss"/>
+  <text x="300" y="415" text-anchor="middle" class="label">Hybrid winner (common)</text>
+  <text x="300" y="440" text-anchor="middle" class="small">Parakeet/Whisper local → cloud fallback (Nova/Scribe)</text>
+  <text x="300" y="460" text-anchor="middle" class="small">Open TTS (CosyVoice/Qwen3‑TTS/Chatterbox*) when stable</text>
+
+  <rect x="650" y="380" width="500" height="90" class="box host"/>
+  <text x="900" y="415" text-anchor="middle" class="label">Hosted-first winner</text>
+  <text x="900" y="440" text-anchor="middle" class="small">Fastest time-to-market; pay for reliability and scale</text>
+  <text x="900" y="460" text-anchor="middle" class="small">Still needs endpointing + barge-in + tracing</text>
+
+  <!-- arrows -->
+  <path d="M600 190 C520 220, 400 230, 300 250" class="arrow"/>
+  <text x="430" y="226" class="small">Yes</text>
+
+  <path d="M600 190 C680 220, 800 230, 900 250" class="arrow"/>
+  <text x="745" y="226" class="small">No</text>
+
+  <path d="M300 320 L300 380" class="arrow"/>
+  <path d="M900 320 L900 380" class="arrow"/>
+
+</svg>
