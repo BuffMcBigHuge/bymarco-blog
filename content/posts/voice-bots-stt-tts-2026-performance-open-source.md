@@ -29,7 +29,7 @@ ShowWordCount: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 cover:
-  image: "assets/images/voice-bots-2026/latency-budget.svg"
+  image: "/images/voice-bots-2026/latency-budget.svg"
   alt: "Latency budget pipeline for a voice bot"
   caption: "Performance-first: measure p50/p95 on endpointing, LLM TTFT, TTS TTFA, and playback buffer."
   relative: false
@@ -56,7 +56,7 @@ A useful rule of thumb:
 
 Here’s where the time actually goes:
 
-![Latency budget pipeline](/assets/images/voice-bots-2026/latency-budget.svg)
+![Latency budget pipeline](/images/voice-bots-2026/latency-budget.svg)
 
 If you aren’t measuring p95 on the red blocks, you don’t know why your bot feels slow.
 
@@ -147,7 +147,7 @@ Most voice bots feel bad because endpointing is bad.
 
 Don’t pretend endpointing is a single silence threshold. Treat it like a policy:
 
-![Endpointing state machine](/assets/images/voice-bots-2026/endpointing-state-machine.svg)
+![Endpointing state machine](/images/voice-bots-2026/endpointing-state-machine.svg)
 
 One modern “plumbing” update that’s directly relevant here: Speechmatics talking about a **ForceEndOfUtterance** mechanism to finalize transcripts in <250ms, available in Pipecat.
 
@@ -226,7 +226,7 @@ If the user speaks and your bot keeps talking, you built an IVR.
 
 Most teams end up hybrid. That’s not a compromise — it’s the optimal point on the reliability/cost curve.
 
-![Open vs hosted decision tree](/assets/images/voice-bots-2026/open-vs-hosted-decision-tree.svg)
+![Open vs hosted decision tree](/images/voice-bots-2026/open-vs-hosted-decision-tree.svg)
 
 ## What I’d ship today (if I cared about performance and cost)
 

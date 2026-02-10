@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="Endpointing state machine: soft end and hard end">
+  <defs>
+    <style>
+      .title{font:700 26px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; fill:#111}
+      .small{font:500 13px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; fill:#333}
+      .label{font:600 16px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; fill:#111}
+      .box{rx:16; ry:16; fill:#fff; stroke:#111; stroke-width:2}
+      .hot{fill:#fff1f1; stroke:#b30000}
+      .arrow{stroke:#111; stroke-width:3; fill:none; marker-end:url(#m)}
+      .hotarrow{stroke:#b30000; stroke-width:3; fill:none; marker-end:url(#mhot)}
+    </style>
+    <marker id="m" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#111"/>
+    </marker>
+    <marker id="mhot" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#b30000"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="52" class="title">Endpointing is a policy (soft end + hard end)</text>
+  <text x="40" y="80" class="small">Don’t pretend there’s a single magic silence threshold. Treat it like a state machine.</text>
+
+  <rect x="70" y="150" width="220" height="90" class="box"/>
+  <text x="180" y="190" text-anchor="middle" class="label">Listening</text>
+  <text x="180" y="215" text-anchor="middle" class="small">waiting for speech</text>
+
+  <rect x="350" y="150" width="260" height="90" class="box"/>
+  <text x="480" y="190" text-anchor="middle" class="label">Speaking (user)</text>
+  <text x="480" y="215" text-anchor="middle" class="small">streaming partials</text>
+
+  <rect x="690" y="130" width="280" height="110" class="box hot"/>
+  <text x="830" y="178" text-anchor="middle" class="label">Maybe done</text>
+  <text x="830" y="203" text-anchor="middle" class="small">silence &gt; soft_end_ms</text>
+  <text x="830" y="225" text-anchor="middle" class="small">(tentative)</text>
+
+  <rect x="690" y="280" width="280" height="110" class="box hot"/>
+  <text x="830" y="328" text-anchor="middle" class="label">Turn ended</text>
+  <text x="830" y="353" text-anchor="middle" class="small">silence &gt; hard_end_ms</text>
+  <text x="830" y="375" text-anchor="middle" class="small">(commit + respond)</text>
+
+  <!-- arrows -->
+  <path d="M290 195 L350 195" class="arrow"/>
+  <path d="M610 195 L690 195" class="hotarrow"/>
+
+  <path d="M830 240 L830 280" class="hotarrow"/>
+
+  <path d="M690 185 C610 120, 430 120, 410 150" class="arrow"/>
+  <text x="520" y="120" class="small">speech resumes</text>
+
+  <path d="M480 240 C480 300, 320 310, 180 240" class="arrow"/>
+  <text x="285" y="318" class="small">long silence / no speech</text>
+
+</svg>
