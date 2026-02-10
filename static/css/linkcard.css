@@ -1,0 +1,71 @@
+/* Minimal link cards (OpenClaw / bymarco-blog)
+   Intentionally simple: thumbnail + title + domain.
+*/
+
+.oc-linkcard{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  text-decoration:none;
+  background:var(--theme);
+  margin:16px 0;
+}
+
+.oc-linkcard:hover{
+  border-color: color-mix(in srgb, var(--secondary) 55%, var(--border));
+}
+
+.oc-linkcard__media{
+  width:56px;
+  height:56px;
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--code-bg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+
+.oc-linkcard__img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.oc-linkcard__fallback{
+  font-weight:700;
+  font-size:18px;
+  color:var(--secondary);
+}
+
+.oc-linkcard__body{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.oc-linkcard__title{
+  font-weight:650;
+  color:var(--primary);
+  line-height:1.2;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.oc-linkcard__meta{
+  font-size:0.9em;
+  color:var(--secondary);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.oc-linkcard__dot{ margin: 0 6px; }

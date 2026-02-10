@@ -1,0 +1,46 @@
+{{- /*
+Minimal link card shortcode.
+Usage:
+  {{< linkcard url="https://..." title="..." site="Reddit" image="/images/linkcards/foo.jpg" >}}
+Optional:
+  desc (currently unused in minimal style; reserved)
+*/ -}}
+
+{{- $url := .Get "url" -}}
+{{- if not $url -}}
+  {{- errorf "linkcard shortcode requires url" -}}
+{{- end -}}
+
+{{- $title := .Get "title" | default $url -}}
+{{- $site := .Get "site" -}}
+{{- $image := .Get "image" -}}
+
+{{- $domain := "" -}}
+{{- $u := urls.Parse $url -}}
+{{- if $u -}}
+  {{- $domain = $u.Host -}}
+{{- end -}}
+{{- if not $domain -}}
+  {{- $domain = $url -}}
+{{- end -}}
+
+<a class="oc-linkcard" href="{{ $url }}" target="_blank" rel="noopener noreferrer">
+  <span class="oc-linkcard__media" aria-hidden="true">
+    {{- if $image -}}
+      <img class="oc-linkcard__img" src="{{ $image }}" alt="" loading="lazy" />
+    {{- else -}}
+      <span class="oc-linkcard__fallback">↗</span>
+    {{- end -}}
+  </span>
+
+  <span class="oc-linkcard__body">
+    <span class="oc-linkcard__title">{{ $title }}</span>
+    <span class="oc-linkcard__meta">
+      {{- if $site -}}
+        <span class="oc-linkcard__site">{{ $site }}</span>
+        <span class="oc-linkcard__dot">·</span>
+      {{- end -}}
+      <span class="oc-linkcard__domain">{{ $domain }}</span>
+    </span>
+  </span>
+</a>
