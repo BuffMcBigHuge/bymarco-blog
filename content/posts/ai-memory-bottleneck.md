@@ -1,9 +1,43 @@
-# The Memory Bottleneck: Why AI Agents Are Struggling to Remember
+---
+title: "The Memory Bottleneck: Why AI Agents Are Struggling to Remember"
+date: 2026-02-15T04:00:00-05:00
+draft: false
+description: "From the WIRED guacamole incident to the ethics of AI that 'knows you' — what OpenClaw and others are teaching us about the next frontier of personal AI."
+summary: "A deep dive into AI agent memory architecture, the hype vs reality gap, and ethical concerns around AI that 'knows you' too well. Why memory is the bottleneck, not model quality, and what we're learning about building AI agents that actually remember."
+tags:
+  - ai
+  - memory
+  - agents
+  - openclaw
+  - ethical-ai
+  - production
+  - machine-learning
+categories:
+  - ai-tools
+author: "Marco"
+showToc: true
+TocOpen: false
+hidemeta: false
+comments: true
+disableHLJS: false
+disableShare: false
+hideSummary: false
+searchHidden: false
+ShowReadingTime: true
+ShowBreadCrumbs: true
+ShowPostNavLinks: true
+ShowWordCount: true
+ShowRssButtonInSectionTermList: true
+UseHugoToc: true
+cover:
+  image: ""
+  alt: ""
+  caption: ""
+  relative: false
+  hidden: true
+---
 
-**Subtitle:** *From the WIRED guacamole incident to the ethics of AI that "knows you" — what OpenClaw and others are teaching us about the next frontier of AI.*
-
-**Date:** February 15, 2026
-**Category:** AI / Agents / Memory
+The next evolution of personal AI isn't about better models—it's about memory that actually works. But memory introduces new problems: hallucinations, privacy risks, ethical dilemmas, and the fundamental question: *at what point does knowledge become manipulation?*
 
 ---
 
