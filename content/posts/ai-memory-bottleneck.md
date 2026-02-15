@@ -1,6 +1,6 @@
 ---
 title: "The Memory Bottleneck: Why AI Agents Are Struggling to Remember"
-date: 2026-02-15T04:00:00-05:00
+date: 2026-02-15T12:00:00-05:00
 draft: false
 description: "From the WIRED guacamole incident to the ethics of AI that 'knows you' — what OpenClaw and others are teaching us about the next frontier of personal AI."
 summary: "A deep dive into AI agent memory architecture, the hype vs reality gap, and ethical concerns around AI that 'knows you' too well. Why memory is the bottleneck, not model quality, and what we're learning about building AI agents that actually remember."
