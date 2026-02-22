@@ -60,6 +60,7 @@ This post is a field guide to a handful of fast-growing open-source projects:
 - Agent Zero — https://github.com/agent0ai/agent-zero
 - ZeroClaw — https://github.com/zeroclaw-labs/zeroclaw
 - memU — https://github.com/NevaMind-AI/memU
+- Rowboat — https://github.com/rowboatlabs/rowboat
 
 > Logos below are embedded locally for reliability; they’re sourced from each project’s GitHub org/user avatar.
 
@@ -76,6 +77,7 @@ This post is a field guide to a handful of fast-growing open-source projects:
 | Agent Zero | A web UI + Docker-first **computer-use environment** you supervise | ![Agent Zero logo](/images/agent-frameworks/agent-zero.png) |
 | ZeroClaw | A Rust **trait-driven agent OS/runtime** with secure defaults | ![ZeroClaw logo](/images/agent-frameworks/zeroclaw.png) |
 | memU | A proactive **memory subsystem** (not a full agent framework) | ![memU logo](/images/agent-frameworks/memu.png) |
+| Rowboat | A local-first **AI coworker** that builds a long-lived knowledge graph (markdown vault) from your work streams | ![Rowboat logo](/images/agent-frameworks/rowboat.png) |
 
 ---
 
@@ -289,6 +291,39 @@ Example user signal (parity/migration checklist):
 
 ---
 
+## Rowboat: a local-first AI coworker with a compounding knowledge graph
+
+**Repo:** https://github.com/rowboatlabs/rowboat
+
+Rowboat is closer to “productized knowledge-first coworker” than “agent framework.”
+It connects to the work you already do (email + meeting notes), builds a **long-lived knowledge graph**, and then uses that accumulated context to draft, brief, and generate artifacts.
+
+What’s distinctive is the **memory substrate**:
+
+- An Obsidian-compatible vault of plain Markdown notes with backlinks
+- Explicitly positioned as “memory that compounds,” not “retrieval that starts cold every time”
+- Designed to be inspectable/editable by the user (no opaque hidden memory store)
+
+### What it optimizes for
+- **Meeting prep** and “what’s the context with this person/project?”
+- **Email drafting** grounded in your past decisions/commitments
+- Generating real artifacts like **PDF slides/decks** from your knowledge context
+- Background agents for routine work (draft replies, daily briefs, recurring project updates)
+
+### Integrations (per README)
+- Gmail
+- Granola (meeting notes)
+- Fireflies (meeting notes)
+
+### Tool / extension model
+Rowboat supports extending via **MCP** (Model Context Protocol), so you can plug in external tools/services (search, GitHub, Slack, etc.) without baking those integrations into the core.
+
+### Tradeoffs
+- It’s primarily a **coworker app** with an opinionated workflow, not a general-purpose agent kernel
+- Some optional features require external API keys (e.g., voice notes via Deepgram; web search via Brave/Exa)
+
+---
+
 ## memU: proactive memory as a subsystem (not a full agent framework)
 
 **Repo:** https://github.com/NevaMind-AI/memU
@@ -320,16 +355,16 @@ If you’re picking something that will run 24/7 and touch real systems, you wan
 
 ### Comparison matrix
 
-| Dimension | OpenClaw | nanobot | PicoClaw | Clawlet | Agent Zero | ZeroClaw | memU |
-|---|---|---|---|---|---|---|---|
-| Primary shape | Control plane + surfaces | Minimal runtime | Edge gateway | Opinionated gateway | Web UI environment | Kernel/runtime OS | Memory subsystem |
-| Best UI/surface fit | Messaging + nodes + UI | Messaging/CLI | Messaging on edge | Messaging on edge | Web UI | Messaging + infra | API/lib |
-| Packaging | Node/TS | Python | Go binary | Go binary | Docker | Rust binary | Python/Rust |
-| Execution model | Host + optional sandbox | Host/tools loop | Host/tools loop | Host/tools loop (scoped) | Computer-use (local) | Runtime adapters (native/docker) | N/A |
-| Security defaults (theme) | Pairing + allowlists + sandbox options | Depends on config | Workspace restrictions | Workspace restrictions | “Isolate it” | Deny-by-default + pairing | Not a tool runner |
-| Memory posture | Integrated + skills | File-first minimalism | File-first + ops | Local semantic search (SQLite) | Varies by setup | Pluggable backends | Core focus |
-| Extensibility | Skills/plugins | Hack the code | Config + community | Strong defaults + plugins | Edit tools/prompts | Traits | Integrations |
-| Best for… | Personal assistant OS | Hackers/research | Cheap hardware | Edge + safer boundary | Supervised workflows | Hardened operators | Anyone needing memory |
+| Dimension | OpenClaw | nanobot | PicoClaw | Clawlet | Agent Zero | ZeroClaw | Rowboat | memU |
+|---|---|---|---|---|---|---|---|---|
+| Primary shape | Control plane + surfaces | Minimal runtime | Edge gateway | Opinionated gateway | Web UI environment | Kernel/runtime OS | Coworker app (knowledge-first) | Memory subsystem |
+| Best UI/surface fit | Messaging + nodes + UI | Messaging/CLI | Messaging on edge | Messaging on edge | Web UI | Messaging + infra | Desktop app / workstreams | API/lib |
+| Packaging | Node/TS | Python | Go binary | Go binary | Docker | Rust binary | Desktop app (downloads) | Python/Rust |
+| Execution model | Host + optional sandbox | Host/tools loop | Host/tools loop | Host/tools loop (scoped) | Computer-use (local) | Runtime adapters (native/docker) | App workflows + background agents | N/A |
+| Security defaults (theme) | Pairing + allowlists + sandbox options | Depends on config | Workspace restrictions | Workspace restrictions | “Isolate it” | Deny-by-default + pairing | Local-first vault, user-controlled | Not a tool runner |
+| Memory posture | Integrated + skills | File-first minimalism | File-first + ops | Local semantic search (SQLite) | Varies by setup | Pluggable backends | Knowledge graph in Markdown vault | Core focus |
+| Extensibility | Skills/plugins | Hack the code | Config + community | Strong defaults + plugins | Edit tools/prompts | Traits | MCP | Integrations |
+| Best for… | Personal assistant OS | Hackers/research | Cheap hardware | Edge + safer boundary | Supervised workflows | Hardened operators | Knowledge compounding from work | Anyone needing memory |
 
 ### Choosing by persona (opinionated)
 
@@ -348,6 +383,9 @@ If you’re picking something that will run 24/7 and touch real systems, you wan
 
 **5) “My runtime is fine; memory is the bottleneck.”**
 - Add **memU**.
+
+**6) “I want my work to compound into a knowledge graph, automatically.”**
+- Start with **Rowboat**.
 
 ### The hard questions (use these as your checklist)
 
@@ -388,4 +426,5 @@ If the project can’t answer these cleanly, it’s not “bad.” It’s just n
 - Clawlet — https://github.com/mosaxiv/clawlet
 - Agent Zero — https://github.com/agent0ai/agent-zero
 - ZeroClaw — https://github.com/zeroclaw-labs/zeroclaw
+- Rowboat — https://github.com/rowboatlabs/rowboat
 - memU — https://github.com/NevaMind-AI/memU
