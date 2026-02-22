@@ -53,14 +53,7 @@ In 2026, the differentiators are boring (and therefore decisive):
 
 This post is a field guide to a handful of fast-growing open-source projects:
 
-- OpenClaw — https://github.com/openclaw/openclaw
-- nanobot — https://github.com/HKUDS/nanobot
-- PicoClaw — https://github.com/sipeed/picoclaw
-- Clawlet (PicoClaw-adjacent Go variant) — https://github.com/mosaxiv/clawlet
-- Agent Zero — https://github.com/agent0ai/agent-zero
-- ZeroClaw — https://github.com/zeroclaw-labs/zeroclaw
-- memU — https://github.com/NevaMind-AI/memU
-- Rowboat — https://github.com/rowboatlabs/rowboat
+OpenClaw, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, and Rowboat.
 
 > Logos below are embedded locally for reliability; they’re sourced from each project’s GitHub org/user avatar.
 
@@ -70,14 +63,14 @@ This post is a field guide to a handful of fast-growing open-source projects:
 
 | Project | “What it is” | Logo |
 |---|---|---|
-| OpenClaw | A full-stack assistant **control plane** (channels + nodes + UI + tools) | ![OpenClaw logo](/images/agent-frameworks/openclaw.png) |
-| nanobot | A minimal Python **agent runtime** with high iteration velocity | ![nanobot logo](/images/agent-frameworks/nanobot-hkuds.png) |
-| PicoClaw | A Go **single-binary assistant gateway** optimized for edge devices | ![PicoClaw logo](/images/agent-frameworks/picoclaw-sipeed.png) |
-| Clawlet | A tighter Go variant with stronger **workspace scoping + local semantic memory** | ![Clawlet logo](/images/agent-frameworks/clawlet-mosaxiv.png) |
-| Agent Zero | A web UI + Docker-first **computer-use environment** you supervise | ![Agent Zero logo](/images/agent-frameworks/agent-zero.png) |
-| ZeroClaw | A Rust **trait-driven agent OS/runtime** with secure defaults | ![ZeroClaw logo](/images/agent-frameworks/zeroclaw.png) |
-| memU | A proactive **memory subsystem** (not a full agent framework) | ![memU logo](/images/agent-frameworks/memu.png) |
-| Rowboat | A local-first **AI coworker** that builds a long-lived knowledge graph (markdown vault) from your work streams | ![Rowboat logo](/images/agent-frameworks/rowboat.png) |
+| [OpenClaw](https://github.com/openclaw/openclaw) | A full-stack assistant **control plane** (channels + nodes + UI + tools) | <img src="/images/agent-frameworks/openclaw.png" width="48" height="48" alt="OpenClaw logo" /> |
+| [nanobot](https://github.com/HKUDS/nanobot) | A minimal Python **agent runtime** with high iteration velocity | <img src="/images/agent-frameworks/nanobot-hkuds.png" width="48" height="48" alt="nanobot logo" /> |
+| [PicoClaw](https://github.com/sipeed/picoclaw) | A Go **single-binary assistant gateway** optimized for edge devices | <img src="/images/agent-frameworks/picoclaw-sipeed.png" width="48" height="48" alt="PicoClaw logo" /> |
+| [Clawlet](https://github.com/mosaxiv/clawlet) | A tighter Go variant with stronger **workspace scoping + local semantic memory** | <img src="/images/agent-frameworks/clawlet-mosaxiv.png" width="48" height="48" alt="Clawlet logo" /> |
+| [Agent Zero](https://github.com/agent0ai/agent-zero) | A web UI + Docker-first **computer-use environment** you supervise | <img src="/images/agent-frameworks/agent-zero.png" width="48" height="48" alt="Agent Zero logo" /> |
+| [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) | A Rust **trait-driven agent OS/runtime** with secure defaults | <img src="/images/agent-frameworks/zeroclaw.png" width="48" height="48" alt="ZeroClaw logo" /> |
+| [memU](https://github.com/NevaMind-AI/memU) | A proactive **memory subsystem** (not a full agent framework) | <img src="/images/agent-frameworks/memu.png" width="48" height="48" alt="memU logo" /> |
+| [Rowboat](https://github.com/rowboatlabs/rowboat) | A local-first **AI coworker** that builds a long-lived knowledge graph (markdown vault) from your work streams | <img src="/images/agent-frameworks/rowboat.png" width="48" height="48" alt="Rowboat logo" /> |
 
 ---
 
