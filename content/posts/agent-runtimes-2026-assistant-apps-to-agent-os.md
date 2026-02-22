@@ -53,7 +53,7 @@ In 2026, the differentiators are boring (and therefore decisive):
 
 This post is a field guide to a handful of fast-growing open-source projects:
 
-OpenClaw, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, and Rowboat.
+OpenClaw, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, Rowboat, and zclaw.
 
 > Logos below are embedded locally for reliability; they’re sourced from each project’s GitHub org/user avatar.
 
@@ -71,6 +71,7 @@ OpenClaw, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, and Rowboat.
 | [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) | A Rust **trait-driven agent OS/runtime** with secure defaults | <img src="/images/agent-frameworks/zeroclaw.png" width="48" height="48" alt="ZeroClaw logo" /> |
 | [memU](https://github.com/NevaMind-AI/memU) | A proactive **memory subsystem** (not a full agent framework) | <img src="/images/agent-frameworks/memu.png" width="48" height="48" alt="memU logo" /> |
 | [Rowboat](https://github.com/rowboatlabs/rowboat) | A local-first **AI coworker** that builds a long-lived knowledge graph (markdown vault) from your work streams | <img src="/images/agent-frameworks/rowboat.png" width="48" height="48" alt="Rowboat logo" /> |
+| [zclaw](https://github.com/tnm/zclaw) | An ESP32 **microcontroller assistant** (~888KiB firmware) with cron, GPIO tools, and persistent memory | <img src="/images/agent-frameworks/zclaw.png" width="48" height="48" alt="zclaw logo" /> |
 
 ---
 
@@ -317,6 +318,33 @@ Rowboat supports extending via **MCP** (Model Context Protocol), so you can plug
 
 ---
 
+## zclaw: the extreme edge case (ESP32 agent in ~888KiB)
+
+**Repo:** https://github.com/tnm/zclaw
+
+zclaw is the most aggressive “agent on cheap hardware” expression I’ve seen: it’s written in C and targets ESP32 boards with a strict all-in firmware budget (<= ~888KiB). That budget includes not just the app logic, but also the ESP-IDF/FreeRTOS runtime, Wi‑Fi, TLS/crypto, and cert bundles.
+
+### What it optimizes for
+- Running an assistant on **microcontrollers** (ESP32-C3/S3/C6) with real constraints
+- **Scheduled tasks** (timezone-aware cron)
+- **Hardware control** via GPIO tools (with guardrails)
+- Persistent memory across reboots
+
+### Why it matters
+Most “edge agent” repos still assume a Linux-ish environment (Pi, old phone, router).
+zclaw forces a more honest question:
+
+> If you strip an agent down to the bare minimum, what capabilities remain useful?
+
+Answer: scheduling + a tiny tool surface + a durable memory nugget + a chat relay can still be compelling.
+
+### Tradeoffs
+- You’re building around embedded constraints (rate limits, payload size, networking realities)
+- Integrations are necessarily narrower than full gateways
+- “Tooling” mostly means device-level actions (GPIO, schedules, simple custom tools)
+
+---
+
 ## memU: proactive memory as a subsystem (not a full agent framework)
 
 **Repo:** https://github.com/NevaMind-AI/memU
@@ -348,16 +376,16 @@ If you’re picking something that will run 24/7 and touch real systems, you wan
 
 ### Comparison matrix
 
-| Dimension | OpenClaw | nanobot | PicoClaw | Clawlet | Agent Zero | ZeroClaw | Rowboat | memU |
-|---|---|---|---|---|---|---|---|---|
-| Primary shape | Control plane + surfaces | Minimal runtime | Edge gateway | Opinionated gateway | Web UI environment | Kernel/runtime OS | Coworker app (knowledge-first) | Memory subsystem |
-| Best UI/surface fit | Messaging + nodes + UI | Messaging/CLI | Messaging on edge | Messaging on edge | Web UI | Messaging + infra | Desktop app / workstreams | API/lib |
-| Packaging | Node/TS | Python | Go binary | Go binary | Docker | Rust binary | Desktop app (downloads) | Python/Rust |
-| Execution model | Host + optional sandbox | Host/tools loop | Host/tools loop | Host/tools loop (scoped) | Computer-use (local) | Runtime adapters (native/docker) | App workflows + background agents | N/A |
-| Security defaults (theme) | Pairing + allowlists + sandbox options | Depends on config | Workspace restrictions | Workspace restrictions | “Isolate it” | Deny-by-default + pairing | Local-first vault, user-controlled | Not a tool runner |
-| Memory posture | Integrated + skills | File-first minimalism | File-first + ops | Local semantic search (SQLite) | Varies by setup | Pluggable backends | Knowledge graph in Markdown vault | Core focus |
-| Extensibility | Skills/plugins | Hack the code | Config + community | Strong defaults + plugins | Edit tools/prompts | Traits | MCP | Integrations |
-| Best for… | Personal assistant OS | Hackers/research | Cheap hardware | Edge + safer boundary | Supervised workflows | Hardened operators | Knowledge compounding from work | Anyone needing memory |
+| Dimension | OpenClaw | nanobot | PicoClaw | Clawlet | Agent Zero | ZeroClaw | Rowboat | zclaw | memU |
+|---|---|---|---|---|---|---|---|---|---|
+| Primary shape | Control plane + surfaces | Minimal runtime | Edge gateway | Opinionated gateway | Web UI environment | Kernel/runtime OS | Coworker app (knowledge-first) | Embedded micro-agent | Memory subsystem |
+| Best UI/surface fit | Messaging + nodes + UI | Messaging/CLI | Messaging on edge | Messaging on edge | Web UI | Messaging + infra | Desktop app / workstreams | Telegram / web relay | API/lib |
+| Packaging | Node/TS | Python | Go binary | Go binary | Docker | Rust binary | Desktop app (downloads) | ESP32 firmware (C) | Python/Rust |
+| Execution model | Host + optional sandbox | Host/tools loop | Host/tools loop | Host/tools loop (scoped) | Computer-use (local) | Runtime adapters (native/docker) | App workflows + background agents | Schedules + GPIO tools | N/A |
+| Security defaults (theme) | Pairing + allowlists + sandbox options | Depends on config | Workspace restrictions | Workspace restrictions | “Isolate it” | Deny-by-default + pairing | Local-first vault, user-controlled | Physical boundary + guardrails | Not a tool runner |
+| Memory posture | Integrated + skills | File-first minimalism | File-first + ops | Local semantic search (SQLite) | Varies by setup | Pluggable backends | Knowledge graph in Markdown vault | Persistent memory | Core focus |
+| Extensibility | Skills/plugins | Hack the code | Config + community | Strong defaults + plugins | Edit tools/prompts | Traits | MCP | Custom tools (embedded) | Integrations |
+| Best for… | Personal assistant OS | Hackers/research | Cheap hardware | Edge + safer boundary | Supervised workflows | Hardened operators | Knowledge compounding from work | Hardware projects | Anyone needing memory |
 
 ### Choosing by persona (opinionated)
 
@@ -420,4 +448,5 @@ If the project can’t answer these cleanly, it’s not “bad.” It’s just n
 - Agent Zero — https://github.com/agent0ai/agent-zero
 - ZeroClaw — https://github.com/zeroclaw-labs/zeroclaw
 - Rowboat — https://github.com/rowboatlabs/rowboat
+- zclaw — https://github.com/tnm/zclaw
 - memU — https://github.com/NevaMind-AI/memU
