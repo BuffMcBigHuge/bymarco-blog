@@ -2,6 +2,8 @@
 title: "First Chat, Then Code, Now Claw"
 date: 2026-02-22T12:00:00-05:00
 draft: false
+slug: "agent-runtimes-2026-assistant-apps-to-agent-os"
+url: "/posts/agent-runtimes-2026-assistant-apps-to-agent-os/"
 description: "A comprehensive field guide to open-source agent frameworks—what they actually ship, where they’re safe to run, and how to choose based on surfaces, runtime, and memory."
 summary: "OpenClaw, nanobot, PicoClaw/Clawlet, Agent Zero, ZeroClaw, and memU aren’t one category. This post maps the layers and the real tradeoffs: execution, security posture, packaging, extensibility, and memory economics—plus a comparison matrix and recommendations."
 tags:
