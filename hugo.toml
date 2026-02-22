@@ -14,7 +14,7 @@ pagination.pagerSize = 10
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
-      unsafe = false
+      unsafe = true
   [markup.highlight]
     noClasses = false
     style = 'monokai'
