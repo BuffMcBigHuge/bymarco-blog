@@ -1,5 +1,5 @@
 ---
-title: "Agent Runtimes in 2026: From Assistant Apps to Agent Operating Systems"
+title: "First Chat, Then Code, Now Claw"
 date: 2026-02-22T12:00:00-05:00
 draft: false
 description: "A comprehensive field guide to open-source agent frameworks—what they actually ship, where they’re safe to run, and how to choose based on surfaces, runtime, and memory."
