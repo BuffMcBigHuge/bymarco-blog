@@ -95,8 +95,8 @@ enableEmoji = true
     url = 'https://github.com/BuffMcBigHuge'
 
   [[params.socialIcons]]
-    name = 'twitter'
-    title = 'X (Twitter)'
+    name = 'x'
+    title = 'X'
     url = 'https://x.com/MarcoTundo'
 
   [[params.socialIcons]]
