@@ -55,7 +55,7 @@ In 2026, the differentiators are boring (and therefore decisive):
 
 This post is a field guide to a handful of fast-growing open-source projects:
 
-OpenClaw, CoWork-OS, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, Rowboat, and zclaw.
+OpenClaw, CoWork-OS, Spacebot, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, Rowboat, and zclaw.
 
 > Logos below are embedded locally for reliability; they’re sourced from each project’s GitHub org/user avatar.
 
@@ -67,6 +67,7 @@ OpenClaw, CoWork-OS, nanobot, PicoClaw, Clawlet, Agent Zero, ZeroClaw, memU, Row
 |---|---|---|
 | [OpenClaw](https://github.com/openclaw/openclaw) | A full-stack assistant **control plane** (channels + nodes + UI + tools) | <img src="/images/agent-frameworks/openclaw.png" width="48" height="48" alt="OpenClaw logo" /> |
 | [CoWork-OS](https://github.com/CoWork-OS/CoWork-OS) | A security-first, self-hosted **agent OS** (multi-channel + multi-provider) | <img src="/images/agent-frameworks/cowork-os.png" width="48" height="48" alt="CoWork-OS logo" /> |
+| [Spacebot](https://github.com/spacedriveapp/spacebot) | A Rust **multi-user agent** for teams/communities built around concurrency (workers don’t block chat) | <img src="/images/agent-frameworks/spacebot.png" width="48" height="48" alt="Spacebot logo" /> |
 | [nanobot](https://github.com/HKUDS/nanobot) | A minimal Python **agent runtime** with high iteration velocity | <img src="/images/agent-frameworks/nanobot-hkuds.png" width="48" height="48" alt="nanobot logo" /> |
 | [PicoClaw](https://github.com/sipeed/picoclaw) | A Go **single-binary assistant gateway** optimized for edge devices | <img src="/images/agent-frameworks/picoclaw-sipeed.png" width="48" height="48" alt="PicoClaw logo" /> |
 | [Clawlet](https://github.com/mosaxiv/clawlet) | A tighter Go variant with stronger **workspace scoping + local semantic memory** | <img src="/images/agent-frameworks/clawlet-mosaxiv.png" width="48" height="48" alt="Clawlet logo" /> |
@@ -170,6 +171,31 @@ If OpenClaw is the “maximalist control plane,” CoWork-OS reads like a tighte
 ### Tradeoffs (pragmatic)
 - The core differentiator is posture and packaging as an “OS,” not novelty in the agent loop
 - You’ll still want to evaluate: sandbox boundaries, pairing/allowlist defaults, and how the project handles secrets and tool execution
+
+---
+
+## Spacebot: a concurrent multi-user agent for communities and teams
+
+**Repo:** https://github.com/spacedriveapp/spacebot
+
+Spacebot is explicitly designed for **multi-user, multi-threaded environments** (Discord communities, Slack workspaces, Telegram groups) where “one agent loop per bot” breaks down.
+
+Its core claim is architectural: **split the monolith into specialized processes** so the agent can think, execute tools, manage memory, and respond *concurrently*—without the chat surface going dark.
+
+### What it optimizes for
+- **Concurrency**: many users talking at once, without serialized blocking
+- **Team/community ergonomics**: threads, message coalescing, and multi-workstream routing
+- Flexible deployment: hosted one-click deploy, self-hosted single Rust binary, or Docker
+
+### Tooling surface (from README)
+- Shell/exec + file tools
+- Browser automation (headless Chrome)
+- Web search integrations (Brave)
+- Ability to spawn a coding agent (OpenCode) as a worker
+
+### Tradeoffs / cautions
+- Complexity moves from “one loop” into “many workers”—debugging and policy boundaries matter more
+- Strongly product-shaped (teams/communities) vs single-user “personal agent” designs
 
 ---
 
@@ -399,16 +425,16 @@ If you’re picking something that will run 24/7 and touch real systems, you wan
 
 ### Comparison matrix
 
-| Dimension | OpenClaw | CoWork-OS | nanobot | PicoClaw | Clawlet | Agent Zero | ZeroClaw | Rowboat | zclaw | memU |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Primary shape | Control plane + surfaces | Security-first agent OS | Minimal runtime | Edge gateway | Opinionated gateway | Web UI environment | Kernel/runtime OS | Coworker app (knowledge-first) | Embedded micro-agent | Memory subsystem |
-| Best UI/surface fit | Messaging + nodes + UI | Messaging inbox | Messaging/CLI | Messaging on edge | Messaging on edge | Web UI | Messaging + infra | Desktop app / workstreams | Telegram / web relay | API/lib |
-| Packaging | Node/TS | (varies) | Python | Go binary | Go binary | Docker | Rust binary | Desktop app (downloads) | ESP32 firmware (C) | Python/Rust |
-| Execution model | Host + optional sandbox | Host + integrations | Host/tools loop | Host/tools loop | Host/tools loop (scoped) | Computer-use (local) | Runtime adapters (native/docker) | App workflows + background agents | Schedules + GPIO tools | N/A |
-| Security defaults (theme) | Pairing + allowlists + sandbox options | Security-first posture | Depends on config | Workspace restrictions | Workspace restrictions | “Isolate it” | Deny-by-default + pairing | Local-first vault, user-controlled | Physical boundary + guardrails | Not a tool runner |
-| Memory posture | Integrated + skills | OS-level memory | File-first minimalism | File-first + ops | Local semantic search (SQLite) | Varies by setup | Pluggable backends | Knowledge graph in Markdown vault | Persistent memory | Core focus |
-| Extensibility | Skills/plugins | Integrations | Hack the code | Config + community | Strong defaults + plugins | Edit tools/prompts | Traits | MCP | Custom tools (embedded) | Integrations |
-| Best for… | Personal assistant OS | Self-hosted inbox OS | Hackers/research | Cheap hardware | Edge + safer boundary | Supervised workflows | Hardened operators | Knowledge compounding from work | Hardware projects | Anyone needing memory |
+| Dimension | OpenClaw | CoWork-OS | Spacebot | nanobot | PicoClaw | Clawlet | Agent Zero | ZeroClaw | Rowboat | zclaw | memU |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Primary shape | Control plane + surfaces | Security-first agent OS | Concurrent multi-user agent | Minimal runtime | Edge gateway | Opinionated gateway | Web UI environment | Kernel/runtime OS | Coworker app (knowledge-first) | Embedded micro-agent | Memory subsystem |
+| Best UI/surface fit | Messaging + nodes + UI | Messaging inbox | Teams/communities (Discord/Slack/etc.) | Messaging/CLI | Messaging on edge | Messaging on edge | Web UI | Messaging + infra | Desktop app / workstreams | Telegram / web relay | API/lib |
+| Packaging | Node/TS | (varies) | Rust binary / Docker / hosted | Python | Go binary | Go binary | Docker | Rust binary | Desktop app (downloads) | ESP32 firmware (C) | Python/Rust |
+| Execution model | Host + optional sandbox | Host + integrations | Workers + tool execution concurrency | Host/tools loop | Host/tools loop | Host/tools loop (scoped) | Computer-use (local) | Runtime adapters (native/docker) | App workflows + background agents | Schedules + GPIO tools | N/A |
+| Security defaults (theme) | Pairing + allowlists + sandbox options | Security-first posture | Permissions + isolation matter | Depends on config | Workspace restrictions | Workspace restrictions | “Isolate it” | Deny-by-default + pairing | Local-first vault, user-controlled | Physical boundary + guardrails | Not a tool runner |
+| Memory posture | Integrated + skills | OS-level memory | Per-workstream memory | File-first minimalism | File-first + ops | Local semantic search (SQLite) | Varies by setup | Pluggable backends | Knowledge graph in Markdown vault | Persistent memory | Core focus |
+| Extensibility | Skills/plugins | Integrations | Tool workers + adapters | Hack the code | Config + community | Strong defaults + plugins | Edit tools/prompts | Traits | MCP | Custom tools (embedded) | Integrations |
+| Best for… | Personal assistant OS | Self-hosted inbox OS | High-traffic orgs | Hackers/research | Cheap hardware | Edge + safer boundary | Supervised workflows | Hardened operators | Knowledge compounding from work | Hardware projects | Anyone needing memory |
 
 ### Choosing by persona (opinionated)
 
@@ -466,6 +492,7 @@ If the project can’t answer these cleanly, it’s not “bad.” It’s just n
 
 - OpenClaw — https://github.com/openclaw/openclaw
 - CoWork-OS — https://github.com/CoWork-OS/CoWork-OS
+- Spacebot — https://github.com/spacedriveapp/spacebot
 - nanobot — https://github.com/HKUDS/nanobot
 - PicoClaw — https://github.com/sipeed/picoclaw
 - Clawlet — https://github.com/mosaxiv/clawlet
