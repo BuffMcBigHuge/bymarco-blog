@@ -65,7 +65,7 @@ enableEmoji = true
 
   # Home page info mode
   [params.homeInfoParams]
-    Title = "Welcome to byMAR.CO Engineering Blog 👋"
+    Title = "Welcome to <strong style=\"color: #a68940; font-weight: 800;\">byMAR.CO Engineering Blog</strong> 👋"
     Content = "I share learnings, experience and ramblings on modern AI developments. The posts are issued as concepts where a local LLM agent then performs further analysis and research for a comprehensive review of the initial thought."
 
   # Show reading time
@@ -86,12 +86,22 @@ enableEmoji = true
 
   # Social icons
   [[params.socialIcons]]
+    name = 'bymar'
+    title = 'Work with Bymar Consulting'
+    url = 'https://bymar.co'
+
+  [[params.socialIcons]]
     name = 'github'
     url = 'https://github.com/BuffMcBigHuge'
 
   [[params.socialIcons]]
     name = 'twitter'
+    title = 'X (Twitter)'
     url = 'https://x.com/MarcoTundo'
+
+  [[params.socialIcons]]
+    name = 'linkedin'
+    url = 'https://www.linkedin.com/in/bymarco/'
 
   [[params.socialIcons]]
     name = 'rss'
@@ -104,7 +114,7 @@ enableEmoji = true
 # Schema.org configuration for SEO
 [params.schema]
   publisherType = "Person"
-  sameAs = ["https://github.com/BuffMcBigHuge", "https://x.com/MarcoTundo"]
+  sameAs = ["https://bymar.co", "https://github.com/BuffMcBigHuge", "https://x.com/MarcoTundo", "https://www.linkedin.com/in/bymarco/"]
 
 # Enable fuseOpts for search
 [params.fuseOpts]

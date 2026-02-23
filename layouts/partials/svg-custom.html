@@ -1,0 +1,40 @@
+{{- $icon_name := ( trim .name " " | lower ) -}}
+
+{{- /* Minimal icon set for bymarco blog header/footer social links */ -}}
+{{- if or (eq $icon_name "bymar") (eq $icon_name "website") (eq $icon_name "web") -}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Bymar Consulting">
+  <path d="M10 13a5 5 0 0 1 0-7l1.5-1.5a5 5 0 0 1 7 7L17 13" />
+  <path d="M14 11a5 5 0 0 1 0 7L12.5 19.5a5 5 0 0 1-7-7L7 11" />
+</svg>
+
+{{- else if (eq $icon_name "github") -}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="GitHub">
+  <path d="M9 19c-4 1.5-4-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+</svg>
+
+{{- else if (or (eq $icon_name "twitter") (eq $icon_name "x")) -}}
+{{/* Render X (formerly Twitter) logo */}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-label="X">
+  <path d="M18.244 2.25h3.308l-7.227 8.26 8.503 11.24H16.4l-5.038-6.59-5.77 6.59H2.28l7.73-8.84L1.85 2.25h6.59l4.56 6.03 5.244-6.03Zm-1.16 17.52h1.833L7.39 4.126H5.422l11.662 15.644Z"/>
+</svg>
+
+{{- else if (eq $icon_name "linkedin") -}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="LinkedIn">
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+  <rect x="2" y="9" width="4" height="12" />
+  <circle cx="4" cy="4" r="2" />
+</svg>
+
+{{- else if (eq $icon_name "rss") -}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="RSS">
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+
+{{- else -}}
+{{/* Fallback: simple dot so layout doesn't break for unknown icons */}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <circle cx="12" cy="12" r="3" />
+</svg>
+{{- end -}}
