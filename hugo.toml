@@ -63,6 +63,13 @@ enableEmoji = true
     icon = "/logo.png"
     iconHeight = 35
 
+  # Favicons / app icons
+  [params.assets]
+    favicon = "/favicon.ico"
+    favicon16x16 = "/favicon-16.png"
+    favicon32x32 = "/favicon-32.png"
+    apple_touch_icon = "/apple-touch-icon.png"
+
   # Home page info mode
   [params.homeInfoParams]
     Title = "Welcome to <strong style=\"color: #a68940; font-weight: 800;\">byMAR.CO Engineering Blog</strong> 👋"
