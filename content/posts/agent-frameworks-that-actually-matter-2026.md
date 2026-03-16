@@ -122,6 +122,8 @@ Not “there’s a new winner.”
 
 More like: different layers of the stack are finally specializing.
 
+![Better than OpenClaw at what?](/images/posts/agentic-world-update-2026/comparison-diagram.png)
+
 ## 1) LangChain Deep Agents: the harness layer is becoming a real product category
 
 Since this was one of the projects you specifically wanted covered, I’m putting it first.
