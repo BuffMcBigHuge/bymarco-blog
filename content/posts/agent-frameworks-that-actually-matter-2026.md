@@ -33,10 +33,10 @@ ShowWordCount: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 cover:
-  image: "/nanobanana-output/editorial_blog_featured_image_fo.png"
+  image: "/images/posts/agentic-world-update-2026/hero.png"
   alt: "Editorial illustration of the 2026 agent stack with context systems, memory layers, and autonomous workflows"
   caption: "The new agent world is less about prompt tricks and more about context, memory, and runtime architecture."
-  relative: true
+  relative: false
   hidden: false
 ---
 
