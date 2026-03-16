@@ -10,6 +10,9 @@ pagination.pagerSize = 10
 [build]
   writeStats = true
 
+[minify]
+  disableXML = true
+
 # Markdown rendering
 [markup]
   [markup.goldmark]
