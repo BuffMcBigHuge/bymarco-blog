@@ -33,11 +33,11 @@ ShowWordCount: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 cover:
-  image: ""
-  alt: ""
-  caption: ""
+  image: "/images/posts/agentic-world-update-2026/comparison-diagram.png"
+  alt: "Comparison diagram showing which systems are better than OpenClaw at which layer"
+  caption: "Different winners, different layers: Deep Agents, Hermes Agent, OpenViking, and OpenClaw are not solving the same problem."
   relative: false
-  hidden: true
+  hidden: false
 ---
 
 A few weeks ago I wrote [First Chat, Then Code, Now Claw](/posts/first-chat-then-code-now-claw/), a field guide to the first big wave of open-source agent frameworks.
@@ -51,6 +51,10 @@ Because the center of gravity moved.
 The useful question is no longer “which agent framework wins?”
 
 It’s: **what layer of the stack is getting better, and who is pushing it forward?**
+
+![Better than OpenClaw at what?](/images/posts/agentic-world-update-2026/comparison-diagram.png)
+
+*Different winners, different layers: Deep Agents, Hermes Agent, OpenViking, and OpenClaw are not solving the same problem.*
 
 ## The short version
 
@@ -122,9 +126,6 @@ Not “there’s a new winner.”
 
 More like: different layers of the stack are finally specializing.
 
-![Better than OpenClaw at what?](/images/posts/agentic-world-update-2026/comparison-diagram.png)
-
-*Comparison diagram: different systems are improving different layers of the stack, not replacing OpenClaw wholesale.*
 
 ## 1) LangChain Deep Agents: the harness layer is becoming a real product category
 
