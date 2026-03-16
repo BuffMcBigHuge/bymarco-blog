@@ -167,7 +167,7 @@ That’s the real reason this project matters.
 
 ### Why people are reacting to it
 
-The X chatter around Deep Agents was noisy, but the interesting part was what the noise was about.
+A lot of the reaction to Deep Agents converged on the same points.
 
 People weren’t just saying “new framework dropped.” They were specifically fixating on:
 
@@ -659,11 +659,3 @@ Better systems.
   author="volcengine"
 >}}
 
-### Signal sources used for framing
-
-These were useful for understanding what was going viral and how people were framing it, but I did **not** treat them as primary technical truth:
-
-- X / Bird searches for Deep Agents
-- X / Bird searches for Hermes Agent
-- X / Bird searches for OpenViking
-- broader GitHub-trending / harness chatter on X
