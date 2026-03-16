@@ -124,6 +124,8 @@ More like: different layers of the stack are finally specializing.
 
 ![Better than OpenClaw at what?](/images/posts/agentic-world-update-2026/comparison-diagram.png)
 
+*Comparison diagram: different systems are improving different layers of the stack, not replacing OpenClaw wholesale.*
+
 ## 1) LangChain Deep Agents: the harness layer is becoming a real product category
 
 Since this was one of the projects you specifically wanted covered, I’m putting it first.
