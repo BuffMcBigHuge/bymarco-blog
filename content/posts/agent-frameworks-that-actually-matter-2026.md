@@ -4,16 +4,16 @@ date: 2026-03-16T11:45:00-04:00
 draft: false
 slug: "agentic-world-update-2026-better-than-openclaw"
 url: "/posts/agentic-world-update-2026-better-than-openclaw/"
-description: "An update to my earlier open-source agent-world survey: what LangChain Deep Agents, Hermes Agent, OpenViking, and the newest viral harnesses are improving, especially where they are genuinely better than OpenClaw."
-summary: "This is a follow-up to my earlier agent-framework field guide. Since then, the center of gravity has shifted toward harnesses, context systems, and persistent runtimes. Deep Agents sharpens long-task execution, Hermes pushes the self-improving personal-agent model, and OpenViking attacks one of OpenClaw’s real bottlenecks: context architecture."
+description: "A follow-up to my earlier agent-framework field guide. This update looks at LangChain Deep Agents, Hermes Agent, OpenViking, and the new agent harness wave through a more useful question: what is genuinely improving over OpenClaw, and in which layer?"
+summary: "OpenClaw is still one of the most complete personal-agent control planes. But newer systems are getting better in narrower ways. Deep Agents sharpens the harness layer for long-running work. Hermes Agent pushes the persistent self-improving personal-agent thesis harder. OpenViking attacks the deeper context-architecture problem underneath agent memory."
 tags:
   - ai
   - agents
   - agentic-ai
+  - openclaw
   - langchain
   - hermes
   - openviking
-  - tooling
   - developer-tools
 categories:
   - ai-tools
@@ -33,11 +33,11 @@ ShowWordCount: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 cover:
-  image: "/images/posts/agentic-world-update-2026/hero.png"
-  alt: "Editorial illustration of the 2026 agent stack with context systems, memory layers, and autonomous workflows"
-  caption: "The new agent world is less about prompt tricks and more about context, memory, and runtime architecture."
+  image: ""
+  alt: ""
+  caption: ""
   relative: false
-  hidden: false
+  hidden: true
 ---
 
 A few weeks ago I wrote [First Chat, Then Code, Now Claw](/posts/first-chat-then-code-now-claw/), a field guide to the first big wave of open-source agent frameworks.
@@ -46,657 +46,624 @@ That post was about making the category legible.
 
 This one is an update.
 
-Because the space moved again.
+Because the center of gravity moved.
 
-The agent world is still messy, but it’s getting less fake.
+The useful question is no longer “which agent framework wins?”
 
-A year ago, most “agent frameworks” were thin wrappers around tool calling with some grand language bolted on top. Now the category is starting to split into real layers with real tradeoffs.
-
-That’s progress.
-
-Over the last little while I’ve been reading through newer projects, docs, repos, and X chatter again, and a few names keep surfacing: **LangChain Deep Agents**, **Nous Hermes Agent**, **OpenViking**, plus a broader cluster of agent harnesses and frameworks that have been going semi-feral on GitHub and X over the last few weeks.
-
-What’s interesting is that these tools are not all solving the same problem.
-
-That’s where a lot of the confusion comes from. People compare them as if they’re direct substitutes. They usually aren’t.
+It’s: **what layer of the stack is getting better, and who is pushing it forward?**
 
 ## The short version
 
-Here’s my read on the update:
+OpenClaw is still one of the most complete personal-agent control planes in the space.
 
-- **OpenClaw** is still one of the most complete agent control planes, especially if you care about channels, nodes, scheduling, and broad day-to-day utility.
-- But newer systems are getting **better in narrower ways**.
-- **Deep Agents** looks better than OpenClaw at packaging the **harness pattern** for long-running, multi-step work.
-- **Hermes Agent** looks better than OpenClaw at making the **persistent personal-agent + skill-learning** thesis feel like the center of the product.
-- **OpenViking** looks better than OpenClaw at treating **context architecture** as a first-class infrastructure problem instead of a supporting feature.
-- The broader trend is that the market is separating into: **runtime**, **harness**, **memory/context layer**, and **surface/product**.
+If you want an assistant that lives across channels, supports tools, scheduling, memory, nodes, and long-running operation, OpenClaw is still one of the clearest full-stack answers.
 
-That separation matters because the engineering problems are different.
+But a few newer projects are clearly improving narrower parts of the stack:
+
+- **LangChain Deep Agents** is better than OpenClaw at packaging the **agent harness** for long-running, multi-step work
+- **Hermes Agent** is better than OpenClaw at pushing the **persistent self-improving personal-agent** thesis to the center of the product
+- **OpenViking** is better than OpenClaw at treating **context architecture** as a first-class infrastructure problem
+
+That does **not** make them better overall.
+
+It makes them better at specific things that matter more now than they did 6 months ago.
 
 ## What changed since the last post
 
-The old framing was: can the model call tools in a loop?
+The old framing was simple:
 
-That’s no longer the hard part.
+- can the model call tools?
+- can it loop?
+- can it finish a task?
 
-The new framing is closer to this:
+That’s table stakes now.
 
-- Can the agent stay coherent over long tasks?
-- Can it manage context without drowning in its own history?
-- Can it externalize state instead of pretending the chat log is a database?
-- Can it operate safely across real surfaces like terminal, messaging, browser, and files?
-- Can it improve or specialize over time without turning into entropy in a trench coat?
+The newer pressure points are more operational:
 
-That’s why the newer frameworks are converging on the same building blocks:
+- can the agent stay coherent over long tasks?
+- can it manage context without drowning in transcript sludge?
+- can it isolate subtasks instead of smearing everything into one context window?
+- can it keep durable state outside the chat log?
+- can it be observed, governed, and run safely?
 
-- planning / todo systems
-- file-backed or structured context
-- subagents for isolation
-- persistent memory
-- tool contracts
+That’s why the newer projects keep converging on the same ingredients:
+
+- planning
+- subagents
+- externalized state
+- memory
+- context management
 - sandboxing
 - scheduling
 - observability
 
-The details differ, but the architecture is getting more recognizable.
+The category is getting less theatrical and more infrastructural.
 
-## 1) LangChain Deep Agents: the “agent harness” pattern gets productized
+That’s good.
 
-Since you meant **Deep Agents by LangChain specifically**, this is the one I’d put at the center of the post.
+## A cleaner way to compare “better than OpenClaw”
 
-LangChain’s **Deep Agents** is one of the cleaner examples of where the category is headed.
+This conversation gets dumb fast if every project is treated like a full OpenClaw replacement.
 
-Their own wording is useful here: they call it an **agent harness**, not just a framework. That’s actually the right term.
+That’s not what’s happening.
 
-The point of a harness is not to give you raw primitives. It’s to give you an opinionated working setup for agents that need to do longer, messier work.
+A more useful comparison is this:
 
-### What Deep Agents actually is
+### Better than OpenClaw at what?
 
-Based on the docs and repo, Deep Agents bundles a few core capabilities out of the box:
+- **Harnessing long, multi-step work:** Deep Agents looks stronger
+- **Foregrounding self-improvement and procedural skill growth:** Hermes looks stronger
+- **Structuring context and retrieval:** OpenViking looks stronger
+- **Broad assistant surface area, channels, nodes, and control-plane utility:** OpenClaw still looks stronger
+
+That’s the real update.
+
+Not “there’s a new winner.”
+
+More like: different layers of the stack are finally specializing.
+
+## 1) LangChain Deep Agents: the harness layer is becoming a real product category
+
+Since this was one of the projects you specifically wanted covered, I’m putting it first.
+
+LangChain’s **Deep Agents** is one of the clearest examples of the harness layer becoming a product category in its own right.
+
+LangChain’s own framing is useful here: Deep Agents is an **agent harness**.
+
+That word matters.
+
+A harness is not just a bag of primitives. It’s an opinionated package for agents that need to do long, messy work without collapsing under their own context.
+
+### What Deep Agents actually ships
+
+From the docs and repo, the core package is pretty clear:
 
 - planning and task decomposition
 - filesystem-backed context management
 - subagent spawning for isolated work
-- memory across conversations/threads
-- optional shell/sandbox execution
-- a CLI on top of the SDK
+- memory across threads/conversations
+- optional shell / sandbox execution
+- a CLI built on top of the SDK
 
-The key design choice is that it treats **context management as infrastructure**, not as an afterthought.
+The key idea is not “tool calling, but more.”
 
-That part is real.
+It’s that **context management** and **task isolation** are treated as first-class architecture.
 
-The docs explicitly position the virtual filesystem as a way for the agent to offload large context, work with variable-length outputs, and avoid just stuffing everything into the prompt window. That is exactly the right instinct.
+That’s the real reason this project matters.
 
-### What it’s good for
+{{< linkcard
+  url="https://docs.langchain.com/oss/python/deepagents/overview"
+  title="LangChain Docs: Deep Agents overview"
+  site="LangChain Docs"
+  author="langchain"
+>}}
 
-Deep Agents makes sense if you want to build agents that:
+{{< linkcard
+  url="https://github.com/langchain-ai/deepagents"
+  title="GitHub: langchain-ai/deepagents"
+  site="GitHub"
+  author="langchain-ai"
+>}}
 
-- work on **complex, multi-step tasks**
-- need **planning** and progress tracking
-- benefit from **subagents** for compartmentalization
-- need a practical way to **externalize context**
-- live inside the LangChain/LangGraph ecosystem already
+### Why people are reacting to it
 
-This is especially relevant for research agents, coding agents, and workflow-like systems where a single flat chat loop becomes mush.
+The X chatter around Deep Agents was noisy, but the interesting part was what the noise was about.
 
-### What feels substantive vs what feels packaged
+People weren’t just saying “new framework dropped.” They were specifically fixating on:
 
-The substantive part:
+- context isolation
+- planning
+- file-backed state
+- long-horizon task handling
+- “open-source Claude Code alternative” framing
 
-- built-in context management primitives
-- clear story for planning + subagents
-- durable execution via LangGraph
-- explicit distinction between lower-level framework and higher-level harness
+That last comparison is a little lazy, but it’s not useless. It points at what people think the market wants now: not another chat wrapper, but an environment for serious agent work.
 
-The packaged part:
-
-- some of the novelty is packaging and defaults, not a brand new conceptual breakthrough
-
-That’s not a criticism. Packaging matters. Good defaults matter a lot. But people should understand what the actual contribution is.
-
-Deep Agents is important because it standardizes a pattern many people were already rediscovering manually.
-
-### Why it’s suddenly everywhere
-
-On X, the viral framing around Deep Agents is pretty consistent:
-
-- “open-source Claude Code alternative”
-- “agent = model + harness”
-- “planning + memory + context isolation”
-- “LangChain just productized long-running agents”
-
-That framing is a little reductive, but it explains the speed of the buzz.
-
-People aren’t reacting to a new prompt trick. They’re reacting to a recognizable package of capabilities that many builders already believe they need.
-
-The interesting part of the X chatter was not just the hype, it was the **specificity** of the hype. A lot of posts were fixated on context isolation, file-backed state, and long-horizon task handling. That’s a healthier sign than generic “this changes everything” posting.
-
-### What feels improved over OpenClaw
+### Where it looks better than OpenClaw
 
 OpenClaw’s strength is breadth.
 
 Deep Agents’ strength is focus.
 
-If I compare them honestly, Deep Agents does look better in a few specific ways:
+Compared to OpenClaw, Deep Agents looks better at:
 
-- **clearer harness identity** for long-running work
-- **more explicit context-isolation story**
-- **better packaging for builders** who want the agent loop, not the full messaging/control-plane universe
-- a tighter fit for people who think in terms of research/coding/task execution first
+- presenting a **clear harness identity** for long-running work
+- making **context isolation** feel central, not auxiliary
+- packaging the agent loop for builders who don’t want the full messaging/control-plane universe
+- fitting research / coding / workflow agents more tightly
 
-Where OpenClaw still wins is product surface. It’s a fuller assistant environment.
+OpenClaw still wins on assistant surface area.
 
-Where Deep Agents may be better is that it feels less like an everything machine and more like a purpose-built skeleton for serious agent workflows.
+Deep Agents may win on **clarity of the long-task harness abstraction**.
+
+That distinction matters.
 
 ### My take
 
-Deep Agents looks like one of the more sensible entries in the space because it’s not pretending raw tool calling is enough. It’s baking in the stuff serious builders end up adding anyway.
+Deep Agents matters because it standardizes a pattern that serious builders were already rediscovering manually.
 
-If you’re already in LangChain/LangGraph land, this probably reduces a lot of wheel reinvention.
+Not revolutionary science.
 
-If you’re not, it’s still a useful reference architecture for what a modern harness should include.
+Still important.
 
-## 2) Hermes Agent: the personal-agent operating layer gets more serious
+The market needed a cleaner articulation of the harness layer, and this is one of the better attempts.
 
-**Hermes Agent** from Nous Research is aiming at a bigger surface area.
+## 2) Hermes Agent: the self-improving personal-agent thesis gets more explicit
 
-This is not just “an agent SDK.” It’s closer to a full personal-agent environment that wants to persist, communicate, schedule, remember, and improve.
+**Hermes Agent** from Nous Research is aiming at a bigger idea than “an agent SDK.”
 
-In other words, it’s trying to become the thing people keep vaguely gesturing at when they say they want an AI that “lives with them.”
+It is much closer to a full personal-agent environment that wants to:
 
-### What Hermes is trying to do
+- persist
+- remember
+- schedule
+- create or improve skills
+- run across messaging surfaces
+- keep growing more useful over time
 
-From the docs and repo, Hermes is built around a pretty aggressive product vision:
+That’s a more ambitious product claim than most harnesses make.
 
-- one agent process that can live across **CLI + messaging channels**
-- persistent **memory** across sessions
-- a **skills system** that can be created and improved from experience
-- built-in **cron/scheduled automations**
-- **subagents** for parallel work
-- multiple terminal backends including local, Docker, SSH, Daytona, Modal, and more
-- support for MCP, voice, context files, personalities, and long-running operation
+### What Hermes actually emphasizes
 
-The docs lean hard on the phrase “self-improving,” which I’d treat with some caution because that phrase gets abused a lot.
+From the docs and repo, Hermes is built around a few recurring ideas:
 
-But unlike a lot of marketing pages, there is at least a concrete substrate under it:
+- persistent memory across sessions
+- skills created from experience
+- scheduled automations
+- cross-channel usage (CLI + messaging)
+- subagents / parallel work
+- multiple runtime backends
+- a stronger emphasis on long-lived operation than one-shot coding flows
 
-- skill creation
+{{< linkcard
+  url="https://hermes-agent.nousresearch.com/docs/"
+  title="Hermes Agent Documentation"
+  site="Nous Research"
+  author="Hermes Agent"
+>}}
+
+{{< linkcard
+  url="https://github.com/NousResearch/hermes-agent"
+  title="GitHub: NousResearch/hermes-agent"
+  site="GitHub"
+  author="NousResearch"
+>}}
+
+The docs lean hard on “self-improving,” which is a phrase I usually distrust.
+
+But here there is at least a concrete substrate under it:
+
 - memory persistence
 - cross-session recall
-- periodic nudges to save useful information
+- skill creation
+- skill reuse
 - user modeling
 
-That’s more specific than the usual “our agent learns” hand-waving.
+That’s more real than the usual “the agent learns” hand-waving.
 
-### What Hermes is actually good for
+### Where it looks better than OpenClaw
 
-Hermes looks strongest for people who want:
+OpenClaw already has memory, skills, persistence, and long-running behavior.
 
-- a **persistent personal assistant** rather than a one-shot coding tool
-- multi-surface operation across **Telegram, Discord, Slack, WhatsApp, Signal, CLI**
-- strong emphasis on **memory + skills + scheduled work**
-- a system that can run **somewhere else**, not just on the laptop in front of you
+So the question is not whether Hermes invented those ideas.
 
-That last part matters.
+The question is what Hermes makes feel more central.
 
-A lot of agent products quietly assume the machine is your local interactive workstation. Hermes is much more comfortable with the idea that the agent lives on a VPS, serverless backend, or remote machine and you just talk to it through messaging.
+And there I think the answer is pretty clear:
 
-That’s a different operational model, and for many use cases it’s the right one.
+Hermes is better than OpenClaw at making the product thesis feel like this:
 
-### The real thesis behind Hermes
+> the real value of a personal agent is that it accumulates procedural knowledge and becomes more reusable over time
 
-The thesis seems to be:
+OpenClaw feels more like a **control plane**.
 
-> a useful personal agent is not just a model with tools, it’s a long-running software organism with memory, habits, surfaces, and procedural reuse
+Hermes feels more like a **long-lived collaborator** that is supposed to build habits and reusable procedural memory.
 
-That’s the right thesis.
+That doesn’t make Hermes stronger overall.
 
-Whether every implementation detail lands perfectly is a separate question, but the direction is smart.
+But it does make Hermes stronger at articulating one of the deepest promises in the category.
 
-### What to be careful about
+### What I’d watch carefully
 
-A few cautions:
+The risk, obviously, is memory and skill drift.
 
-- “self-improving” agents can drift into self-generated cruft if the memory/skill loop isn’t curated well
-- more surfaces means more operational complexity and a larger security perimeter
-- anything that touches messaging, files, shell, and scheduling at once needs real boundaries, not vibes
+Any “self-improving” system can generate a lot of self-produced garbage if the curation loop is weak.
 
-In other words, Hermes looks powerful, but this is a category where capability and blast radius rise together.
+So the big question is not whether Hermes can accumulate more stuff.
 
-### What feels improved over OpenClaw
+It’s whether it can accumulate **better procedural memory without compounding noise**.
 
-Hermes is especially interesting because it seems to believe the core product is not just “an agent with tools,” but **an agent that accumulates procedural memory and gets more reusable over time**.
+That is the real test.
 
-OpenClaw absolutely has memory, skills, scheduling, and persistence. But Hermes pushes that learning loop much harder as the headline.
+## 3) OpenViking: context architecture is finally being treated like infrastructure
 
-So if I compare them directly:
+**OpenViking** is the sharpest update in this whole pass.
 
-- OpenClaw feels stronger as a **broad assistant operating layer**
-- Hermes feels stronger as a **self-improving personal-agent thesis**
-- OpenClaw feels more like a control plane
-- Hermes feels more like a long-lived collaborator that is supposed to grow habits and reusable procedural knowledge
+Not because it is “the best agent.”
 
-That doesn’t automatically make Hermes better overall.
+Because it is not trying to be the agent at all.
 
-But it does make Hermes better at articulating, and maybe productizing, one of the biggest promises in this whole category.
+It is trying to fix something deeper: the way agent context is organized.
 
-### My take
+That matters because most agent stacks still handle context badly.
 
-Hermes is one of the more interesting projects right now because it’s trying to solve the full-stack personal-agent problem instead of hiding inside an SDK abstraction.
+They scatter it across:
 
-That ambition is both the appeal and the risk.
+- files
+- memory stores
+- vector databases
+- prompt scaffolding
+- tool output history
+- whatever retrieval glue happened to get bolted on
 
-If you care about persistent assistants, not just agent demos, it’s worth watching closely.
+That works until it doesn’t.
 
-## 3) OpenViking: context is becoming its own infrastructure layer
+And when it doesn’t, debugging retrieval becomes a black-box exercise in superstition.
 
-**OpenViking** is the one that caught my eye because it’s attacking a different problem.
+### OpenViking’s core idea
 
-Most agent tools assume context is an implementation detail. OpenViking treats it like a missing infrastructure primitive.
-
-Their framing is blunt: memory, resources, and skills are usually fragmented across code, vector stores, files, prompts, and ad hoc retrieval systems. They want to unify that into a **context database** organized through a **filesystem paradigm**.
-
-That sounds abstract at first, but the core idea is simple enough.
-
-### What OpenViking is trying to fix
-
-OpenViking’s pitch is basically this:
+OpenViking’s pitch is basically:
 
 - traditional flat RAG is bad at global structure
-- context gets fragmented across too many storage patterns
-- long-running agents generate context continuously
-- retrieval chains are hard to inspect and debug
-- agent memory should include more than just past chat messages
+- long-running agents produce too much context for flat retrieval to stay sane
+- memory, resources, and skills should be organized through a filesystem-like model
+- context should be addressable, hierarchical, and observable
 
-That diagnosis is pretty solid.
+The specific mechanisms they emphasize are interesting:
 
-The proposed solution is to organize context in a hierarchical, file-like way with:
+- unified handling of memory, resources, and skills
+- hierarchical / tiered loading (L0/L1/L2)
+- directory-style retrieval plus semantic search
+- retrieval path observability
+- automatic session compression and long-term extraction
 
-- unified handling of **memory, resources, and skills**
-- **tiered loading** to reduce token usage
-- directory-style recursive retrieval plus semantic search
-- visualized retrieval trajectories
-- automatic session management and long-term extraction
+{{< linkcard
+  url="https://github.com/volcengine/OpenViking"
+  title="GitHub: volcengine/OpenViking"
+  site="GitHub"
+  author="volcengine"
+>}}
 
-### Why this matters
+### Where it looks better than OpenClaw
 
-I think OpenViking matters because it points at a likely next step for the whole ecosystem:
+This is the cleanest “better than OpenClaw” comparison in the post.
 
-**context stops being a bag of chunks and becomes an addressable operating environment**.
+OpenClaw already has memory and retrieval.
 
-That’s a big deal.
+But OpenViking is attacking the deeper issue underneath them: **context architecture itself**.
 
-Right now, a lot of “memory systems” are basically:
+That means:
 
-- embed everything
-- query vaguely
-- rerank
-- hope the right fragments show up
+- how context is organized
+- how it is addressed
+- how it is loaded
+- how it is debugged
+- how it avoids becoming soup
 
-That works up to a point. Then the agent becomes a confused intern with access to a warehouse.
+If OpenViking works well in practice, then yes, it may represent a real improvement over OpenClaw in one major dimension:
 
-A hierarchical context model could be much better for:
+**the structure of context**.
 
-- project-based retrieval
-- skills and resources that belong together
-- selective loading
-- observability when retrieval goes wrong
+Not assistant breadth.
+Not channel support.
+Not overall product completeness.
 
-### What feels real vs aspirational
+But context architecture is a huge lever.
 
-The real part:
-
-- the problem is real
-- the filesystem mental model is genuinely useful
-- tiered context loading is the kind of thing agents need
-- observability for retrieval paths is overdue
-
-The aspirational part:
-
-- context databases are still early, and the quality of the abstraction matters more than the ambition statement
-- a lot depends on whether the hierarchy remains intuitive as real-world use gets messy
-- if config and ops overhead get too heavy, many developers will bounce even if the theory is good
-
-### What feels improved over OpenClaw
-
-This is the sharpest comparison in the whole post.
-
-OpenClaw already has memory and retrieval. But OpenViking is attacking the deeper problem underneath them: **how context itself is organized, addressed, loaded, and debugged**.
-
-That matters because one of the real weak spots in almost every agent stack, not just OpenClaw, is that context becomes an opaque soup:
-
-- some in files
-- some in memory stores
-- some in prompt scaffolding
-- some in ad hoc retrieval
-- some in tool output history
-
-OpenViking’s filesystem-style context model looks like a genuine attempt to clean that up.
-
-If it works well in practice, then yes, this could be a real improvement over OpenClaw in one important dimension:
-
-**context architecture**.
-
-Not assistant breadth. Not channels. Not overall product completeness.
-
-But context architecture is a huge lever, and OpenClaw could plausibly benefit from ideas like this whether or not OpenViking itself becomes the winner.
+And frankly, OpenClaw is exactly the kind of system that could benefit from ideas like this.
 
 ### My take
 
-OpenViking is interesting because it’s not trying to win by being “the agent.” It’s trying to become part of the substrate underneath agents.
+OpenViking is one of the more important projects in the current wave because it’s asking the right question.
 
-That might end up being the bigger opportunity.
+Not:
 
-A lot of the next wave of agent quality gains will not come from smarter prompting. They’ll come from better context systems.
+> how do we give the model more context?
 
-## 4) Other viral tools and harnesses worth tracking
+But:
 
-Deep Agents, Hermes, and OpenViking are the three I’d highlight most from this pass, but they’re not alone.
+> how do we structure context so the agent can navigate it deliberately?
 
-A bunch of adjacent projects keep showing up in GitHub trending screenshots and X threads. I wouldn’t put all of them in the same bucket, but they’re clearly part of the same moment.
+That’s a better question.
+
+## 4) Other viral harnesses worth tracking, but with less conviction
+
+There are other names that keep circulating in the same GitHub/X conversations.
+
+I’m mentioning them because they’re part of the moment, not because I’m equally confident in all of them.
 
 ### OpenCode
 
-OpenCode is still one of the biggest reference points in the harness conversation, especially on X where people keep grouping it with Deep Agents, Goose, and other coding-agent environments.
+OpenCode still matters because it helped normalize the idea that the model is not the whole product.
 
-What matters about OpenCode is not just scale or stars. It helped normalize the idea that the model itself is not the product. The real differentiators are:
+The harness is the product:
 
 - context handling
 - workflow ergonomics
 - extensibility
 - multi-model portability
-- how well the tool survives long, messy sessions
+- survivability in long sessions
 
-It’s less “framework” in the abstract and more “proof that the harness layer is now a category.”
+That’s a major category shift, even if OpenCode itself is not the subject of this post.
 
-### Goose, ForgeCode, and similar coding-agent harnesses
+### Goose / similar coding-agent harnesses
 
-These keep coming up in the same breath as Deep Agents for a reason.
+These keep getting grouped with Deep Agents for a reason.
 
-They all sit in the same design neighborhood:
+They live in the same design neighborhood:
 
-- terminal-first or dev-first agent workflows
+- terminal-first flows
 - multi-step task execution
-- file/tool access
-- some notion of memory or reusable instructions
-- stronger operational posture than a plain chatbot wrapper
+- strong file/tool posture
+- some notion of reusable instructions or memory
 
-I wouldn’t flatten them into one thing, but the market is obviously rewarding tools that feel like **work environments**, not just chat interfaces.
+The market clearly wants **work environments**, not just chat windows.
 
-### DeerFlow and the ByteDance wave
+### DeerFlow / ByteDance-adjacent agent tooling
 
-DeerFlow keeps getting mentioned alongside OpenViking in “what’s viral on GitHub” posts.
+DeerFlow keeps getting mentioned near OpenViking in “what’s going viral” conversations.
 
-That pairing is interesting.
+That pairing is interesting because it hints at a broader ByteDance push around:
 
-It suggests ByteDance is not just shipping one-off demos, it’s shipping pieces of a larger belief about agent systems: memory, context, sandboxing, tools, long-running execution. Even when the individual projects differ, the direction feels coherent.
+- long-running execution
+- context systems
+- tooling
+- memory
+- sandboxed or structured agent work
 
-### Agency / company-of-agents style frameworks
+I’d watch that cluster, but I’d still put OpenViking ahead in conceptual clarity.
 
-There’s also a separate viral lane built around “an entire startup run by agents” style repos.
+### “Company of agents” repos
 
-These are useful as signals, but I’d be more skeptical here.
+These get a lot of attention.
 
-They’re great at attention. Less clear that they’re solving the hard infrastructure problems as well as the better harness projects are.
+I’m skeptical.
 
-If I’m choosing where to pay attention, I care more about:
+They’re good at narrative. Less clear they’re good at infrastructure.
 
-- state
-- isolation
-- memory quality
-- tool boundaries
-- observability
+And right now infrastructure is where the real progress is.
 
-…than whether the repo roleplays a 12-person company.
+## What the stack looks like now
 
-## 5) The broader wave: the stack is separating into layers
+The category makes more sense once you stop flattening everything into “framework.”
 
-Once you look at these projects side by side, the category starts making more sense.
-
-They’re not all fighting for the same box on the diagram.
-
-### Layer A: agent runtimes / personal agent systems
-
-These are the systems that want to actually live somewhere and do work over time.
+### Layer 1: personal-agent runtimes / control planes
 
 Examples:
 
-- Hermes Agent
 - OpenClaw
-- other personal-assistant runtimes and control planes
+- Hermes Agent
 
 These care about:
 
-- messaging surfaces
+- channels
 - scheduling
-- tool routing
+- tools
 - memory
-- device access
+- surfaces
 - operational boundaries
 
-### Layer B: harnesses
-
-These are the batteries-included frameworks for building longer-running agents without wiring every primitive yourself.
+### Layer 2: harnesses
 
 Examples:
 
 - Deep Agents
-- similar coding/research harnesses
+- coding / research harnesses in the same family
 
 These care about:
 
 - planning
 - subagents
-- context compression
-- execution model
-- developer ergonomics
+- context isolation
+- long-task execution
+- builder ergonomics
 
-### Layer C: context and memory infrastructure
-
-These focus on the information substrate more than the user-facing agent.
+### Layer 3: context and memory infrastructure
 
 Examples:
 
 - OpenViking
-- memory systems and context databases
-- retrieval layers and long-term state systems
+- memory layers / context databases more broadly
 
 These care about:
 
 - storage model
 - retrieval quality
 - observability
-- durability
-- cost and token efficiency
+- token efficiency
+- durable state organization
 
-### Layer D: surfaces and products
-
-These are the interfaces people actually touch.
+### Layer 4: products and surfaces
 
 Examples:
 
-- terminal coding agents
-- web UIs
-- chat integrations
+- chat interfaces
+- coding UIs
+- web apps
 - domain-specific assistants
 
-This layer often gets the attention, but it’s increasingly downstream of the others.
+This layer gets the attention.
 
-## 5.5) A cleaner way to compare “better than OpenClaw”
+Increasingly, it is downstream of the others.
 
-It’s easy to make this conversation dumb.
+## What is actually new, and what is just better branding
 
-If you compare every project against OpenClaw as if they all need to be full replacements, you’ll miss what’s actually happening.
+A lot of the current wave is not conceptually new in the absolute sense.
 
-A better frame is:
+Planning, files, memory, tools, retrieval, and subagents were already in the water.
 
-### Better than OpenClaw at **what**?
-
-#### Better at harnessing long tasks
-Deep Agents looks stronger.
-
-#### Better at foregrounding self-improvement and procedural skill growth
-Hermes looks stronger.
-
-#### Better at context architecture and retrieval structure
-OpenViking looks stronger.
-
-#### Better at broad assistant surface area, channels, nodes, and control-plane utility
-OpenClaw still looks stronger.
-
-That’s the useful comparison.
-
-Not “who wins?”
-
-More like: **which layer is improving fastest, and who is pushing it forward?**
-
-## 6) What’s actually new in 2026, and what’s just better branding
-
-A lot of this wave is not new in the absolute sense.
-
-Planning, subagents, memory, retrieval, files, and tools have been around.
-
-What’s new is that projects are getting more honest about what’s required for agents to work well outside a demo.
+What’s new is that projects are becoming more honest about what’s required to survive real tasks.
 
 ### The real advances
 
-I’d put these in the “real” bucket:
+These look real to me:
 
-- **context management** becoming explicit rather than accidental
-- **subagents for isolation** becoming normal
-- **file-backed or externalized state** replacing giant chat blobs
-- **persistent memory** being treated as infrastructure instead of a prompt trick
-- **scheduling and long-running operation** entering the default design
-- **sandboxing / backend separation** becoming part of the architecture conversation
+- context management becoming explicit
+- subagents for isolation becoming normal
+- externalized state replacing giant chat blobs
+- memory being treated like infrastructure
+- scheduling entering default agent design
+- sandboxing and runtime boundaries becoming part of the architecture story
 
-### The less-real advances
+### The fake advances
 
-I’d be more skeptical of:
+I’d stay skeptical of:
 
-- vague claims about “self-improving” without clear curation mechanisms
-- frameworks that are mostly prompt packaging pretending to be new science
-- anything that says it solved memory just because it added vector search
-- agent demos that ignore observability, security, and failure recovery
+- vague “self-improving” claims without curation details
+- frameworks that are mostly prompt packaging with new branding
+- memory claims that reduce to “we added vector search”
+- demos with no observability or failure model
 
-The category is still full of theatrical language.
+The category still has plenty of theatre in it.
 
-But underneath that, some of the engineering is finally sanding down into something practical.
+But the serious projects are at least pushing in the right direction.
 
-## 7) What builders should actually pay attention to
+## Practical takeaway
 
-If you’re building with these tools, I think the important questions are not “which framework is best?”
+If you’re evaluating these tools, don’t ask “which one is best?”
 
-The better questions are:
+Ask these instead:
 
-### 1. Where does state live?
+### 1) Where does state live?
 
-If the answer is “mostly in chat history,” the system is weaker than it looks.
+If the answer is mostly “in the transcript,” that’s a weakness.
 
-### 2. How is context managed when work gets long?
+### 2) How does the system manage long-task context?
 
-Compression, file offloading, tiered loading, and context isolation are not optional anymore.
+If there’s no deliberate answer here, it will fail in boring ways.
 
-### 3. What is the memory model?
+### 3) What kind of memory is this?
 
-Not just “do you have memory,” but:
+Not just “does it have memory?” but:
 
-- what gets persisted
-- what gets summarized
-- what decays
-- what is project-local vs user-global
-- how recall is debugged
+- what gets persisted?
+- what gets summarized?
+- what gets forgotten?
+- what is global vs project-local?
+- how do you debug recall?
 
-### 4. What is the surface area and blast radius?
+### 4) What is the actual blast radius?
 
-An agent that can read messages, run shell, browse the web, edit files, and message people back is not a toy. Treat it like an automation system with risk.
+An agent with shell, web, files, and messaging is an automation system with real risk.
 
-### 5. What part of the stack are you really buying?
+Treat it like one.
+
+### 5) Which layer are you actually buying?
 
 Do you need:
 
 - a personal assistant runtime?
-- an agent harness?
+- a harness?
 - a context database?
 - a productized coding agent?
 
-Buying the wrong layer is how teams end up frustrated.
-
-## 8) My current verdict on the main players
-
-If I had to compress this into a practical read:
-
-### Deep Agents
-
-**Best described as:** an opinionated harness for long-running autonomous work.
-
-**Why it matters:** it productizes patterns that serious agents need, especially context management and isolated delegation.
-
-**Watch if:** you build research/coding/workflow agents and want a structured base instead of raw primitives.
-
-### Hermes Agent
-
-**Best described as:** a persistent personal-agent runtime with memory, skills, messaging, and scheduling.
-
-**Why it matters:** it’s trying to solve the “agent that actually lives somewhere” problem, not just the “agent that completes a benchmark” problem.
-
-**Watch if:** you care about long-lived assistants, remote operation, and multi-surface personal AI.
-
-### OpenViking
-
-**Best described as:** a context database for agents.
-
-**Why it matters:** it attacks the real bottleneck, context organization and retrieval quality, at the infrastructure level.
-
-**Watch if:** you think memory and context architecture are now more important than prompt wording (I do).
+Buying the wrong layer is how teams get confused and disappointed.
 
 ## Bottom line
 
-The agent ecosystem is finally starting to sort itself into recognizable categories.
+OpenClaw is still one of the most important projects in the space because it made the personal-agent control-plane model real for a huge number of builders.
 
-That’s healthy.
+That still matters.
 
-OpenClaw is still one of the most important projects in the whole space because it made the personal-agent control-plane model real for a huge number of builders.
+But the update is real.
 
-But this update matters because newer projects are now clearly improving on specific parts of the stack.
+Deep Agents is pushing the harness layer forward.
+Hermes is pushing the persistent personal-agent thesis forward.
+OpenViking is pushing context architecture forward.
 
-Deep Agents is pushing the harness pattern forward.
-Hermes Agent is pushing the persistent personal-agent model forward.
-OpenViking is pushing context infrastructure forward.
+Those are different bets.
 
-Those are different bets, but they rhyme.
+They rhyme.
 
-The common theme is that the useful agent stack is becoming less about “a clever loop around an LLM” and more about:
+And they point to the same shift:
+
+The useful agent stack is becoming less about “a clever loop around an LLM” and more about:
 
 - context architecture
 - durable state
 - isolation
 - memory
 - scheduling
-- surfaces
 - operator control
+- product surfaces built on top of those layers
 
-That’s the real shift.
+That’s the actual movement.
 
-The prompt was never the whole product. Now the tooling is finally starting to admit it.
+Not more prompt tricks.
 
----
+Better systems.
 
-## Sources and references
+## Sources
 
-Primary sources:
-- LangChain Deep Agents overview: https://docs.langchain.com/oss/python/deepagents/overview
-- LangChain Deep Agents landing page: https://www.langchain.com/deep-agents
-- LangChain Deep Agents GitHub: https://github.com/langchain-ai/deepagents
-- Nous Hermes Agent docs: https://hermes-agent.nousresearch.com/docs/
-- Nous Hermes Agent GitHub: https://github.com/NousResearch/hermes-agent
-- OpenViking GitHub: https://github.com/volcengine/OpenViking
+### Primary project sources
 
-X / Bird research signals reviewed for this update:
-- LangChain Deep Agents discussion on X via Bird search
-- Hermes Agent discussion on X via Bird search
-- OpenViking discussion on X via Bird search
-- broader “AI agent harness” / viral GitHub chatter on X via Bird search
+{{< linkcard
+  url="https://github.com/openclaw/openclaw"
+  title="GitHub: openclaw/openclaw"
+  site="GitHub"
+  author="openclaw"
+>}}
 
-Notes:
-- X is useful here as a signal layer for what is going viral and how people are framing these projects, not as the source of truth for technical claims.
-- For factual claims in this post, I weighted official docs/repos above social posts.
+{{< linkcard
+  url="https://docs.langchain.com/oss/python/deepagents/overview"
+  title="LangChain Docs: Deep Agents overview"
+  site="LangChain Docs"
+  author="langchain"
+>}}
+
+{{< linkcard
+  url="https://github.com/langchain-ai/deepagents"
+  title="GitHub: langchain-ai/deepagents"
+  site="GitHub"
+  author="langchain-ai"
+>}}
+
+{{< linkcard
+  url="https://hermes-agent.nousresearch.com/docs/"
+  title="Hermes Agent Documentation"
+  site="Nous Research"
+  author="Hermes Agent"
+>}}
+
+{{< linkcard
+  url="https://github.com/NousResearch/hermes-agent"
+  title="GitHub: NousResearch/hermes-agent"
+  site="GitHub"
+  author="NousResearch"
+>}}
+
+{{< linkcard
+  url="https://github.com/volcengine/OpenViking"
+  title="GitHub: volcengine/OpenViking"
+  site="GitHub"
+  author="volcengine"
+>}}
+
+### Signal sources used for framing
+
+These were useful for understanding what was going viral and how people were framing it, but I did **not** treat them as primary technical truth:
+
+- X / Bird searches for Deep Agents
+- X / Bird searches for Hermes Agent
+- X / Bird searches for OpenViking
+- broader GitHub-trending / harness chatter on X
