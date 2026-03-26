@@ -96,10 +96,10 @@ Some of the earliest agent-first tools are trying to give software workers the b
 
 That includes things like:
 
-- **AgentMail**, so agents can have email accounts
-- **AgentPhone**, so agents can have phone numbers, SMS, and voice
-- **Kapso**, so agents can use WhatsApp numbers
-- **Linq**, mentioned in the thread as a way for agents to use iMessage
+- [**AgentMail**](https://www.agentmail.to/), so agents can have email accounts
+- [**AgentPhone**](https://www.tryagentphone.com/), so agents can have phone numbers, SMS, and voice
+- [**Kapso**](https://www.kapso.ai/), so agents can use WhatsApp numbers
+- [**Linq**](https://www.thelinqapp.com/), mentioned in the thread as a way for agents to use iMessage
 - **Clawphone**, surfaced in replies as another phone-like layer
 
 At first glance, this category feels a little silly.
@@ -135,8 +135,8 @@ Agents need:
 
 That’s where tools like these fit:
 
-- **Daytona**
-- **E2B**
+- [**Daytona**](https://www.daytona.io/)
+- [**E2B**](https://e2b.dev/)
 - other runtimes mentioned in replies that emphasize long-running sessions, secret security, and burstable CPU or RAM for heavier tasks
 
 A chatbot tab is not enough. If an agent is going to actually operate, it needs a workstation layer.
@@ -151,14 +151,14 @@ That means the browser layer is being rebuilt too.
 
 Tools repeatedly cited in and around the thread included:
 
-- **Browserbase**
-- **Browser Use**
-- **Hyperbrowser**
-- **Revyl**, for navigating and testing mobile apps
+- [**Browserbase**](https://www.browserbase.com/)
+- [**Browser Use**](https://browser-use.com/)
+- [**Hyperbrowser**](https://www.hyperbrowser.ai/)
+- [**Revyl**](https://www.tryrevyl.com/), for navigating and testing mobile apps
 
 There is also a separate but related category built around skipping the browser when possible:
 
-- **Firecrawl**, for machine-friendly crawling and extraction
+- [**Firecrawl**](https://www.firecrawl.dev/), for machine-friendly crawling and extraction
 
 This split matters.
 
@@ -174,9 +174,9 @@ That’s why memory and retrieval products keep appearing near the center of thi
 
 Examples include:
 
-- **Mem0**, for persistent memory
-- **Exa**, for web search that works better for programmatic agents than traditional search interfaces do
-- **Sixtyfour**, for people and company search
+- [**Mem0**](https://mem0.ai/), for persistent memory
+- [**Exa**](https://exa.ai/), for web search that works better for programmatic agents than traditional search interfaces do
+- [**Sixtyfour**](https://www.sixtyfour.ai/), for people and company search
 
 This is one of the places where the human-first stack breaks most obviously.
 
@@ -192,10 +192,10 @@ Another large slice of the category is about helping agents actually do useful w
 
 That includes:
 
-- **Composio**, for SaaS tool access
-- **Orthogonal**, for easier API access
+- [**Composio**](https://composio.dev/), for SaaS tool access
+- [**Orthogonal**](https://orthogonal.sh/), for easier API access
 - generated API layers that make existing services more machine-usable
-- **MCP**, increasingly treated as a standard way for models and agents to discover and use tools
+- [**MCP**](https://modelcontextprotocol.io/), increasingly treated as a standard way for models and agents to discover and use tools
 
 This layer might end up being one of the most defensible.
 
@@ -209,10 +209,10 @@ Once agents move from assistant mode into operator mode, they need ways to commu
 
 That’s where another cluster of agent-first products starts to matter:
 
-- **ElevenLabs** and **Vapi**, for voice interfaces
-- **Kite** and **Sponge**, for payments
-- **Reins**, mentioned as a bank-account-like primitive for agents
-- **x402 / AP2**, discussed in adjacent X posts as machine-native payment rails for HTTP-level transactions
+- [**ElevenLabs**](https://elevenlabs.io/) and [**Vapi**](https://vapi.ai/), for voice interfaces
+- [**Kite**](https://gokite.ai/) and [**Sponge**](https://www.paysponge.com/), for payments
+- [**Reins**](https://www.reins.co/), mentioned as a bank-account-like primitive for agents
+- [**x402**](https://www.x402.org/) / AP2, discussed in adjacent X posts as machine-native payment rails for HTTP-level transactions
 
 This part of the stack feels early, but it’s hard to imagine the category maturing without it.
 
@@ -236,10 +236,10 @@ Again and again, people converged on the same idea: identity, trust, permissions
 
 Examples mentioned in the thread and adjacent discussion included:
 
-- **AgentProof**, for reputation
-- **Skyfire**, for verified agent identity and trust
+- [**AgentProof**](https://www.agentproof.sh/), for reputation
+- [**Skyfire**](https://www.skyfire.xyz/), for verified agent identity and trust
 - proposals around agent passports, machine-speed compliance, and track records
-- on-chain identity and reputation concepts like **ERC-8004**
+- on-chain identity and reputation concepts like [**ERC-8004**](https://eips.ethereum.org/)
 
 This is where the category stops being cute.
 
@@ -317,13 +317,13 @@ It also explains why so many of these companies feel infrastructural even when t
 
 Looking beyond the original thread, the broader agent-first bucket already seems to include adjacent tools like:
 
-- **Bool**, for helping agents spin up websites
-- **Revyl**, for mobile navigation and testing
-- **Skyfire**, for identity and trust
-- **x402 / AP2**, for agent-native economic rails
-- **Reins**, for financial primitives
-- **MCP-compatible tool servers**, which turn software capabilities into machine-discoverable surfaces
-- runtimes like **OpenClaw**, which package execution, integrations, scheduling, and control around agents as active operators
+- [**Bool**](https://bool.com/), for helping agents spin up websites
+- [**Revyl**](https://www.tryrevyl.com/), for mobile navigation and testing
+- [**Skyfire**](https://www.skyfire.xyz/), for identity and trust
+- [**x402**](https://www.x402.org/) / AP2, for agent-native economic rails
+- [**Reins**](https://www.reins.co/), for financial primitives
+- [**MCP-compatible tool servers**](https://modelcontextprotocol.io/), which turn software capabilities into machine-discoverable surfaces
+- runtimes like [**OpenClaw**](https://github.com/openclaw/openclaw), which package execution, integrations, scheduling, and control around agents as active operators
 
 Not all of these will win.
 
