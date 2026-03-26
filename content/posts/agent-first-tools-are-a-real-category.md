@@ -3,9 +3,14 @@ title: "Agent-First Tools Are Becoming a Real Software Category"
 date: 2026-03-26T12:50:00-04:00
 draft: false
 slug: "agent-first-tools-are-a-real-category"
-url: "/posts/agent-first-tools-are-a-real-category/"
 description: "A new class of products is being built for AI agents as the primary users, not humans. Here’s what makes a tool agent-first, which companies are shaping the stack, what’s missing, and why trust and orchestration may matter more than flashy demos."
 summary: "Agent-first tools are starting to look like a real software category. The common pattern is simple: products rebuilt around autonomous software users instead of humans. Email, phone numbers, browsers, memory, payments, APIs, and trust layers are all being redesigned around machine operators."
+cover:
+  image: "/images/posts/agent-first-tools-2026/agent-first-tools-hero.png"
+  alt: "Editorial illustration of a digital coworker operating across browser, communications, memory, and payment layers"
+  caption: "Agent-first software is rebuilding the stack around machine operators instead of human users."
+  relative: false
+  hidden: false
 tags:
   - ai
   - agents
@@ -80,6 +85,10 @@ Once agents become actual users, product teams stop optimizing for attention and
 The cleanest way to understand this market is to look at the primitives founders are trying to assemble.
 
 Individually, some of these look narrow or gimmicky. Together, they start to resemble the operating kit for a digital coworker.
+
+![Agent-first tools hero](/images/posts/agent-first-tools-2026/agent-first-tools-hero.png)
+
+*An emerging software stack for agents: identity, execution, browsing, memory, payments, and trust.*
 
 ## 1) Identity and communications
 
@@ -212,6 +221,10 @@ If an agent can search, browse, schedule, and call tools but cannot pay, it is s
 The second agents start spending money, a new question dominates the whole category.
 
 Can they be trusted?
+
+![Agent stack diagram](/images/posts/agent-first-tools-2026/agent-stack-diagram.png)
+
+*The primitives are multiplying faster than the trust and orchestration layers that hold them together.*
 
 ## The missing center of gravity is trust
 
