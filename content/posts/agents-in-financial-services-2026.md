@@ -24,6 +24,11 @@ ShowBreadCrumbs: true
 ShowPostNavLinks: true
 ShowWordCount: true
 UseHugoToc: true
+cover:
+  image: "/images/posts/agents-in-financial-services-2026/hero.png"
+  alt: "Editorial visualization of bounded AI agents operating inside regulated financial workflows with human oversight, audit trails, and approval checkpoints."
+  relative: false
+  hidden: false
 ---
 
 A lot of the current agent discourse still sounds like demo theatre.
@@ -289,7 +294,7 @@ They will be the ones that treat agents as constrained process actors inside a g
 That means:
 
 - narrow mandates
-- strong tooling boundaries
+- strong system boundaries
 - human approvals where stakes are real
 - excellent audit trails
 - relentless focus on exception handling
@@ -309,4 +314,4 @@ A few references that helped shape this view:
 - Oracle Financial Services on its 2026 agentic banking platform and human-in-the-loop retail banking agents: <https://www.oracle.com/news/announcement/oracle-reimagines-banking-for-the-ai-era-2026-02-03/>
 - Microsoft Industry Blogs on AI transformation and agentic operating models in financial services: <https://www.microsoft.com/en-us/industry/blog/financial-services/2025/12/18/ai-transformation-in-financial-services-5-predictors-for-success-in-2026/>
 - AdvisorEngine on a principles-based, risk-classified compliance approach for AI in financial services: <https://www.advisorengine.com/action-magazine/articles/navigating-ai-compliance-a-risk-based-framework-for-financial-services-in-2026>
-- Bird/X discussion reflecting production skepticism and edge-case failure around real-money workflows
+- Practitioner discussion on X reflecting production skepticism and edge-case failure around real-money workflows
