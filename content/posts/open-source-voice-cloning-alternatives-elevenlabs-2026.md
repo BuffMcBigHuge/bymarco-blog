@@ -390,6 +390,7 @@ They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and 
 
 {{< audio-sample
   title="Chatterbox"
+  srcMp3="/audio/voice-cloning-2026/chatterbox-sample.mp3"
   src="/audio/voice-cloning-2026/chatterbox-sample.flac"
   caption="Public sample from the official Chatterbox demo."
   meta="Why it matters: strong expressiveness and a more polished modern feel than a lot of older open TTS stacks."
@@ -400,6 +401,7 @@ They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and 
 
 {{< audio-sample
   title="Qwen3-TTS"
+  srcMp3="/audio/voice-cloning-2026/qwen3tts-sample.mp3"
   src="/audio/voice-cloning-2026/qwen3tts-sample.wav"
   caption="Public sample from the official Qwen3-TTS demo."
   meta="Why it matters: one of the strongest commercially permissive open options, with a very practical deployment story."
@@ -410,6 +412,7 @@ They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and 
 
 {{< audio-sample
   title="KittenTTS"
+  srcMp3="/audio/voice-cloning-2026/kittentts-sample.mp3"
   src="/audio/voice-cloning-2026/kittentts-sample.wav"
   caption="Public sample from the official KittenTTS demo."
   meta="Why it matters: tiny local TTS is getting surprisingly decent, even when the goal is not top-tier voice cloning realism."

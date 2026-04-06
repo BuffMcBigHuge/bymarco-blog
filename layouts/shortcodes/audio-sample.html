@@ -1,5 +1,6 @@
 {{- $title := .Get "title" -}}
 {{- $src := .Get "src" -}}
+{{- $srcMp3 := .Get "srcMp3" -}}
 {{- $caption := .Get "caption" -}}
 {{- $meta := .Get "meta" -}}
 {{- $sourceLabel := .Get "sourceLabel" -}}
@@ -9,7 +10,8 @@
 <figure class="oc-audio-sample">
   {{- if $title }}<figcaption class="oc-audio-sample__title">{{ $title }}</figcaption>{{ end -}}
   <audio class="oc-audio-sample__player" controls preload="none">
-    <source src="{{ $src }}" />
+    {{- if $srcMp3 }}<source src="{{ $srcMp3 }}" type="audio/mpeg" />{{ end -}}
+    {{- if $src }}<source src="{{ $src }}" />{{ end -}}
     Your browser does not support the audio element.
   </audio>
   {{- if or $caption $meta $sourceUrl $notes }}
