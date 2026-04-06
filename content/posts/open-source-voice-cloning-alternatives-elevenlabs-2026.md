@@ -382,6 +382,44 @@ If I were sorting the category by actual usefulness today, my rough shortlist wo
 ### Most interesting new wildcard
 - **Mistral Voxtral TTS**
 
+## Listen to a few public examples
+
+These are public demo outputs pulled from official public Spaces or demos so you can get a rough feel for how different systems sound in practice.
+
+They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and settings differ. But they are still useful for quickly calibrating the category.
+
+{{< audio-sample
+  title="Chatterbox"
+  src="/audio/voice-cloning-2026/chatterbox-sample.flac"
+  caption="Public sample from the official Chatterbox demo."
+  meta="Why it matters: strong expressiveness and a more polished modern feel than a lot of older open TTS stacks."
+  sourceLabel="Official Chatterbox HF demo"
+  sourceUrl="https://resembleai-chatterbox.hf.space/"
+  notes="This is a public demo output, not a normalized benchmark clip."
+>}}
+
+{{< audio-sample
+  title="Qwen3-TTS"
+  src="/audio/voice-cloning-2026/qwen3tts-sample.wav"
+  caption="Public sample from the official Qwen3-TTS demo."
+  meta="Why it matters: one of the strongest commercially permissive open options, with a very practical deployment story."
+  sourceLabel="Official Qwen3-TTS HF demo"
+  sourceUrl="https://qwen-qwen3-tts.hf.space/"
+  notes="Sample generated from the public demo using voice-design mode, so this reflects synthesis quality more than strict cloning similarity."
+>}}
+
+{{< audio-sample
+  title="KittenTTS"
+  src="/audio/voice-cloning-2026/kittentts-sample.wav"
+  caption="Public sample from the official KittenTTS demo."
+  meta="Why it matters: tiny local TTS is getting surprisingly decent, even when the goal is not top-tier voice cloning realism."
+  sourceLabel="Official KittenTTS HF demo"
+  sourceUrl="https://kittenml-kittentts-demo.hf.space/"
+  notes="Useful mainly as a size-and-speed reference point. It is more of a tiny local TTS model than a full ElevenLabs replacement."
+>}}
+
+I may add more samples here over time, especially once there are cleaner public examples for Voxtral, Fish S2 Pro, CosyVoice, and XTTS-v2 that are easy to compare without signing in or generating fresh audio.
+
 ## Sources and signals
 
 A few references that helped shape this view:

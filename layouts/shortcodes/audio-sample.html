@@ -1,0 +1,28 @@
+{{- $title := .Get "title" -}}
+{{- $src := .Get "src" -}}
+{{- $caption := .Get "caption" -}}
+{{- $meta := .Get "meta" -}}
+{{- $sourceLabel := .Get "sourceLabel" -}}
+{{- $sourceUrl := .Get "sourceUrl" -}}
+{{- $notes := .Get "notes" -}}
+
+<figure class="oc-audio-sample">
+  {{- if $title }}<figcaption class="oc-audio-sample__title">{{ $title }}</figcaption>{{ end -}}
+  <audio class="oc-audio-sample__player" controls preload="none">
+    <source src="{{ $src }}" />
+    Your browser does not support the audio element.
+  </audio>
+  {{- if or $caption $meta $sourceUrl $notes }}
+  <div class="oc-audio-sample__body">
+    {{- if $caption }}<p class="oc-audio-sample__caption">{{ $caption }}</p>{{ end -}}
+    {{- if $meta }}<p class="oc-audio-sample__meta">{{ $meta }}</p>{{ end -}}
+    {{- if $notes }}<p class="oc-audio-sample__notes">{{ $notes }}</p>{{ end -}}
+    {{- if $sourceUrl }}
+      <p class="oc-audio-sample__source">
+        Source:
+        <a href="{{ $sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ $sourceLabel | default $sourceUrl }}</a>
+      </p>
+    {{- end -}}
+  </div>
+  {{- end }}
+</figure>
