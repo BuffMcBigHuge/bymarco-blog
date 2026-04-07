@@ -391,7 +391,7 @@ They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and 
 <figure class="oc-audio-sample">
   <figcaption class="oc-audio-sample__title">Chatterbox</figcaption>
   <audio class="oc-audio-sample__player" controls preload="none">
-    <source src="/audio/voice-cloning-2026/chatterbox-sample.mp3" type="audio/mpeg">
+    <source src="/images/audio/voice-cloning-2026/chatterbox-sample.mp3" type="audio/mpeg">
   </audio>
   <div class="oc-audio-sample__body">
     <p class="oc-audio-sample__caption">Public sample from the official Chatterbox demo.</p>
@@ -404,7 +404,7 @@ They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and 
 <figure class="oc-audio-sample">
   <figcaption class="oc-audio-sample__title">Qwen3-TTS</figcaption>
   <audio class="oc-audio-sample__player" controls preload="none">
-    <source src="/audio/voice-cloning-2026/qwen3tts-sample.mp3" type="audio/mpeg">
+    <source src="/images/audio/voice-cloning-2026/qwen3tts-sample.mp3" type="audio/mpeg">
   </audio>
   <div class="oc-audio-sample__body">
     <p class="oc-audio-sample__caption">Public sample from the official Qwen3-TTS demo.</p>
@@ -417,7 +417,7 @@ They are **not** a perfect apples-to-apples benchmark. The prompts, voices, and 
 <figure class="oc-audio-sample">
   <figcaption class="oc-audio-sample__title">KittenTTS</figcaption>
   <audio class="oc-audio-sample__player" controls preload="none">
-    <source src="/audio/voice-cloning-2026/kittentts-sample.mp3" type="audio/mpeg">
+    <source src="/images/audio/voice-cloning-2026/kittentts-sample.mp3" type="audio/mpeg">
   </audio>
   <div class="oc-audio-sample__body">
     <p class="oc-audio-sample__caption">Public sample from the official KittenTTS demo.</p>
