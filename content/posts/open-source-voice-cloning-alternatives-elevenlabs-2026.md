@@ -445,9 +445,3 @@ A few references that helped shape this view:
 - Practitioner discussion on X around Chatterbox, Fish Speech, Qwen3-TTS, GPT-SoVITS, XTTS-v2, and Voxtral
 - Reddit discussion on Mistral Voxtral TTS in r/LocalLLaMA: <https://www.reddit.com/r/LocalLLaMA/comments/1s46ylj/mistral_ai_to_release_voxtral_tts_a/>
 - Reddit discussion on KittenTTS in r/LocalLLaMA: <https://www.reddit.com/r/LocalLLaMA/comments/1mhyzp7/kitten_tts_sota_supertiny_tts_model_less_than_25/>
-
-## Image concepts
-
-- Editorial hero image showing a voice waveform splitting into multiple open model paths labeled by constraints like quality, license, latency, and local deployment
-- A decision-tree diagram for choosing an ElevenLabs alternative: permissive commercial, research-only, non-commercial, multilingual, realtime, tiny local
-- Studio-style visual of a short reference voice clip being transformed into cloned speech across different languages and deployment contexts
