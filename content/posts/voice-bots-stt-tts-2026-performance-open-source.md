@@ -199,10 +199,17 @@ Measure:
 
 ### Open-source TTS you should still keep on your radar
 
-Two projects that look like “real open releases” (not just a paper repo) because they’re being adopted and productized:
+Four projects that look like “real open releases” (not just a paper repo) because they’re being adopted and productized:
+
+- **Qwen3-TTS** still looks like one of the most practical open options when you care about commercial friendliness and ecosystem momentum.
+- **CosyVoice** keeps showing up in edge and ONNX conversations, which is usually a sign a model is escaping the demo phase.
+- **OmniVoice** is worth watching because the scope is unusually ambitious: 600+ languages, zero-shot cloning, voice design, non-verbal controls, and claimed RTF as low as 0.025. If those tradeoffs hold up outside the launch page, that is a serious multilingual TTS signal.
+- **VoxCPM2** looks especially relevant for builders who want a modern open stack with fewer licensing headaches: Apache-2.0, 30 languages, tokenizer-free generation, controllable cloning, voice design, 48kHz output, and claimed real-time streaming around 0.3 RTF on a 4090.
 
 {{< linkcard url="https://www.reddit.com/r/LocalLLaMA/comments/1qjul5t/qwen_have_opensourced_the_full_family_of_qwen3tts/" title="Qwen3‑TTS: open-sourced family release (LocalLLaMA thread)" site="Reddit" author="u/Nunki08" >}}
 {{< linkcard url="https://x.com/psk90_ai/status/2012052652520325461" title="CosyVoice ONNX/edge port signal (ecosystem productization)" site="X" author="@psk90_ai" >}}
+{{< linkcard url="https://huggingface.co/k2-fsa/OmniVoice" title="OmniVoice: 600+ language zero-shot TTS with voice cloning and voice design" site="Hugging Face" author="k2-fsa" >}}
+{{< linkcard url="https://github.com/OpenBMB/VoxCPM" title="VoxCPM2: tokenizer-free multilingual TTS with controllable cloning and 48kHz output" site="GitHub" author="OpenBMB" >}}
 
 ## The workflow: how to build a voice agent that doesn’t collapse under real users
 
