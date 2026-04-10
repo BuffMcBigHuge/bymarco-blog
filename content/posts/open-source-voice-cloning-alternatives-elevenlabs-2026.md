@@ -78,6 +78,8 @@ The important part is separating permissive commercial stacks, research-grade re
   <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/164266700?s=200&v=4" alt="Fish Audio logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Fish Audio</div></div>
   <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/83593640?s=200&v=4" alt="Resemble AI logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Chatterbox</div></div>
   <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/160986761?s=200&v=4" alt="FunAudioLLM logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">CosyVoice</div></div>
+  <div style="text-align:center;"><img src="https://opengraph.githubassets.com/1/OpenBMB/VoxCPM" alt="VoxCPM2 logo" width="64" height="64" style="object-fit:contain;border-radius:12px;" /><div style="margin-top:8px;font-size:14px;">VoxCPM2</div></div>
+  <div style="text-align:center;"><img src="https://opengraph.githubassets.com/1/k2-fsa/OmniVoice" alt="OmniVoice logo" width="64" height="64" style="object-fit:contain;border-radius:12px;" /><div style="margin-top:8px;font-size:14px;">OmniVoice</div></div>
   <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/34219044?s=200&v=4" alt="Coqui logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">XTTS-v2</div></div>
   <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/148570376?s=200&v=4" alt="Mistral AI logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Voxtral</div></div>
 </div>
