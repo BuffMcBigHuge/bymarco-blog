@@ -197,7 +197,41 @@ That last part matters a lot in production. One of the fastest ways to hate a TT
 
 CosyVoice is not the smallest or simplest option here. But if your real goal is multilingual deployment rather than just English narration, it has a strong case.
 
-### 5. Mistral Voxtral TTS is important, but you have to read the fine print
+### 5. OmniVoice is the most ambitious multilingual swing in the category
+
+If your evaluation lens is **language coverage first**, OmniVoice immediately jumps out.
+
+The project claims **600+ languages**, zero-shot cloning, voice design, non-verbal control like `[laughter]`, pronunciation guidance, and very fast inference. That is not a small extension of the current open TTS playbook. That is a direct attempt to widen the category.
+
+That makes OmniVoice interesting for 2 reasons.
+
+First, it is aimed at a genuinely hard problem. A lot of open TTS discussion quietly collapses into English, maybe with a few major European and Asian languages bolted on. OmniVoice is trying to make omnilingual speech synthesis a first-class feature rather than a nice extra.
+
+Second, the feature set is pointed in the right direction for real products: cloning, design, controllability, and speed all in one place. If those claims survive wider practitioner testing, this could become one of the most important multilingual open releases in the space.
+
+The catch is that breadth claims need verification more than demo-page admiration. A model can technically support hundreds of languages and still have very uneven quality across the long tail.
+
+So the right posture is interest, not instant coronation.
+
+Still, OmniVoice absolutely belongs in the serious-shortlist conversation now.
+
+### 6. VoxCPM2 looks like one of the most credible new open stacks for developers
+
+**VoxCPM2** feels notable for a different reason.
+
+It is not just pitching quality. It is pitching a full modern product shape: **Apache-2.0**, 30 languages, tokenizer-free generation, controllable voice cloning, voice design, 48kHz output, and streaming-oriented performance claims.
+
+That combination matters.
+
+A lot of audio releases make one strong impression, then fall apart when you ask the practical questions. Can I use it commercially? Does it stream? Is cloning actually part of the public release? Is the output quality high enough for polished narration or voice agents?
+
+VoxCPM2 is interesting because it seems to be trying to answer all of those questions at once.
+
+The tokenizer-free architecture is also worth paying attention to. Whether it ends up being the long-term winning design or not, it is part of a broader pattern: open TTS systems are getting less toy-like and more end-to-end.
+
+If I were building a serious shortlist for current open voice stacks, VoxCPM2 would be on it.
+
+### 7. Mistral Voxtral TTS is important, but you have to read the fine print
 
 **Mistral's Voxtral TTS** is one of the most interesting new entries because the quality bar appears high enough that people immediately started comparing it to ElevenLabs rather than to other open demos.
 
@@ -372,6 +406,12 @@ If I were sorting the category by actual usefulness today, my rough shortlist wo
 ### Best tiny deploy-anywhere TTS option
 - **Kokoro**
 
+### Most ambitious multilingual swing
+- **OmniVoice**
+
+### Best newer open stack to watch closely
+- **VoxCPM2**
+
 ### Most interesting new wildcard
 - **Mistral Voxtral TTS**
 
@@ -439,6 +479,10 @@ A few references that helped shape this view:
 - XTTS-v2 model page: <https://huggingface.co/coqui/XTTS-v2>
 - GPT-SoVITS official repo: <https://github.com/RVC-Boss/GPT-SoVITS>
 - KittenTTS official repo: <https://github.com/KittenML/KittenTTS>
+- OmniVoice model page: <https://huggingface.co/k2-fsa/OmniVoice>
+- OmniVoice official repo: <https://github.com/k2-fsa/OmniVoice>
+- VoxCPM official repo: <https://github.com/OpenBMB/VoxCPM>
+- VoxCPM2 model page: <https://huggingface.co/openbmb/VoxCPM2>
 - Mistral Voxtral TTS docs: <https://docs.mistral.ai/capabilities/audio/text_to_speech>
 - Mistral Voxtral TTS model page: <https://huggingface.co/mistralai/Voxtral-4B-TTS-2603>
 - Microsoft VibeVoice repo: <https://github.com/microsoft/VibeVoice>
