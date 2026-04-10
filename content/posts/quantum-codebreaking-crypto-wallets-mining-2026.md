@@ -26,10 +26,10 @@ ShowPostNavLinks: true
 ShowWordCount: true
 UseHugoToc: true
 cover:
-  image: ""
-  alt: ""
+  image: "/images/posts/quantum-codebreaking-2026/hero.png"
+  alt: "Editorial illustration of quantum circuits colliding with crypto wallet security and elliptic-curve cryptography."
   relative: false
-  hidden: true
+  hidden: false
 ---
 
 A tweet from Justin Drake kicked off a familiar cycle on crypto Twitter: panic, memes, denial, and a lot of people suddenly pretending they had strong opinions about Toffoli gates.
@@ -53,6 +53,8 @@ Before getting lost in the qubit-count Olympics, the useful questions are:
 3. **Does this threaten wallets, mining, or both?**
 
 Those questions cut through most of the drama.
+
+![Editorial visualization of quantum cryptography risk](/images/posts/quantum-codebreaking-2026/support-1.png)
 
 ## What the Google paper actually says
 
@@ -230,6 +232,8 @@ So if you are ranking risks:
 4. **mining**
 
 Mining is on the list. It is just not at the top of the list.
+
+![Abstract illustration of quantum pressure on crypto wallets and mining narratives](/images/posts/quantum-codebreaking-2026/support-2.png)
 
 Justin Drake made this point directly in the tweet thread too: **Bitcoin PoW is not the main quantum story here**.
 
