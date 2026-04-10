@@ -74,14 +74,14 @@ The important part is not picking one winner.
 The important part is separating permissive commercial stacks, research-grade releases, local tiny runtimes, and genuine cloning systems from plain TTS.
 
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:18px;align-items:start;margin:22px 0 12px;">
-  <div style="text-align:center;"><img src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.png" alt="Qwen / Hugging Face logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Qwen3-TTS</div></div>
-  <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/164266700?s=200&v=4" alt="Fish Audio logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Fish Audio</div></div>
-  <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/83593640?s=200&v=4" alt="Resemble AI logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Chatterbox</div></div>
-  <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/160986761?s=200&v=4" alt="FunAudioLLM logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">CosyVoice</div></div>
-  <div style="text-align:center;"><img src="https://opengraph.githubassets.com/1/OpenBMB/VoxCPM" alt="VoxCPM2 logo" width="64" height="64" style="object-fit:contain;border-radius:12px;" /><div style="margin-top:8px;font-size:14px;">VoxCPM2</div></div>
-  <div style="text-align:center;"><img src="https://opengraph.githubassets.com/1/k2-fsa/OmniVoice" alt="OmniVoice logo" width="64" height="64" style="object-fit:contain;border-radius:12px;" /><div style="margin-top:8px;font-size:14px;">OmniVoice</div></div>
-  <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/34219044?s=200&v=4" alt="Coqui logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">XTTS-v2</div></div>
-  <div style="text-align:center;"><img src="https://avatars.githubusercontent.com/u/148570376?s=200&v=4" alt="Mistral AI logo" width="64" height="64" /><div style="margin-top:8px;font-size:14px;">Voxtral</div></div>
+  <div style="text-align:center;"><a href="https://github.com/QwenLM/Qwen3-TTS" target="_blank" rel="noopener noreferrer"><img src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.png" alt="Qwen / Hugging Face logo" width="64" height="64" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/QwenLM/Qwen3-TTS" target="_blank" rel="noopener noreferrer">Qwen3-TTS</a></div></div>
+  <div style="text-align:center;"><a href="https://github.com/fishaudio/fish-speech" target="_blank" rel="noopener noreferrer"><img src="https://avatars.githubusercontent.com/u/164266700?s=200&v=4" alt="Fish Audio logo" width="64" height="64" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/fishaudio/fish-speech" target="_blank" rel="noopener noreferrer">Fish Audio</a></div></div>
+  <div style="text-align:center;"><a href="https://github.com/resemble-ai/chatterbox" target="_blank" rel="noopener noreferrer"><img src="https://avatars.githubusercontent.com/u/83593640?s=200&v=4" alt="Resemble AI logo" width="64" height="64" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/resemble-ai/chatterbox" target="_blank" rel="noopener noreferrer">Chatterbox</a></div></div>
+  <div style="text-align:center;"><a href="https://github.com/FunAudioLLM/CosyVoice" target="_blank" rel="noopener noreferrer"><img src="https://avatars.githubusercontent.com/u/160986761?s=200&v=4" alt="FunAudioLLM logo" width="64" height="64" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/FunAudioLLM/CosyVoice" target="_blank" rel="noopener noreferrer">CosyVoice</a></div></div>
+  <div style="text-align:center;"><a href="https://github.com/OpenBMB/VoxCPM" target="_blank" rel="noopener noreferrer"><img src="https://opengraph.githubassets.com/1/OpenBMB/VoxCPM" alt="VoxCPM2 logo" width="64" height="64" style="object-fit:contain;border-radius:12px;" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/OpenBMB/VoxCPM" target="_blank" rel="noopener noreferrer">VoxCPM2</a></div></div>
+  <div style="text-align:center;"><a href="https://github.com/k2-fsa/OmniVoice" target="_blank" rel="noopener noreferrer"><img src="https://opengraph.githubassets.com/1/k2-fsa/OmniVoice" alt="OmniVoice logo" width="64" height="64" style="object-fit:contain;border-radius:12px;" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/k2-fsa/OmniVoice" target="_blank" rel="noopener noreferrer">OmniVoice</a></div></div>
+  <div style="text-align:center;"><a href="https://huggingface.co/coqui/XTTS-v2" target="_blank" rel="noopener noreferrer"><img src="https://avatars.githubusercontent.com/u/34219044?s=200&v=4" alt="Coqui logo" width="64" height="64" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://huggingface.co/coqui/XTTS-v2" target="_blank" rel="noopener noreferrer">XTTS-v2</a></div></div>
+  <div style="text-align:center;"><a href="https://github.com/mistralai/mistral-inference" target="_blank" rel="noopener noreferrer"><img src="https://avatars.githubusercontent.com/u/148570376?s=200&v=4" alt="Mistral AI logo" width="64" height="64" /></a><div style="margin-top:8px;font-size:14px;"><a href="https://github.com/mistralai/mistral-inference" target="_blank" rel="noopener noreferrer">Voxtral</a></div></div>
 </div>
 
 ## First, separate TTS from voice cloning
@@ -122,7 +122,7 @@ A surprising number of promising projects fail on filter 3.
 
 ## The strongest open alternatives right now
 
-### 1. Qwen3-TTS is probably the most practical open replacement for ElevenLabs
+### 1. Qwen3-TTS
 
 If I had to pick one model family that best balances capability, flexibility, and commercial friendliness right now, it would probably be **Qwen3-TTS**.
 
@@ -140,7 +140,7 @@ Some practitioner discussion suggests it can sound a little flatter than the mos
 
 Still, if your question is "what can I actually ship without turning the legal review into a side quest?" Qwen3-TTS is one of the best answers on the board.
 
-### 2. Fish Audio S2 Pro is one of the strongest open releases, but the license matters a lot
+### 2. Fish Audio S2 Pro
 
 On raw ambition, **Fish Audio S2 Pro** is one of the most impressive models in the category.
 
@@ -160,7 +160,7 @@ So the honest framing is this:
 
 Fish S2 Pro is one of the best open releases for people who care about quality, expressiveness, and multilingual reach. It is not the easiest answer if you need a safe, boring, production license.
 
-### 3. Chatterbox feels like one of the most credible modern open TTS stacks for developers
+### 3. Chatterbox
 
 **Chatterbox**, from Resemble AI, is one of the more interesting releases because it seems to understand what developers actually want.
 
@@ -178,7 +178,7 @@ That makes it one of the best candidates for people who want an open system that
 
 One thing worth watching closely is the exact licensing and packaging across versions. The project is very promising, but whenever a model family straddles open releases and commercial services, it is worth being precise about what is open, what is benchmarked, and what assumptions those comparisons depend on.
 
-### 4. CosyVoice 3.0 looks especially strong if multilingual speech is the real requirement
+### 4. CosyVoice 3.0
 
 A lot of TTS evaluation still overweights English demos.
 
@@ -199,7 +199,7 @@ That last part matters a lot in production. One of the fastest ways to hate a TT
 
 CosyVoice is not the smallest or simplest option here. But if your real goal is multilingual deployment rather than just English narration, it has a strong case.
 
-### 5. OmniVoice is the most ambitious multilingual swing in the category
+### 5. OmniVoice
 
 If your evaluation lens is **language coverage first**, OmniVoice immediately jumps out.
 
@@ -217,7 +217,7 @@ So the right posture is interest, not instant coronation.
 
 Still, OmniVoice absolutely belongs in the serious-shortlist conversation now.
 
-### 6. VoxCPM2 looks like one of the most credible new open stacks for developers
+### 6. VoxCPM2
 
 **VoxCPM2** feels notable for a different reason.
 
@@ -233,7 +233,7 @@ The tokenizer-free architecture is also worth paying attention to. Whether it en
 
 If I were building a serious shortlist for current open voice stacks, VoxCPM2 would be on it.
 
-### 7. Mistral Voxtral TTS is important, but you have to read the fine print
+### 7. Mistral Voxtral TTS
 
 **Mistral's Voxtral TTS** is one of the most interesting new entries because the quality bar appears high enough that people immediately started comparing it to ElevenLabs rather than to other open demos.
 
@@ -259,7 +259,7 @@ Right now, it is more complicated than the headline suggests.
 
 ## The workhorses still matter
 
-### XTTS-v2 is older, but it is still one of the default answers for a reason
+### XTTS-v2
 
 Open-source categories do not reset every time a newer model drops.
 
@@ -280,7 +280,7 @@ If you want the audio equivalent of a dependable older framework that lots of pe
 
 The main downside is the license. Coqui's public model license is not the same thing as a clean Apache or MIT setup, so you still need to pay attention before assuming it is a drop-in commercial answer.
 
-### GPT-SoVITS is still the tinkerer favorite for people who want control
+### GPT-SoVITS
 
 If XTTS-v2 is the dependable workhorse, **GPT-SoVITS** is the enthusiast's garage.
 
@@ -303,7 +303,7 @@ For others, that is the warning label.
 
 ## The tiny local models are real, but don’t oversell them
 
-### Kokoro is the small, practical deployment answer
+### Kokoro
 
 **Kokoro** matters because it makes local TTS cheap and boring in the best possible way.
 
@@ -321,7 +321,7 @@ That is not quite right.
 
 Kokoro is one of the best examples of how far efficient open TTS has come. It is less convincing as the single answer for highest-end voice cloning where similarity and expressiveness are the whole game.
 
-### KittenTTS is exciting, but it is mostly a TTS story right now
+### KittenTTS
 
 **KittenTTS** got attention for a good reason.
 
