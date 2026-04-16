@@ -668,22 +668,146 @@ A lot of agent builders will not buy a standalone memory product at all. They wi
 - **Winner:** Supermemory
 - **Why:** broad context platform with connectors, plugins, profiles, and enterprise posture
 
-## What Reddit and X would matter for here
+## What Reddit and X are actually saying
 
-You asked specifically for Reddit and Bird/X research. I want to be strict here: in this session I had tool access for web research, but not the dedicated Bird and Reddit specialist flow I’d normally prefer for a proper sentiment pass.
+I re-ran the research pass using **bird** for X and the local **reddit-praw** wrapper after adding a missing `search` command to that tool.
 
-So I’m not going to fake “the discourse.”
+The useful thing about the social pass is not that it settles the rankings. It doesn’t. It shows where each tool is landing in people’s heads.
 
-What I can say from the public materials and recent repo behavior is that the current conversation around agent memory is converging on the same themes anyway:
+### MemPalace
 
-- semantic search alone is not enough
-- profile memory is useful but incomplete
-- raw history still matters
-- observability matters far more than people used to admit
-- coding-agent memory is becoming its own subcategory
-- the best systems are now blending retrieval, entity state, temporal reasoning, and reflection
+The social signal around MemPalace is loud, but polarized.
 
-That’s the real shape of the market.
+On X, the dominant tone is hype around:
+
+- its GitHub momentum
+- its local-first pitch
+- the headline benchmark numbers
+- the idea that raw memory beats fact extraction
+
+On Reddit, the tone is more skeptical. The two strongest recurring themes were:
+
+- genuine excitement about persistent Claude / MCP memory
+- pushback on benchmark framing, especially around raw mode vs compressed mode and what exactly was independently verified
+
+That matches the product itself. MemPalace is interesting, but the discourse around it is also a case study in how fast agent-memory products can outrun their own evidence.
+
+### Mem0
+
+Mem0 has the broadest “default memory layer” positioning in the group.
+
+On X, the conversation is heavily product-and-builder oriented:
+
+- people shipping apps with Mem0 in the stack
+- discussion of the new add-only extraction algorithm
+- repeated emphasis on entity linking and multi-signal retrieval
+
+On Reddit, Mem0 shows up most often as a comparison point:
+
+- “Mem0 vs Letta”
+- “Mem0 vs Zep vs LangMem”
+- “should I self-host this or roll my own?”
+
+That’s a pretty good sign. It means Mem0 has become one of the reference baselines people use when they think about memory infrastructure.
+
+### Honcho
+
+Honcho has a weaker broad social footprint than Mem0 or MemPalace, but the narrower signal is interesting.
+
+The X mentions that looked relevant were mostly around:
+
+- pairing Honcho with Hermes Agent
+- isolation across users and contexts
+- setup complexity
+
+Reddit signal was thinner and noisier than I expected. That does **not** mean the product is weak. It mostly means Honcho currently has a more technical / builder-heavy footprint than a big community-content footprint.
+
+### OpenViking
+
+OpenViking’s social signal is heavily architecture-coded.
+
+On X, the dominant themes are:
+
+- Memory V2
+- OpenViking as shared memory for multi-agent setups
+- integrations with Hermes Agent
+- the broader “context database” framing
+
+On Reddit, the mentions are fewer, but the interesting ones frame it as a direct alternative in agent-stack design decisions rather than as a simple memory plugin.
+
+That tracks with the product: OpenViking gets discussed more as infrastructure than as a convenience tool.
+
+### Hindsight
+
+Hindsight is the hardest one to search cleanly because the name is such a common word.
+
+Reddit and X both produce a lot of generic “in hindsight” noise, which is a product-discovery problem all by itself.
+
+The signal that does break through tends to position Hindsight as:
+
+- a serious memory contender for coding agents
+- a more advanced alternative people compare against ByteRover or Mem0
+- a tool for agents that need richer learning behavior, not just recall
+
+The naming collision makes its social footprint look smaller than the underlying technical interest probably is.
+
+### ByteRover
+
+ByteRover’s social signal is much more coherent.
+
+On X, it shows up in the context of:
+
+- coding-agent memory
+- local-first agent stacks
+- lower cost / lower cloud dependence
+- harness-builder adoption
+- memory retention claims tied to engineering workflows
+
+On Reddit, the surrounding discussion is more about the underlying problem than the product name itself:
+
+- shared context for Claude Code teams
+- coding agents repeating mistakes
+- memory across tools
+- reviewable project knowledge
+
+That tells you ByteRover’s niche is real. It is solving a pain people already know they have.
+
+### Supermemory
+
+Supermemory has a stronger product/community/platform vibe than a research vibe.
+
+On X, a lot of the visible chatter is about:
+
+- the product surface
+- plugins and compatibility
+- brand/design discussion
+- GitHub-star discourse and positioning debates
+
+On Reddit, Supermemory mostly appears in broader “which memory tool do you use?” conversations.
+
+That suggests Supermemory is legible as a category player, but the public discourse around it currently feels more platform-and-adoption-oriented than deeply technical.
+
+### The cross-platform pattern
+
+The clearest pattern across Reddit and X is this:
+
+- **Reddit** is where people ask whether these systems hold up in real use, whether the benchmarks are honest, and whether self-hosting is worth the pain
+- **X** is where product positioning, benchmark claims, integrations, and stack narratives spread fastest
+
+Put differently:
+
+- Reddit is better for spotting skepticism and recurring operational pain
+- X is better for spotting narrative momentum and who is integrating with whom
+
+Across both, the same underlying concerns keep resurfacing:
+
+- benchmark honesty
+- whether memory stores raw history or extracted summaries
+- mutation semantics when user state changes
+- whether retrieval is explainable
+- whether coding-agent memory deserves its own category
+
+That’s a much better signal than just “who has the most stars.”
 
 ## Final take
 
