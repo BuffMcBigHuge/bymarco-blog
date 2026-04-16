@@ -107,7 +107,7 @@ enableEmoji = true
   [[params.socialIcons]]
     name = 'x'
     title = 'X'
-    url = 'https://x.com/MarcoTundo'
+    url = 'https://x.com/BuffMcBigHuge'
 
   [[params.socialIcons]]
     name = 'linkedin'
@@ -124,7 +124,7 @@ enableEmoji = true
 # Schema.org configuration for SEO
 [params.schema]
   publisherType = "Person"
-  sameAs = ["https://bymar.co", "https://github.com/BuffMcBigHuge", "https://x.com/MarcoTundo", "https://www.linkedin.com/in/bymarco/"]
+  sameAs = ["https://bymar.co", "https://github.com/BuffMcBigHuge", "https://x.com/BuffMcBigHuge", "https://www.linkedin.com/in/bymarco/"]
 
 # Enable fuseOpts for search
 [params.fuseOpts]
