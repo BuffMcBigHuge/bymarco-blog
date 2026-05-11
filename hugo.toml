@@ -1,6 +1,7 @@
 baseURL = 'https://blog.bymar.co/'
 languageCode = 'en-us'
 title = 'blog.byMAR.CO'
+disableAliases = true
 theme = 'hugo-PaperMod'
 
 # Pagination
@@ -56,7 +57,9 @@ enableEmoji = true
 [params]
   env = 'production'
   title = 'byMAR.CO'
-  description = "bYMAR.CO AI Ramblings"
+  brandTitle = 'byMAR.CO Engineering Blog'
+  homeSeoTitle = 'byMAR.CO Engineering Blog | Applied AI, Agents, Local LLMs, and Engineering'
+  description = "Applied AI engineering notes from Marco Tundo, covering autonomous agents, local LLMs, AI infrastructure, software systems, crypto, and practical technology strategy."
   author = 'Marco'
   keywords = ["software engineering", "cloud", "technology", "AI", "artificial intelligence", "agents", "blog"]
 
