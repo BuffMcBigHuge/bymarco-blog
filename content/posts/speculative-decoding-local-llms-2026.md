@@ -1,10 +1,11 @@
 ---
 title: "Speculative Decoding Is Finally Useful for Local LLMs"
 date: 2026-05-07T02:10:00-04:00
+lastmod: 2026-05-11T14:45:00-04:00
 draft: false
 slug: "speculative-decoding-local-llms-2026"
-description: "A practical field guide to speculative decoding for local LLMs, covering ngram speculation, MTP heads, TurboQuant, Qwen3.6, llama.cpp, vLLM, and the current LocalLLaMA field reports."
-summary: "Speculative decoding has moved from inference-paper trivia into the local LLM hot path. The useful version combines ngram speculation for repeated text, MTP for models that were trained to draft ahead, and KV compression like TurboQuant when long context is the real constraint."
+description: "A practical field guide to speculative decoding for local LLMs, updated with new llama.cpp MTP, TurboQuant HIP, and BeeLlama.cpp field reports for Qwen3.6 on RTX 4090, RTX 3090, and Radeon 7900 XTX."
+summary: "Speculative decoding has moved from inference-paper trivia into the local LLM hot path. The useful version now includes ngram speculation, native MTP heads, DFlash-style drafting, and TurboQuant / TCQ KV compression, with early llama.cpp forks showing both real speedups and real rough edges."
 tags:
   - ai
   - local-llm
@@ -81,6 +82,29 @@ The pattern from Bird/X and r/LocalLLaMA is pretty clear:
 The hype is justified.
 
 The defaults are not settled.
+
+**May 11 update:** the local stack moved again. Three new community paths are worth separating from the original llama.cpp/vLLM discussion: Indras-Mirror's CUDA MTP plus fused TBQ4 fork for RTX 4090-class cards, domvox's HIP/ROCm TurboQuant fork for RDNA3 cards like the 7900 XTX, and Anbeeld's BeeLlama.cpp fork, which packages DFlash, adaptive drafting, TurboQuant/TCQ cache types, multimodal support, and reasoning-loop protection into a more productized llama.cpp variant.
+
+{{< linkcard
+  url="https://github.com/Indras-Mirror/llama.cpp-mtp"
+  title="llama.cpp-mtp: Fused TBQ4 Flash Attention + MTP + Shared Tensors"
+  site="GitHub"
+  author="Indras-Mirror"
+>}}
+
+{{< linkcard
+  url="https://github.com/domvox/llama.cpp-turboquant-hip"
+  title="llama.cpp-turboquant-hip: TurboQuant KV cache compression for HIP/ROCm"
+  site="GitHub"
+  author="domvox"
+>}}
+
+{{< linkcard
+  url="https://github.com/Anbeeld/beellama.cpp"
+  title="BeeLlama.cpp: DFlash, TurboQuant, TCQ, and multimodal llama.cpp fork"
+  site="GitHub"
+  author="Anbeeld"
+>}}
 
 ## Why speculative decoding matters more locally than in the cloud
 
@@ -183,7 +207,7 @@ Qwen3.6 models are landing in a moment where inference engines are ready to use 
   author="vLLM"
 >}}
 
-On X, people are reporting Qwen3.6-27B and Qwen3.6-35B-A3B results that would have sounded fake a year ago: 2x-ish speedups on a single L40S, 50+ tokens per second on dual 3090 rigs, NVFP4 plus MTP numbers above 100 tokens per second on newer Blackwell hardware, and vLLM configurations where changing batching settings moves aggregate throughput materially.
+On X and Reddit, people are reporting Qwen3.6-27B and Qwen3.6-35B-A3B results that would have sounded fake a year ago: 2x-ish speedups on a single L40S, 50+ tokens per second on dual 3090 rigs, 80+ tokens per second at very long context on a 4090-class setup, and vLLM / llama.cpp configurations where small batching, cache, and draft-depth changes move throughput materially.
 
 {{< linkcard
   url="https://x.com/CDerinbogaz/status/2048800691339039147"
@@ -205,13 +229,41 @@ Dense Qwen3.6-27B plus MTP is starting to look like a serious local coding-agent
 
 That changes the product surface. If local inference is fast enough, you can run more loops, keep more experiments local, and treat failure as cheap.
 
-## What r/LocalLLaMA is finding
+### The new llama.cpp fork layer
 
-The LocalLLaMA threads are more useful than the marketing because they include the weird stuff.
+The May 11 wave adds an important nuance: **the best numbers are no longer coming from one clean upstream path.** They are coming from forks that combine several optimizations at once.
+
+Indras-Mirror's fork keeps the native Qwen3.6 MTP path, then attacks the KV-cache side with fused TBQ4 flash attention. The interesting claim is architectural, not just benchmark-shaped: instead of dequantizing TurboQuant KV into an intermediate F16 buffer and then feeding flash attention, the fork reads raw TBQ4 blocks inside the flash-attention path and does centroid lookup inline. It also adds shared tensor plumbing to avoid duplicating hundreds of MiB of embedding memory between trunk and MTP models.
+
+The reported setup is very specific: Qwen3.6-27B Heretic-style Q4_K_M with preserved/grafted MTP heads, RTX 4090 24GB, 262k context, TBQ4_0 KV cache, MTP draft 3. The Reddit field report started around 80 to 87 tokens per second with roughly 73% draft acceptance; the repo README later reports a newer May 11 benchmark at 179.4 tokens per second, 81.4% acceptance, and roughly 20GB VRAM for 262k context.
+
+That number is exciting, but I would not treat it as a universal llama.cpp baseline. It is a fast-moving fork, on a specific CUDA card, with specific quantization and MTP-preserved GGUFs. The useful takeaway is narrower and more durable: fusing quantized-KV dequant into the attention hot path is probably the right direction if long context and MTP are going to coexist on 24GB cards.
+
+{{< linkcard
+  url="https://www.reddit.com/r/LocalLLaMA/comments/1t7kyju/got_mtp_turboquant_running_qwen3627b_80_ts_at/"
+  title="Got MTP + TurboQuant running — Qwen3.6-27B, 80+ t/s at 262K context on RTX 4090"
+  site="Reddit"
+  author="r/LocalLLaMA"
+>}}
+
+BeeLlama.cpp is a different bet. It is not just “MTP in llama.cpp.” It packages DFlash speculative decoding, adaptive draft control, TurboQuant/TCQ KV cache compression, CopySpec, optional branch verification, multimodal support, and reasoning-loop protection into one fork. The README reports Qwen3.6-27B Q4/Q5 DFlash best cases on a single RTX 3090 around 2.3x to 3.7x speedup, with peak generation above 130 tokens per second on simple code-generation tasks.
+
+The important product detail is adaptive drafting. Fixed draft depth is brittle: draft too shallow and you leave speed on the table; draft too deep and low acceptance turns speculation into overhead. Bee's controller tries to adjust draft depth based on whether speculation is beating the no-spec baseline. That is the kind of boring control loop that real local-agent runtimes will need.
+
+{{< linkcard
+  url="https://www.reddit.com/r/LocalLLM/comments/1t8905x/beellamacpp_advanced_dflash_turboquant_with/"
+  title="BeeLlama.cpp: DFlash, TurboQuant, reasoning and vision on Qwen3.6 27B"
+  site="Reddit"
+  author="r/LocalLLM"
+>}}
+
+## What the Reddit threads add
+
+The Reddit threads are more useful than benchmark screenshots because they include the annoying parts: build failures, weird VRAM spikes, acceptance-rate collapses, tool-calling anxiety, and arguments about whether compressed KV cache is actually preserving quality.
 
 A few patterns stood out.
 
-First, Qwen3.6-27B is the obvious center of gravity. One high-score thread framed it as roughly 2.5x faster using MTP, with 262k context on 48GB and drop-in OpenAI / Anthropic compatible endpoints.
+First, Qwen3.6-27B is still the center of gravity. Earlier threads framed it as roughly 2.5x faster with MTP, but the newer reports are more concrete: exact `llama-server` commands, cache types, draft depths, context sizes, and hardware-specific failures.
 
 {{< linkcard
   url="https://www.reddit.com/r/LocalLLaMA/comments/1t57xuu/25x_faster_inference_with_qwen_36_27b_using_mtp/"
@@ -220,16 +272,36 @@ First, Qwen3.6-27B is the obvious center of gravity. One high-score thread frame
   author="r/LocalLLaMA"
 >}}
 
-Second, llama.cpp users are treating Qwen3.6 speculative decoding as more than a benchmark toy. There are appreciation posts, config threads, and people sharing exact flags because the implementation details matter.
+Second, the 4090 path is ahead of the cleaner upstream story. The Indras-Mirror report combines Qwen3.6-27B, preserved/grafted MTP heads, `--spec-type mtp`, draft depth 3, `tbq4_0` for K/V cache, and 262k context. The post claims 80 to 87 tokens per second after optimization and about 73% draft acceptance. In comments, the useful pushback is not “this is fake.” It is sharper: TurboQuant's “lossless” language is contested, Q4 model quality is workload-dependent, and tokens per second is not enough unless the setup survives code, tools, long context, and quality checks.
 
 {{< linkcard
-  url="https://www.reddit.com/r/LocalLLaMA/comments/1stcer1/qwen3627b_llamacpp_speculative_decoding/"
-  title="Qwen-3.6-27B, llamacpp, speculative decoding"
+  url="https://www.reddit.com/r/LocalLLaMA/comments/1t7kyju/got_mtp_turboquant_running_qwen3627b_80_ts_at/"
+  title="Got MTP + TurboQuant running — Qwen3.6-27B, 80+ t/s at 262K context on RTX 4090"
   site="Reddit"
   author="r/LocalLLaMA"
 >}}
 
-Third, MoE MTP is more complicated.
+Third, AMD is not a footnote. The 7900 XTX thread is exactly the kind of report local inference needs: messy backend-by-backend comparison instead of one heroic chart. The headline result was that Vulkan plus MTP on Qwen3.6-27B reached about 81 tokens per second in the poster's llama-cli test, while ROCm plus MTP was also materially faster than non-MTP but hit an unexplained VRAM spike that limited practical context. ROCm plus TurboQuant remained interesting because of long-context memory, not raw decode speed.
+
+{{< linkcard
+  url="https://www.reddit.com/r/LocalLLM/comments/1ta42t1/llamacpp_turboquant_mtp_on_7900_xtx/"
+  title="llama.cpp TurboQuant + MTP on Radeon 7900 XTX"
+  site="Reddit"
+  author="r/LocalLLM"
+>}}
+
+That distinction matters for AMD users: **Vulkan may currently be the better MTP speed path, while ROCm/HIP may be the better TurboQuant experimentation path.** The domvox fork exists because the HIP/RDNA3 story needs direct work, not just CUDA ports with the names changed.
+
+Fourth, BeeLlama.cpp is trying to make this less hand-assembled. The thread's value is not only the Qwen3.6 27B Q5 plus 200k-context claim on a 3090. It is the feature bundling: DFlash drafting, adaptive draft-max, TurboQuant/TCQ cache types, multimodal support, reasoning-loop protection, and OpenAI-compatible server flow. The comments also show the current reality: initial Linux build issues got fixed, users hit runtime crashes around grammar/tool-call paths, and low acceptance-rate reports still require full config-level debugging.
+
+{{< linkcard
+  url="https://www.reddit.com/r/LocalLLM/comments/1t8905x/beellamacpp_advanced_dflash_turboquant_with/"
+  title="BeeLlama.cpp: DFlash, TurboQuant, reasoning and vision on Qwen3.6 27B"
+  site="Reddit"
+  author="r/LocalLLM"
+>}}
+
+Fifth, MoE MTP is still more complicated than dense Qwen3.6-27B.
 
 In a thread about Qwen3.6-35B-A3B with MTP grafted into Unsloth UD XL GGUFs, users were seeing mixed results. Some saw big jumps on specific hardware. Others pointed out that MoE models can benefit less cleanly because the main model still needs to verify the draft, and sparse routing changes the cost profile.
 
@@ -240,9 +312,9 @@ In a thread about Qwen3.6-35B-A3B with MTP grafted into Unsloth UD XL GGUFs, use
   author="r/LocalLLaMA"
 >}}
 
-Fourth, quality anxiety is real, but slightly misdirected.
+Sixth, quality anxiety is real, but slightly misdirected.
 
-One LocalLLaMA thread asked whether MTP changes intelligence. The best answer is: correctly verified MTP should preserve the target model behavior. The bigger risk lives in the surrounding stack: templates, quantization, runtime bugs, and aggressive speculative settings.
+One LocalLLaMA thread asked whether MTP changes intelligence. The best answer is: correctly verified MTP should preserve the target model behavior. The bigger risk lives in the surrounding stack: templates, quantization, runtime bugs, cache compression, sampler settings, aggressive draft depth, and edge cases in grammars or tool calls.
 
 {{< linkcard
   url="https://www.reddit.com/r/LocalLLaMA/comments/1t5v8n0/quality_intelligence_testing_on_mtp/"
@@ -251,9 +323,7 @@ One LocalLLaMA thread asked whether MTP changes intelligence. The best answer is
   author="r/LocalLLaMA"
 >}}
 
-That distinction matters.
-
-The local community is converging on a useful norm: measure acceptance rate, prefill cost, long-context behavior, and task quality separately. Tokens per second alone is too blunt.
+The local community is converging on a useful norm: measure acceptance rate, prefill cost, decode speed, VRAM, long-context behavior, and task quality separately. Tokens per second alone is too blunt.
 
 ## 3) TurboQuant: the memory side of the same story
 
@@ -314,11 +384,11 @@ Use it for:
 
 Expect uneven gains. That is fine. The setup cost is low enough that even modest wins are worth it.
 
-### Higher-upside path: Qwen3.6 MTP in vLLM
+### Higher-upside path: Qwen3.6 MTP
 
 If you want the current fast local-agent setup, Qwen3.6-27B plus MTP is the thing to test.
 
-A typical vLLM direction looks like Qwen-family MTP speculative config with a small number of speculative tokens, then careful tuning around batching, context, KV cache, and tool calling.
+A typical vLLM direction looks like Qwen-family MTP speculative config with a small number of speculative tokens, then careful tuning around batching, context, KV cache, and tool calling. A typical llama.cpp direction now means trying the upstream MTP PR or one of the fast-moving forks, depending on whether you care more about mainline safety, CUDA speed, AMD support, or DFlash features.
 
 The trap is over-tuning for tokens per second.
 
@@ -330,6 +400,22 @@ For an agent, I care more about:
 - whether the model loops at high context
 - whether prefill gets worse enough to erase decode gains
 - whether acceptance rate holds on real repo tasks
+
+### Fork path: BeeLlama.cpp / fused-TBQ4 llama.cpp
+
+If you are comfortable running forks, there are now 2 different reasons to leave the mainline path.
+
+Use Indras-Mirror-style MTP plus fused TBQ4 if your priority is long-context CUDA performance on a 24GB NVIDIA card and you are willing to track a fast-moving branch.
+
+Use BeeLlama.cpp if you want a more bundled speculative runtime: DFlash, adaptive drafting, TurboQuant/TCQ cache types, multimodal support, CopySpec, and reasoning-loop protection in one llama.cpp-shaped server.
+
+For either path, pin the commit, keep the exact launch command in your notes, and test tool calls. These forks are promising, but they are not boring infrastructure yet.
+
+### AMD path: Vulkan for MTP, HIP for TurboQuant experiments
+
+For Radeon 7900 XTX-class hardware, I would test Vulkan plus MTP first if raw decode speed is the goal.
+
+The current field report suggests Vulkan MTP can be substantially faster than non-MTP and avoids some of the ROCm/MTP memory weirdness. ROCm/HIP is still worth tracking because the domvox TurboQuant fork is directly aimed at RDNA3 KV-cache compression, but the reported VRAM spike around ROCm plus MTP is exactly the kind of issue that can turn a good benchmark into a bad daily driver.
 
 ### Experimental path: MTP plus TurboQuant
 
@@ -361,6 +447,8 @@ For local agents, use a small benchmark pack that matches your actual workload:
 5. **Markdown rewrite**: repetitive prose and headings
 6. **Loop test**: run the same tool-calling prompt 20 times and check for degenerate loops
 7. **Quality check**: compare diffs, tests, and hallucinated APIs, not just speed
+8. **Grammar/tool-call stress**: run structured outputs while speculation is active
+9. **VRAM spike test**: start fresh conversations at several context sizes and watch transient allocations
 
 Track these separately:
 
@@ -370,6 +458,8 @@ Track these separately:
 - VRAM usage
 - context cliff
 - tool-call validity
+- grammar / JSON crash rate
+- transient VRAM spikes
 - test pass rate
 
 The best speculative setup is not always the one with the prettiest decode number.
@@ -382,7 +472,9 @@ The local LLM story used to be dominated by model releases.
 
 Now the inference layer is getting interesting again.
 
-ngram speculation makes boring repeated text cheap. MTP gives models like Qwen3.6 a native way to draft ahead. TurboQuant gives long-context setups more breathing room. Together, they point at a local-agent stack that is much faster without abandoning model quality.
+ngram speculation makes boring repeated text cheap. MTP gives models like Qwen3.6 a native way to draft ahead. DFlash-style drafters push speculation into a more configurable runtime layer. TurboQuant and TCQ give long-context setups more breathing room. Together, they point at a local-agent stack that is much faster without automatically abandoning model quality.
+
+But the May 11 field reports also make the risk clearer. The fast path is no longer one flag. It is model quant, MTP heads, draft depth, KV cache type, backend, flash-attention path, prompt format, and tool-call behavior all interacting at once.
 
 The mistake is treating this as one magic flag.
 
