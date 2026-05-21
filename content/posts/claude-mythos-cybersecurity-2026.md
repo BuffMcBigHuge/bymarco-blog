@@ -86,7 +86,7 @@ The Guardian reported that Anthropic is also briefing the Financial Stability Bo
 
 This is the real novelty: the model capability and the governance wrapper are being launched together.
 
-![A GPT Image 2-generated diagram showing the defensive workflow from AI vulnerability discovery to responsible disclosure and defender advantage.](/images/posts/claude-mythos-cybersecurity-2026/mythos-defender-workflow.png)
+![A diagram showing the defensive workflow from AI vulnerability discovery to responsible disclosure and defender advantage.](/images/posts/claude-mythos-cybersecurity-2026/mythos-defender-workflow.png)
 
 ## The Symfony audit made it concrete
 
@@ -113,7 +113,7 @@ That is promising. It is also a warning. If models can generate credible vulnera
 
 ## Reddit is split between awe, skepticism, and operational realism
 
-Using Reddit PRAW, three clusters stood out.
+Across public Reddit discussions, three clusters stood out.
 
 The first is the obvious hype cluster. r/singularity threads like "Anthropic's new model, Claude Mythos, is so powerful that it is not releasing it to the public" and "Claude Mythos: The Model Anthropic is Too Scared to Release" attracted thousands of upvotes and hundreds of comments.[^reddit-singularity][^reddit-anthropic]
 
@@ -131,7 +131,7 @@ The risk is not that every old system becomes instantly transparent. The risk is
 
 ## X is treating Mythos like a geopolitical and market signal
 
-Bird/X search was noisier, but useful as a sentiment layer.
+X was noisier, but useful as a sentiment layer.
 
 The most circulated framing was that Anthropic had built a model capable enough to force a restricted-access coalition. One widely shared post summarized Project Glasswing as a closed group involving Amazon, Apple, Google, Microsoft, Cisco, CrowdStrike, JPMorgan, the Linux Foundation, NVIDIA, and Palo Alto Networks, and framed Mythos as the beginning of "permissioned access" for dangerous frontier capabilities.[^x-rahil]
 
@@ -202,25 +202,14 @@ The right conclusion is neither panic nor dismissal.
 
 The right conclusion is: **security teams need to get ready for a world where vulnerability discovery is abundant, but remediation is still human, organizational, and painfully slow.**
 
----
-
-## Research notes
-
-For this piece I used:
-
-- Reddit PRAW searches and comment-tree pulls across r/singularity, r/Anthropic, r/PHP, r/symfony, r/mainframe, and related threads.
-- `bird` searches across X/Twitter for Claude Mythos, Project Glasswing, Symfony, FreeBSD, and AISI/Cooling Tower discourse.
-- Agent Browser CDP snapshots of primary pages from Anthropic, Symfony, The Guardian, and Gizmodo.
-- GPT Image 2 for the generated hero and workflow images.
-
 [^glasswing]: Anthropic, ["Project Glasswing: Securing critical software for the AI era"](https://www.anthropic.com/glasswing).
 [^red]: Anthropic red team, ["Assessing Claude Mythos Preview's cybersecurity capabilities"](https://red.anthropic.com/2026/mythos-preview/).
 [^symfony]: Symfony Blog, ["Claude Mythos Audited Symfony and Found 19 Vulnerabilities"](https://symfony.com/blog/claude-mythos-audited-symfony-and-found-19-vulnerabilities).
 [^guardian-fsb]: The Guardian, ["Anthropic to share Mythos cyber flaw findings with global finance watchdog"](https://www.theguardian.com/technology/2026/may/18/anthropic-ai-claude-mythos-cyber-financial-stability-board-fsb).
-[^reddit-php]: Reddit PRAW review of r/PHP thread, ["Claude Mythos Audited Symfony and Found 19 Vulnerabilities"](https://www.reddit.com/r/PHP/comments/1tjdjho/claude_mythos_audited_symfony_and_found_19/), plus r/symfony mirror thread.
-[^reddit-singularity]: Reddit PRAW review of r/singularity thread, ["Anthropic's new model, Claude Mythos, is so powerful that it is not releasing it to the public"](https://www.reddit.com/r/singularity/comments/1sf3uhp/anthropics_new_model_claude_mythos_is_so_powerful/).
-[^reddit-anthropic]: Reddit PRAW review of r/Anthropic thread, ["Claude Mythos: The Model Anthropic is Too Scared to Release"](https://www.reddit.com/r/Anthropic/comments/1sfk639/claude_mythos_the_model_anthropic_is_too_scared/).
-[^reddit-architecture]: Reddit PRAW review of r/singularity thread, ["Andrew Curran: Anthropic May Have Had An Architectural Breakthrough!"](https://www.reddit.com/r/singularity/comments/1s6hj0n/andrew_curran_anthropic_may_have_had_an/).
+[^reddit-php]: Reddit r/PHP thread, ["Claude Mythos Audited Symfony and Found 19 Vulnerabilities"](https://www.reddit.com/r/PHP/comments/1tjdjho/claude_mythos_audited_symfony_and_found_19/), plus r/symfony mirror thread.
+[^reddit-singularity]: Reddit r/singularity thread, ["Anthropic's new model, Claude Mythos, is so powerful that it is not releasing it to the public"](https://www.reddit.com/r/singularity/comments/1sf3uhp/anthropics_new_model_claude_mythos_is_so_powerful/).
+[^reddit-anthropic]: Reddit r/Anthropic thread, ["Claude Mythos: The Model Anthropic is Too Scared to Release"](https://www.reddit.com/r/Anthropic/comments/1sfk639/claude_mythos_the_model_anthropic_is_too_scared/).
+[^reddit-architecture]: Reddit r/singularity thread, ["Andrew Curran: Anthropic May Have Had An Architectural Breakthrough!"](https://www.reddit.com/r/singularity/comments/1s6hj0n/andrew_curran_anthropic_may_have_had_an/).
 [^schneier]: Bruce Schneier in The Guardian, ["How dangerous is Anthropic's Mythos AI?"](https://www.theguardian.com/commentisfree/2026/may/08/how-dangerous-is-anthropics-mythos-ai).
-[^reddit-mainframe]: Reddit PRAW review of r/mainframe thread, ["Unpopular Opinion: Banks Should Stop Panicking About AI Hacking Their COBOL..."](https://www.reddit.com/r/mainframe/comments/1tjmjki/unpopular_opinion_banks_should_stop_panicking/).
-[^x-rahil]: Bird/X search result: Rahil Jain, [post on Claude Mythos and Project Glasswing](https://x.com/rahilnjain/status/2057515760440971520), May 21, 2026.
+[^reddit-mainframe]: Reddit r/mainframe thread, ["Unpopular Opinion: Banks Should Stop Panicking About AI Hacking Their COBOL..."](https://www.reddit.com/r/mainframe/comments/1tjmjki/unpopular_opinion_banks_should_stop_panicking/).
+[^x-rahil]: Rahil Jain, [post on Claude Mythos and Project Glasswing](https://x.com/rahilnjain/status/2057515760440971520), May 21, 2026.
