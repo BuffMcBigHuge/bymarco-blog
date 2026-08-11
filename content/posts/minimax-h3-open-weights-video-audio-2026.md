@@ -1,9 +1,9 @@
 ---
-title: "MiniMax H3: The Open-Weight Video Model That Finally Comes With Sound"
+title: "MiniMax H3: The Open-Weight Video Model That Follows Complex Prompts"
 date: 2026-08-11T12:00:00-04:00
 draft: false
-description: "MiniMax H3 (Hailuo 3.0) generates 15s 2K video with native stereo audio from text, images, video, and audio refs. How it works, what it costs, community verdict."
-summary: "MiniMax H3 is a 33B open-weights model that reads text, images, video, and audio in one context, then outputs 2K video with synced stereo sound. Architecture, official demo clips, and the Reddit/X verdict."
+description: "MiniMax H3 follows complex multimodal prompts better than any open video model, powered by a 32B Qwen3-VL text encoder. Quality, ComfyUI long gens, prompt guide."
+summary: "MiniMax H3's real differentiator is instruction following: a 32B Qwen3-VL text encoder, a structured prompt system with shot lists and soundscapes, and 25-second ComfyUI generations. Full breakdown with official demo clips."
 tags:
   - ai
   - video-generation
@@ -38,51 +38,71 @@ cover:
   hidden: false
 ---
 
-MiniMax H3 (Hailuo 3.0) launched on July 31, 2026, and the open-weights release followed days later. It is the first open video model where the audio is not an afterthought. One transformer reads text, images, video, and audio as a single context, then generates a video with dialogue, sound effects, and music baked into one native stereo track. Up to 15 seconds, up to 2K, at 24 fps.
+Most video models treat your prompt as a wish. MiniMax H3 treats it as a spec. Give it "Reference the Hitchcock camera movement from Video 1, have the character in Image 2 sing, with the vocals matching Audio 3" and it plans the whole audiovisual timeline before generating a single frame: the shots, the cuts, the camera motion, the dialogue, the foley, and the score.
 
-The reaction was immediate. On r/StableDiffusion, a clip of Will Smith eating spaghetti, the meme that defined the awkward early days of AI video, became the "new benchmark." One top comment on the Hugging Face release thread: "we have never had a model like this." The Hugging Face page already shows 59,000 downloads over the last 30 days, 49 community fine-tunes, and 42 quantizations. That is not hype noise. Something real shipped.
+That instruction-following is the story of H3, not the audio. LTX 2.3 shipped synced audio first, and the community rated that audio somewhere between "atmospheric" and "the most horrible audio ever." The difference with H3 is that everything else around the audio is good: prompt adherence that people compare to image models, legible text and brand marks, character consistency across cuts, and hands that are not spaghetti. On r/LocalLLaMA the top review was blunt: "we have never had a model like this."
 
-## What MiniMax H3 Is
+H3 launched July 31, 2026 as Hailuo 3.0, with open weights on Hugging Face days later. The Hugging Face page already shows 59,000 downloads over the last 30 days, 49 community fine-tunes, 42 quantizations, and 5,200 GitHub stars. Here is what makes it work, why the text encoder is the secret weapon, and how to prompt it properly.
 
-H3 is a general-purpose, omni-modal generative system. The output spec alone puts it ahead of most closed competitors:
+## The Quick Spec
 
-- Duration: 4 to 15 seconds per generation
-- Resolution: 768p short side by default; 2K through the H3-Regenerate-2K stage
-- Frame rate: 24 fps
-- Audio: 32 kHz native stereo, with dialogue, foley, and music modeled jointly
-- Languages: stable support for 11, including English, Chinese, Japanese, Korean, Spanish, French, German, Italian, Portuguese, Russian, and Arabic
-- Aspect ratios: 21:9 down to 9:16
+- One omni-modal transformer: text, images, video, and audio in a single context
+- Output: 4 to 15 seconds, 24 fps, 768p short side by default, 2K via the H3-Regenerate-2K stage
+- Audio: 32 kHz native stereo; dialogue, foley, and music modeled jointly
+- Languages: stable support for 11, including English, Chinese, Japanese, Korean, Spanish, and Arabic
+- Two checkpoints: **FL2VA** (text-to-video plus first/last-frame conditioning) and **Ref2VA** (up to 9 images, 3 video clips, 3 audio clips, 12 files max)
 
-It ships as two task-specific checkpoints. **H3-Base-FL2VA** handles text-to-video plus first-frame, last-frame, and first-and-last-frame conditioning. **H3-Base-Ref2VA** is the omni-reference variant: up to 9 images, 3 video clips, and 3 audio clips in one request (12 files max across types, each clip 2 to 15 seconds). Want a character to look like Image 2, move like Video 1, and speak with the voice from Audio 3? That is a single Ref2VA call.
+## The Quality Is the Point
 
-## Why One Model Instead of Ten
+The community reaction on day one was not about features. It was about output you could actually use. A r/StableDiffusion post showing a multi-shot anime sequence with a tracking shot and a jump cut drew the comment "I haven't seen any extra fingers in the shared videos, and that's already a 10/10." The AMA thread opened with people asking what in the training regimen produces prompt adherence "impressive even when compared to image models."
 
-Image generation has been split into T2I, editing, subject reference, motion reference, and style reference models. Audio has treated voice, sound effects, and music as separate domains. Video has fragmented into text-to-video, image-to-video, first-and-last-frame, video editing, and voice cloning. MiniMax's argument, spelled out in the launch post, is that these silos cap generalization. H3 was trained from the start on all of these tasks together, with reference and editing relationships expressed in natural language. Language, in their words, is the bridge: "Reference the Hitchcock camera movement from Video 1, have the character in Image 2 sing, with the vocals matching Audio 3."
+Concretely, the strengths people keep citing:
 
-That framing holds up in practice. The model card's own Ref2VA demo is a video edit where a man holding a lamb in a field is re-animated to speak new dialogue, with a second audio clip supplying the voice timbre and the original track kept as background music. That single generation covers video editing, lip-sync, voice cloning, and audio mixing.
+- **Prompt adherence on complex, multi-sentence prompts.** Details survive. Multiple subjects, scene changes, and shot lists come through instead of averaging into a generic clip.
+- **Text and brand rendering.** The launch post leads with it, and the community confirmed it: game intros where subtitles render in the source game's font, product names that stay legible, UI that holds together.
+- **Character consistency across cuts.** Jump cuts and multi-shot prompts, historically the failure mode of open video models, hold identity.
+- **Motion and physics.** Fight scenes, vehicles, water, and composed camera moves like dolly-plus-rack-focus behave.
+- **Multi-shot narrative structure.** The model handles a 10-second clip with multiple timed cuts as one coherent piece, not a collage.
 
-## How the System Fits Together
+One person on the AMA summed it up: "This model seems to handle almost anything I ask of it... It can even do fight scenes. Also it obeys the prompt."
 
-The full product is three modules, and only one of them is open today.
+## The Secret Weapon: a 32B Vision-Language Text Encoder
 
-![The three-stage H3 system: H3-Context-IR, H3-Base, H3-Regenerate-2K](/images/minimax-h3/overview.png)
+Here is the architecture detail that explains most of the above. H3's text encoder is not a text encoder in the T5 sense. It is the full **Qwen3-VL-32B**, a 32-billion-parameter vision-language model, and it ingests both your text and your reference images.
 
-1. **H3-Context-IR** is a hosted preprocessing system that parses the multimodal inputs and rewrites them into a structured prompt. MiniMax says source material runs through roughly 100K tokens of inference, distilled to an average of 4K tokens. It is not in the open release; you either use their API or build your own prompt pipeline.
-2. **H3-Base** is the open-weights generator. It produces the 768p result with synchronized stereo audio.
-3. **H3-Regenerate-2K** feeds the 768p output plus the original context back into H3 to regenerate at 2K. MiniMax calls this in-context regeneration, and it is the clever part: instead of a generic upscaler guessing at fine detail, the model re-reads the source context and re-renders, which is why small text and brand marks survive the resolution jump. Also not open yet.
+The encoder produces two token streams. Text tokens carry your prompt. Visual semantic tokens carry the meaning of your reference images and video frames. Both are drawn from the hidden states of Qwen3-VL's 50th layer and fed to the generation backbone, along with custom special tokens like `<d>` which delimit spoken dialogue. The H3-Omni-Transformer, a 33B single-stream dense model with 50 shared DiT blocks, then denoises video and audio latents jointly against that conditioning.
 
-## Inside the Transformer
+Why this matters: most open video models pair a few-billion-parameter T5-style encoder with the diffusion backbone. The encoder's job is to compress your intent into conditioning, and a small encoder is a bottleneck. A 32B vision-language encoder is bigger than many video models in total, and it can actually read an image, parse a camera move described in one clause, or resolve "make the character in Image 2 sing like Audio 3" as a relationship between modalities rather than a bag of words.
 
-The architecture is refreshingly plain. A Qwen3-VL-32B encoder (layer-50 hidden states) produces text and visual-semantic tokens. A visual VAE compresses video at 16x spatial and 4x temporal with 24 latent channels, then patches 1x2x2 (time, height, width) into the sequence, for an effective 32x spatial compression. An audio VAE turns 32 kHz stereo into 40 Hz tokens per channel. Everything gets packed into one sequence with three-dimensional rotary position embeddings (MM-RoPE) over time, height, and width, and a 33B single-stream dense transformer denoises video and audio latents jointly.
+That is why the AMA team's answer on prompt adherence rings true: "construct a sufficiently broad and diverse set of data and tasks, train on them using a general-purpose architecture." The encoder is the machinery that lets that data express itself. When a model understands the reference before it starts generating, prompt following stops being a hope and becomes a property of the pipeline.
 
-![The H3-Base architecture: modality encoders, packed in-context sequence, 33B omni transformer, and joint decode](/images/minimax-h3/full-arch.png)
+## Prompting H3: Read the Guide, Seriously
 
-A few details worth knowing:
+H3 is CFG-distilled. There are no negative prompts. Your prompt is the only lever you have, which is why MiniMax ships a detailed prompt-writing guide in the model repository, installable as an agent skill:
 
-- About 13B of the 33B parameters live in AdaLN modulation branches. Those outputs can be precomputed and cached, so inference-only deployments do not need to load them. The full weights are released for fine-tuning.
-- The 50 shared DiT blocks are modality-agnostic. Modality-specific structure is confined to input/output layers and AdaLN. That is the design bet: one backbone, no per-modality experts.
-- H3 was trained with native sparse attention (MoBA-style block selection, not the MSA used in MiniMax M3), but the open release runs full attention. A sparse-attention release is promised for faster inference.
-- The visual VAE's compression gives an effective 4x gain in sequence length, which is the trick that makes native 2K training affordable.
+```bash
+npx skills add https://github.com/MiniMax-AI/MiniMax-H3 --skill h3-prompt-writing
+```
+
+The guide is unusually rigorous for a video model. Every prompt is built from three core fields:
+
+```text
+integrated_multimodal_description: [Shot 1] ... [Shot 2] At 00:04.500, the camera cuts to ...
+overall_soundscape: ambient noise, physical action sounds, non-verbal human sounds
+non_diegetic_music: the score, which the characters cannot hear
+```
+
+The conventions matter:
+
+- **Shots and timestamps.** The first shot carries no timestamp. Every later shot opens with a strictly increasing cut time: "At 00:04.500, the camera cuts to...". Cuts must introduce new information; a distance change is a camera move, not a cut.
+- **Camera motion has a vocabulary.** Motion type plus optional amplitude and speed, written as natural English: "The camera pushes in with small amplitude at slow speed toward the folded letter in her hands." The guide defines 14 motion types, from Zoom In and Truck to Arc Shot, POV, and Roll.
+- **Speakers get stable IDs.** A character who speaks is `(S1)`, `(S2)`, and stays that ID across shots. First appearance must establish identity from audio and visual context: age, gender, pitch, timbre, accent.
+- **Dialogue is delimited.** Spoken lines sit inside `<d>[English] Follow the wind, live free.</d>` tags, which the model lip-syncs and voices.
+- **Sound is designed, not assumed.** The soundscape field lists ambient and physical sounds; the music field describes the score separately. H3 generates them as distinct layers.
+
+The Ref2VA mode adds a reference-editing layer on top. Prompts declare subjects and references first (`subject_definitions`), state what the edit is (`summary`), then tell the model what to keep, copy, or reference (`retention_analysis`: `fully_preserved`, `partially_copy`, `reference`), and finally the detailed shot description. This is how you get "keep the golden-hour lighting, reuse the background music, but re-voice the character with this voice timbre" to actually work.
+
+The official model card examples show the payoff. A 10-second starship prompt became a shot-by-shot timeline with a timed cut at 4.5 seconds, an escalating soundscape, and a score that snaps to silence right after the jump. That structure, not raw model power, is why H3's outputs feel directed rather than generated.
 
 ## The Official Demos
 
@@ -116,33 +136,37 @@ These clips are the official assets from the MiniMax H3 Hugging Face repository,
   Your browser does not support the video tag.
 </video>
 
-## What the Community Is Doing With It
+## Long Generations in ComfyUI
 
-The launch week produced a predictable gold rush. A fan assembled a full AI Star Trek: The Next Generation scene in ComfyUI. Someone made a Seinfeld sketch where the characters realize they are AI, shot at 1080p with a raw text-to-video workflow. Another user demoed character swaps into existing footage. And the benchmark that keeps getting cited is the Will Smith spaghetti clip, a callback to the meme that started it all. The recurring complaints are the same ones every good local model gets: it is slow, it eats VRAM, and the license is restrictive.
+Native ComfyUI workflows (T2V and R2V templates) landed within days of the release, and the community immediately started pushing duration. A 25-second 1080p text-to-video clip ran in native ComfyUI before the weights even dropped, and it held coherence across the whole run, the part where long generations usually fall apart. The official native window is 15 seconds; longer runs work by continuation. The H3-Motion-Context project chains clips by reusing latents from the previous video, and the AMA team confirmed they trained a dedicated audio-video continuation task with extended RoPE positions, then set it aside because it did not generalize across tasks. Expect that capability to come back in a better-integrated form.
 
-Performance numbers people are actually reporting:
+Community-reported speeds, so you know what you are signing up for:
 
-- RTX 5090, 15-second 768p clip with one 13-second video reference plus 3 images: 57 minutes. Video references are the killer; the same generation with no references is far faster.
-- 12 GB VRAM plus 24 GB system RAM works. Roughly 15 minutes for a 5-second clip, per a LocalLLaMA user.
-- An unofficial Turbo LoRA (larryvrh/MiniMax-H3-Turbo-Lora) cuts generation to 6 to 10 steps, which is the difference between "fun experiment" and "usable in a workflow."
+- RTX 3060 12 GB + 32 GB RAM: a 5-second 480p clip in under 9 minutes end to end
+- RTX 5090: a 15-second 768p text-to-video run lands around 15 to 20 minutes
+- Video references are the killer: one 13-second reference video plus 3 images pushed a 15-second generation to 57 minutes on a 5090
+- 12 GB VRAM + 24 GB system RAM works, roughly 15 minutes per 5-second clip
+- An unofficial Turbo LoRA (larryvrh/MiniMax-H3-Turbo-Lora) drops generation to 6 to 10 steps, which moves it from "experiment" to "workflow"
 
-The MiniMax team did an AMA on r/StableDiffusion and confirmed the community's biggest gripes. Ref2VA output is visually weaker than FL2VA, and they said so directly, blaming divergent post-training strategies and promising fixes. They also confirmed the sparse-attention release is in the works and that the official 2K regeneration module will be open-sourced "once it is ready."
+## The Community Verdict and the Drama
 
-The other story of launch week: MiniMax issued takedowns on decensor and NSFW LoRAs. The Streisand effect was immediate, with mirrors and torrents popping up within hours. Worth a mention only because it tells you what the base model can already do; several users noted the base weights are "uncensored enough" for most purposes, so the LoRAs mostly existed to push further.
+The launch week produced the usual gold rush, and the output quality held up under scrutiny. A fan assembled a full AI Star Trek: The Next Generation scene in ComfyUI. Someone made a Seinfeld sketch where the characters realize they are AI. Another user demoed character swaps into existing footage. The benchmark that keeps getting cited is the Will Smith spaghetti clip, a callback to the meme that started it all.
 
-## The Catch: the License
+The MiniMax team did an AMA and answered the hard questions directly. Yes, Ref2VA output is visually weaker than FL2VA, and it is being worked on. Yes, the sparse-attention release is coming, which should cut the quadratic attention cost that dominates long generations. No, the 2K regeneration module and Context-IR are not open yet; both are hosted.
 
-H3 ships under the MiniMax H3 Community License Agreement, and it is not a permissive open-source license. The automatic grant covers "worldwide, excluding the Excluded Territories," and the Excluded Territories are the European Union, the United Kingdom, South Korea, and the United States. Commercial use, derivatives, and hosted services in those four regions require a separate application. One important carve-out: generated outputs are not treated as model derivatives, so the videos you create are yours to use even where the model itself is restricted.
+The other story: MiniMax issued takedowns on decensor and NSFW LoRAs within the first week, and the mirrors went up within hours. Several users pointed out the base model is "uncensored enough" for most purposes anyway, which tells you something about the training data.
 
-That license is the main reason the "open weights" framing needs a footnote. Weights are open, the license is not OSI-approved, and the two most commercially active regions on earth need to ask permission. For individual tinkerers and anyone outside the excluded territories it is a non-issue. For agencies, studios, or SaaS products in North America or the EU, read the license before you build a business on it.
+## The License, Read It Before You Build
+
+H3 ships under the MiniMax H3 Community License Agreement. The automatic grant covers the world excluding the European Union, the United Kingdom, South Korea, and the United States. Commercial use in those four regions requires a separate application. Generated outputs are not treated as model derivatives, so the videos you create are yours to use even where the model itself is restricted.
+
+For individual tinkerers and most of the rest of the world, it is a non-issue. For agencies, studios, or SaaS products in North America or the EU, it is the first thing to check.
 
 ## How to Run It
 
-Three paths, from easiest to most control:
-
-1. **API:** platform.minimax.io, fal.ai (endpoints like `minimax/h3/text-to-video` and `minimax/h3/image-to-video`), OpenArt, and Runway all carry it. MiniMax claims the 2K per-second price is under a third of mainstream closed models, and 768p under half of mainstream 720p pricing.
-2. **ComfyUI:** native T2V and R2V templates shipped within days of the release. This is the fastest way to a local workflow with LoRAs, reference nodes, and the rest of the ecosystem.
-3. **Serve it yourself:** SGLang (the model card's reference deployment, 4 GPUs with Ulysses tensor parallelism) or vLLM for production, or the one-liner for a single GPU:
+1. **API:** platform.minimax.io, fal.ai (endpoints like `minimax/h3/text-to-video` and `minimax/h3/image-to-video`), OpenArt, and Runway all carry it. MiniMax claims the 2K per-second price is under a third of mainstream closed models.
+2. **ComfyUI:** native T2V and R2V templates. The fastest path to a local workflow with LoRAs and reference nodes.
+3. **Serve it yourself:** SGLang (the model card's reference deployment, 4 GPUs with Ulysses tensor parallelism), vLLM, or the single-GPU diffusers path:
 
 ```python
 from diffusers import DiffusionPipeline
@@ -151,31 +175,25 @@ pipe = DiffusionPipeline.from_pretrained("MiniMaxAI/MiniMax-H3", dtype="bfloat16
 video = pipe("Astronaut in a jungle, cold color palette, muted colors, detailed, 8k").images[0]
 ```
 
-MiniMax also ships an agent skill for prompt writing, installable into Claude Code, Cursor, or any harness that reads SKILL.md files:
-
-```bash
-npx skills add https://github.com/MiniMax-AI/MiniMax-H3 --skill h3-prompt-writing
-```
-
-Their prompt guides matter more than usual here because H3 is CFG-distilled. There are no negative prompts, so prompt quality is the only lever you have. The prompt templates in the repo, which break a scene into shot-by-shot visual description, soundscape, and non-diegetic music blocks, are the single biggest quality multiplier available.
+Whichever path you take, install the prompt skill and read the two guides in the repo (`base-en` for text and keyframe modes, `ref-en` for Ref2VA). They are the single biggest quality multiplier available, and they double as a tutorial for how this generation of video models wants to be talked to.
 
 ## Bottom Line
 
-H3 is the strongest day-one open video release I have seen. The instruction following, the text rendering, and the native audio put it in a different class from the LTX and Wan releases that preceded it, and the community consensus agrees: people are deleting their old model folders. The audio-video coupling is the real step change. Sound is not synthesized to match a finished video; it is generated as part of the same latent sequence, which is why the boom lands on the cut and the score stops when the scene ends.
+H3 is the strongest day-one open video release I have seen, and the reason is not any single feature. It is that the whole pipeline was built to understand what you asked for: a 32B vision-language encoder that reads references instead of tokenizing them, a prompt format that forces you to plan shots, sound, and score, and a transformer big enough to hold it all together. The community consensus agrees; people are deleting their old model folders.
 
-The caveats are real. The license excludes the US and EU without an application. Local inference is slow on consumer hardware, and reference-heavy prompts slow it further. The hosted pieces (Context-IR and 2K regeneration) mean the open model is only two-thirds of the advertised system. And Ref2VA needs quality work, which the team has acknowledged.
+The caveats are real. The license excludes the US and EU without an application. Local inference is slow on consumer hardware, and reference-heavy prompts slow it further. The hosted pieces mean the open model is only two-thirds of the advertised system. And Ref2VA needs quality work, which the team has acknowledged.
 
-Still, the direction is unmistakable. One transformer, every modality, language as the interface. The next H-series generation promises M-series integration and higher resolution, the sparse-attention release should cut the quadratic attention cost that dominates long generations, and the technical report is on the way. If you build with video models, run the demos above and judge for yourself. Then go read the license before you commit to it.
+Still, the direction is unmistakable. One transformer, every modality, language as the interface. If you build with video models, run the demos above, then read the prompt guide and the license before you commit.
 
 ## Sources
 
 - MiniMax launch post: [MiniMax H3: An Open Model Breaking the Boundaries Between Tasks and Modalities](https://www.minimax.io/blog/minimax-h3)
-- Model card: [MiniMaxAI/MiniMax-H3 on Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-H3)
+- Model card and prompt guides: [MiniMaxAI/MiniMax-H3 on Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-H3)
 - Code and prompt skill: [MiniMax-AI/MiniMax-H3 on GitHub](https://github.com/MiniMax-AI/MiniMax-H3)
 - AMA: [MiniMax H3 Team, r/StableDiffusion](https://www.reddit.com/r/StableDiffusion/comments/1vh9rtw/ama_minimax_h3_team_ask_us_anything_about_our/)
 - Launch threads: [r/StableDiffusion](https://www.reddit.com/r/StableDiffusion/comments/1ve4kue/minimax_h3_is_an_amazing_model/), [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1ve1mvh/minimaxh3_now_on_huggingface/)
+- ComfyUI long generations: [25-second native ComfyUI demo](https://www.reddit.com/r/StableDiffusion/comments/1vd9o0r/minimax_h3_1080p_25_seconds_text_to_video_in/)
 - Benchmarks and drama: [LTX 2.3 vs H3](https://www.reddit.com/r/StableDiffusion/comments/1vedlza/quick_comparison_ltx_23minimax_h3/), [Turbo LoRA](https://www.reddit.com/r/StableDiffusion/comments/1vgxf4x/minimax_h3_turbo_lora/), [LoRA takedowns](https://www.reddit.com/r/StableDiffusion/comments/1vfwijz/minimax_are_issuing_takedowns_on_decensorexplicit/)
 - Hosted options: [fal.ai](https://fal.ai/minimax-h3), [Comfy](https://comfy.org/minimax-h3/), [OpenArt](https://openart.ai/ai-model/minimax-h3/)
-- Coverage: [Forbes](https://www.forbes.com/sites/johnwerner/2026/08/03/4-things-to-know-about-minimax-h3/), [MarkTechPost](https://www.marktechpost.com/2026/08/01/minimax-releases-minimax-h3-an-omni-modal-video-model-that-generates-15-second-2k-clips-with-native-stereo-audio/)
 
 *Demo clips are the official sample assets from the MiniMaxAI/MiniMax-H3 repository, self-hosted under /images/minimax-h3/.*
