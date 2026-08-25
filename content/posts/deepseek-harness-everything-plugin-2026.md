@@ -176,10 +176,10 @@ The comparison I find most instructive is dsh against Codex, because they sit at
 
 ## Should You Use It?
 
-Two questions, two answers.
+Depends which of two people you are.
 
-Writing production code today? Not with this. Cost per task is high before tuning, the plugin ecosystem is weeks old, and the API surface is unstable by the project's own announcement. Pin a version and run a contained pilot if you're curious. Don't put a pipeline on it that you can't babysit.
+**You want an agent to write production code today:** don't use this one. Cost per task is high before tuning, the plugin ecosystem is weeks old, and the API surface is unstable by the project's own announcement. Pin a version and run a contained pilot if you're curious. Don't put a pipeline on it that you can't babysit.
 
-Building agent infrastructure? Then run it this week. This is the first time a frontier lab open-sourced its entire harness layer under MIT, decision records included, and there's no other working reference implementation of the approach. Read as a business move, it argues the harness should never have been a paid product at all. Models, tools, state, permissions, the loop: an architecture your team can inspect and swap instead of a black box on a subscription.
+**You build agent infrastructure:** run it this week. This is the first time a frontier lab open-sourced its entire harness layer under MIT, decision records included, and there's no other working reference implementation of the approach. Read as a business move, it argues the harness should never have been a paid product at all. Models, tools, state, permissions, the loop: an architecture your team can inspect and swap instead of a black box on a subscription.
 
 Ten minutes with `--dump-config` will show you the scaffolding every other coding agent hides behind a fence.
