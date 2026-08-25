@@ -3,7 +3,7 @@ title: "DeepSeek Harness: The Agent Runtime Where Everything Is a Plugin"
 date: 2026-08-25T12:00:00-04:00
 draft: false
 description: "DeepSeek Harness (dsh) is the MIT agent runtime where models, tools, sandboxes, and even the agent loop itself are swappable plugins. Architecture, code mode, honest limits."
-summary: "DeepSeek Harness hit 195K stars in two weeks. It is less a coding agent than the machinery a coding agent is assembled from — everything is a plugin, built on Cordis, with append-only session logs and cross-vendor subagents. Here's what's real and what still hurts."
+summary: "DeepSeek Harness hit 195K stars in two weeks. It's less a coding agent than the machinery a coding agent gets assembled from: everything is a plugin, built on Cordis, with append-only session logs and subagents that can delegate to competitors. What's real, what still hurts."
 tags:
   - ai
   - agents
@@ -38,13 +38,13 @@ cover:
   hidden: false
 ---
 
-Most coding agents share a shape. There's a core loop — take input, call the model, run tools, repeat — written as privileged code, with a ring of extension points around it: MCP servers, skills, hooks. The core is framework-private. Extensions observe rather than participate.
+Every coding agent you've used has the same skeleton. A core loop sits at the center: take input, call the model, run tools, repeat. Around it, a ring of sanctioned extension points, MCP servers and skills and hooks, all of which get to *observe* the loop and none of which get to *be* the loop. The core is framework-private. You fork if you want to change it.
 
-DeepSeek Harness inverts that. It's a runtime where the model adapter, the tool registry, the session log, the sandbox, the UI, even the agent loop itself are all plugins sitting at the same privilege level. Change the loop is a config line, not a fork. The project's one-line pitch — "Everything is a Plugin" — is specific enough to be falsifiable, and it mostly holds.
+DeepSeek Harness threw that skeleton out. In this runtime the model adapter, the tool registry, the session log, the sandbox, the UI, and the agent loop itself are all plugins, sitting at exactly the same privilege level. Swapping the loop for a different driver is a config line. Not a fork, a config line.
 
-That's why it's the fastest repo on GitHub. Launched August 13, 2026 as a developer preview, it pulled roughly 92,000 stars in its first 28 hours, 195,000 with 22,000 forks in under two weeks. For reference, OpenClaw — the previous velocity record holder — took 84 days to reach 200,000 stars.
+The one-line pitch, "Everything is a Plugin," is specific enough to be falsifiable. Mostly it holds.
 
-But stars are hype, not adoption. Here's what actually makes this thing different, what breaks, and whether you should run it today.
+Which brings us to the stars. Launched August 13, 2026 as a developer preview, the repo pulled roughly 92,000 stars in its first 28 hours and passed 195,000 with 22,000 forks inside two weeks. OpenClaw, the previous velocity record holder, needed 84 days to reach 200,000. Stars measure hype, though, not adoption. The interesting question is what DeepSeek actually shipped, and where it hurts when you run it.
 
 ## The Quick Spec
 
@@ -53,18 +53,18 @@ But stars are hype, not adoption. Here's what actually makes this thing differen
 - **Foundation:** Cordis, a TypeScript plugin framework with four years of production use inside the Koishi chatbot project
 - **Language:** TypeScript monorepo, ~500K LOC plus ~300 lines of C11 for the sandbox launcher
 - **Release:** v0.1.1-rc.2 (August 21, 2026), explicitly a developer preview
-- **Models:** agnostic — DeepSeek's own or ~40 providers, and subagents can even be delegated to a rival vendor's agent
+- **Models:** agnostic. DeepSeek's own or ~40 providers, and subagents can be delegated to a rival vendor's agent
 - **The warning, verbatim:** "THERE WILL BE COMPATIBILITY-BREAKING CHANGES"
 
 ## What "Everything Is a Plugin" Actually Means
 
-Stop thinking "plugin marketplace." That's the boring half. The slogan is really about turning implementation choices into named, swappable runtime dependencies.
+Forget the plugin-marketplace reading. That's the boring half of the slogan. The real claim is that implementation choices become named, swappable runtime dependencies.
 
-Underneath sits Cordis. Plugins contribute services, typed events, and reversible effects to a shared context; registrations unwind automatically when a plugin unloads. That reversibility is the trick that makes the claim hold. A registration isn't a mutation you hope someone remembers to undo — it's an effect with an inverse the runtime owns. Tool schemas, prompt sections, adapters, and listeners all register this way, so unloading a plugin predictably clean.
+Underneath sits Cordis. Plugins contribute services, typed events, and reversible effects to a shared context. When a plugin unloads, its registrations unwind automatically. This reversibility is the whole trick. A registration isn't a mutation someone hopes gets cleaned up later; it's an effect with an inverse the runtime owns. Tool schemas, prompt sections, adapters, listeners, all registered this way, so teardown is predictable instead of leaky.
 
-The architecture doc is blunt: "There is no privileged core to patch: you extend dsh by mounting a plugin beside the others."
+The architecture doc puts it plainly: "There is no privileged core to patch: you extend dsh by mounting a plugin beside the others."
 
-The minimal plugin is a file exporting an `apply(ctx)` function:
+A minimal plugin is a file exporting an `apply(ctx)` function:
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
@@ -76,21 +76,21 @@ export function apply(ctx: Context) {
 }
 ```
 
-Mount it with one line of YAML and it sits at the same privilege level as the model adapter or the tool registry.
+One line of YAML mounts it, and now your hello-world sits at the same privilege level as the model adapter.
 
-A running dsh is a plugin tree composed at boot from ordered layers. A **profile** lists the bundles it stacks and holds your `cordis.patch.yml`; a **bundle** distributes Cordis config rows plus the code they mount. `dsh-base` supplies model adapters, tools, persistence, sandbox, and approval policy. `dsh-web-app` adds the browser; `dsh-headless` is a one-shot runner with no server.
+A running dsh is a plugin tree composed at boot from ordered layers. A **profile** lists the bundles it stacks and holds your `cordis.patch.yml`. A **bundle** distributes Cordis config rows plus the code they mount. `dsh-base` supplies model adapters, tools, persistence, sandbox, approval policy. `dsh-web-app` adds the browser. `dsh-headless` is a one-shot runner with no server at all.
 
-The honesty check on the whole claim is one command:
+And there's an honesty check for the entire "no privileged core" claim:
 
 ```sh
 dsh --profile web --dump-config
 ```
 
-Every row it prints is a component you can replace with a patch of your own. If that command showed a hidden privileged core, the marketing would be exposed. It doesn't.
+Every row this prints can be replaced by a patch of your own. If a hidden core existed, this command would be where the marketing fell apart. It doesn't fall apart.
 
 ## The Turn/Step Event Loop
 
-The agent loop is not a hard-coded `while` loop. It's decomposed into interceptable events:
+There is no hard-coded `while` loop. The agent loop decomposes into interceptable events:
 
 ```
 turn/start → agent/pre-step → step/start
@@ -100,21 +100,23 @@ turn/start → agent/pre-step → step/start
   → step/end → agent/turn-stopping → turn/end
 ```
 
-A **step** is one model request plus the tools it calls. A **turn** is zero or more steps. Nearly every stage is interceptable: a plugin can rewrite messages or refuse execution at `agent/pre-step`, or substitute a tool's result at `tools/post-execute`. The loop is a public protocol, not framework-private code.
+A **step** is one model request plus the tools it calls. A **turn** is zero or more steps. Nearly every stage is interceptable: a plugin can rewrite messages or refuse execution at `agent/pre-step`, or substitute a tool's result at `tools/post-execute`. The loop is a public protocol rather than framework-private code.
 
-Event waterfalls are how policy attaches. A listener on `tools/*` calls `next()` to delegate down the chain, or short-circuits to own the decision. That single convention lets permission policy, sandboxing, retries, and metrics all attach to tool execution without any of them knowing about each other.
+Policy attaches through event waterfalls. A listener on `tools/*` calls `next()` to pass control down the chain, or skips the call and owns the decision itself. That one convention lets permission policy, sandboxing, retries, and metrics attach to tool execution without any of them knowing the others exist.
 
 ## Append-Only Session Logs
 
-This is the least controversial strength in the whole project, and maybe the most undervalued.
+Of everything in the project, this is the strength I'd bet on.
 
-dsh enforces a runtime invariant: anything that reaches a model request must be reconstructible from the session log. The log is an append-only event stream — `turn/*`, `step/*`, `user/message`, `assistant/*`, `tool/*` — and the history the model sees is projected from it. Resume, fork, search, and replay fall out of that design rather than being bolted on. Context compaction is an independent plugin too, bracketed by three log events so a crash mid-compaction stays reconstructible.
+dsh enforces a runtime invariant: anything that reaches a model request must be reconstructible from the session log. The log is an append-only event stream (`turn/*`, `step/*`, `user/message`, `assistant/*`, `tool/*`), and the history the model sees is projected from it. Resume, fork, search, replay all fall out of that design instead of being bolted on afterward. Even context compaction is an independent plugin, bracketed by three log events so a crash mid-compaction stays reconstructible.
 
-In the Web UI's Trajectory view you watch exactly what reached the wire. The `request/header` event records the config actually sent — which is what one reviewer credits with diagnosing a 3.5x cost blowup in minutes. At a moment when several vendors are encrypting reasoning traces and making agent behavior hard to audit, full traceability as an architectural guarantee is a real differentiator. If you need auditable agent execution records, nothing else in open source does this yet.
+In the Web UI's Trajectory view you watch exactly what reached the wire. One reviewer credits the `request/header` event, which records the config actually sent, with diagnosing a 3.5x cost blowup in minutes instead of hours.
+
+Think about where the industry is going: several vendors are encrypting reasoning traces right now, making agent behavior progressively harder to audit. Making full traceability an architectural guarantee, enforced in code, cuts against that current. If compliance or research requires auditable execution records, nothing else in open source offers this yet.
 
 ## Code Mode and Cross-Vendor Subagents
 
-Two capabilities here genuinely don't exist elsewhere.
+Two capabilities here have no equivalent anywhere else I can find.
 
 **Code mode (`run_code`).** Instead of emitting a dozen individual tool calls that each round-trip through the context window, the model writes TypeScript that batch-calls tools:
 
@@ -128,30 +130,35 @@ for (const f of files.slice(0, 50)) {
 return hits
 ```
 
-Only what's printed or returned goes back to the model. A dozen round-trips collapse into one execution, directly attacking the "scattered tool calls burn the context window" problem — a real bill-saver given how token-heavy this harness is.
+Only printed output and return values go back to the model. Twelve round-trips become one execution. Given how token-heavy this harness is (more on that below), this matters for the bill, not just elegance.
 
-**Subagents delegable to a competitor.** `ctx.subagents` supports multiple backends, and one can be a rival's agent. You can run dsh as the orchestration layer and hand a subtask to Claude Code or Codex. Very few vendors would ship that.
+**Subagents delegable to a competitor.** `ctx.subagents` supports multiple backends, and one of them can be a rival's agent. Run dsh as your orchestration layer and hand a subtask to Claude Code or Codex. I can't think of another vendor that would ship that.
 
-There's also a set of `cordis_*` tools that let the model inspect the live plugin graph, write, and mount its own plugins at runtime — the seed of a self-evolving agent. Two caveats: they're off by default in every official preset, and a plugin written on the fly lives only in memory. It's gone on restart, with no persistence path yet.
+There's also a set of `cordis_*` tools letting the model inspect the live plugin graph, write, and mount its own plugins at runtime. A self-evolving agent, in seed form. Two catches: they're off by default in every official preset, and a plugin written on the fly lives only in memory. Restart wipes it. No persistence path yet.
 
 ## Sandboxing and the Trust Gap
 
-The security work is not sloppy. Linux uses bwrap + Landlock behind a custom fail-closed C launcher; macOS uses Seatbelt; Windows uses restricted ACL tokens. The approval model is a closed enumeration — anything anomalous is rejected as "unavailable" rather than silently allowed. It even reports enforcement honestly as `full` or `partial`, flagging older Landlock kernels rather than overclaiming.
+Credit where due: the sandbox work is careful. Linux runs bwrap + Landlock behind a custom fail-closed C launcher. macOS uses Seatbelt, Windows restricted ACL tokens. The approval model is a closed enumeration, so anything anomalous gets rejected as "unavailable" instead of silently allowed. Enforcement reports honestly as `full` or `partial`, flagging older Landlock kernels rather than overclaiming.
 
-But there's a layering gap worth flagging loudly. **The sandbox governs tool execution, while plugins themselves run inside the harness process.** Any third-party plugin can reach the shell and filesystem directly. With a plugin repository that crossed 2,000+ submissions in two days, the trust model for community plugins amounts to good faith. Treat a dsh plugin like an npm postinstall script, not like an MCP server.
+Now the gap. **The sandbox governs tool execution. Plugins themselves run inside the harness process**, outside it. Any third-party plugin can reach the shell and filesystem directly. The plugin repository crossed 2,000 submissions within two days of launch, and the trust model for all that community code amounts to good faith. Treat a dsh plugin like an npm postinstall script, not like an MCP server.
 
-The sandbox also governs filesystem effects only. Network access and process visibility sit outside its vocabulary — which matters if you're piloting it on code that talks to the outside world.
+One more limit while we're here: the sandbox covers filesystem effects only. Network access and process visibility sit outside its vocabulary. If your pilot talks to the outside world, the sandbox is not what's protecting it.
 
 ## The Honest Limits
 
-This is a preview build and it shows.
+It's a preview build, and it shows.
 
-- **Token usage runs high.** One developer's preliminary comparison found uncached input around 47.6K tokens for dsh versus ~4.5K for Pi on the same model — an order of magnitude. Full pluggability shows up on the bill. The first call in a fresh session carries the whole system prompt, tool schemas, and skill catalogue.
-- **A confirmed context-duplication bug.** dsh reads both `CLAUDE.md` and `AGENTS.md`. Many repos keep those files identical for cross-tool compatibility — in which case the instruction set gets injected twice, doubling the system prompt. No official fix at the time of writing.
-- **Third-party compatibility is thin.** The official list shows 41 compatible integrations against 219 flagged as needing attention. One hands-on test found all five third-party tools it tried failed outright.
-- **The docs are inverted.** Internal architecture docs run to ~170,000 lines with CI checks preventing drift, while user-facing onboarding is thin. Documentation written for agents and documentation for newcomers are different artifacts, and the latter is missing.
-- **Config gotchas are buried.** The settings that control cost and correctness live in package READMEs, not the guide. A model entry that declares only `id` inherits a default context window, and the adapter guesses the reasoning dialect from your endpoint's URL — fail that guess and a private DeepSeek gateway gets spoken to in the OpenAI dialect, silently tripling your token bill.
-- **Benchmark transparency questions.** V4-Pro's SWE-bench Verified score circulates in two versions: 80.6% self-reported versus 96.4% from third-party evaluator Vals — a 16-point gap with no authoritative explanation. Official agent benchmarks ran in dsh's minimal mode, which raises a fair question about model capability versus framework boost.
+Token usage runs high. One developer's preliminary comparison found uncached input around 47.6K tokens for dsh versus roughly 4.5K for Pi on the same model. An order of magnitude. Every fresh session pays for the full system prompt, tool schemas, and skill catalogue up front, which is the price of shipping everything pluggable.
+
+There's a confirmed context-duplication bug. dsh reads both `CLAUDE.md` and `AGENTS.md`, and many repos keep those files identical for cross-tool compatibility. Identical files means the instruction set gets injected twice and your system prompt doubles. No official fix at time of writing.
+
+Third-party compatibility is thin. The official list shows 41 compatible integrations against 219 flagged as needing attention. One hands-on test tried five third-party tools; all five failed outright.
+
+The docs are inverted. Internal architecture documentation runs to about 170,000 lines with CI checks preventing drift against source, while user-facing onboarding barely exists. Docs written for agents and docs written for newcomers are different artifacts. Only one got written.
+
+Some cost-critical settings are buried in package READMEs instead of the guide. Declare a model entry with only an `id` and it inherits default context-window fallbacks. Worse, the adapter guesses your endpoint's reasoning dialect from its hostname. Run a DeepSeek-dialect gateway on a neutral URL and the harness speaks OpenAI dialect to it, silently tripling token spend on some workloads. The fix exists (`compat.thinkingFormat`), finding it does not.
+
+Benchmark transparency deserves its own paragraph. V4-Pro's SWE-bench Verified score circulates as two numbers: 80.6% self-reported versus 96.4% from third-party evaluator Vals. Sixteen points apart, no authoritative explanation for the gap. Official agent benchmarks ran in dsh's minimal mode, which raises a fair question about how much score comes from the model versus the framework. To be precise about the accusation: nobody has publicly reproduced and disproven any official number. The complaint is transparency, not fabrication. And an open-source harness is what makes independent reproduction possible in the first place, which is arguably the point of shipping it.
 
 ## Comparison With Alternatives
 
@@ -165,14 +172,14 @@ Star counts approximate, August 2026:
 | Pi | Minimalist | MIT | ~90k | Four default tools, sub-1K-token system prompt |
 | OpenCode | Open ecosystem | Open source | ~197k | Broad provider support, mature TUI |
 
-The most illuminating debate is dsh versus Codex. Codex is declarative: a plugin is a folder on disk — a Markdown skill, an MCP config, a shell script — that never enters the harness process. Reload takes 2-3 seconds and the barrier to entry is near zero. dsh is imperative: plugins carry state, run in-process, and register into each other. Hot-swapping one means handling dangling references and rolling back cleanly — exactly why it needed four years of Cordis underneath.
+The comparison I find most instructive is dsh against Codex, because they sit at opposite ends of one axis. Codex extensions are declarative: a plugin is a folder on disk holding a Markdown skill or an MCP config, and it never enters the harness process. Reload takes two or three seconds and anyone can write one. dsh plugins are imperative: they carry state, run in-process, register into each other. Hot-swapping one at runtime means handling dangling references and rolling back cleanly from a crash, which is exactly the problem Cordis spent four years solving. Declarative wins on accessibility. Imperative wins on power. Pick your poison knowingly.
 
 ## Should You Use It?
 
-Two separate questions, two answers.
+Two questions, two answers.
 
-If you want a coding agent to write production code today: **not this, not yet.** Cost-per-task is high before tuning, the plugin ecosystem is days old, and the API surface is explicitly unstable. Use a pinned version on a contained pilot if you want to explore; don't bet a pipeline you can't babysit.
+Writing production code today? Not with this. Cost per task is high before tuning, the plugin ecosystem is weeks old, and the API surface is unstable by the project's own announcement. Pin a version and run a contained pilot if you're curious. Don't put a pipeline on it that you can't babysit.
 
-If you build agent infrastructure — or want to understand where the harness layer is heading: **this has no other working reference implementation.** It's the first time a frontier lab open-sourced its entire harness under MIT, decision records included. That's a shot at the business model: on this reading, the harness should not be a paid product at all. Models, tools, state, permissions, and the loop become an architecture your team can inspect, compose, and test instead of a black box you pay a subscription for.
+Building agent infrastructure? Then run it this week. This is the first time a frontier lab open-sourced its entire harness layer under MIT, decision records included, and there's no other working reference implementation of the approach. Read as a business move, it argues the harness should never have been a paid product at all. Models, tools, state, permissions, the loop: an architecture your team can inspect and swap instead of a black box on a subscription.
 
-The verdict that keeps landing is: dsh wins on speed-per-dollar and flexibility, Claude Code wins on absolute quality by a hair, and both reviews stump for running it for an afternoon to learn more than any roundup tells you. I agree with all three. Ten minutes with `--dump-config` will show you the scaffolding every other coding agent hides behind a fence.
+Ten minutes with `--dump-config` will show you the scaffolding every other coding agent hides behind a fence.
