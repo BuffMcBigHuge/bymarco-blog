@@ -60,7 +60,7 @@ That single design choice is why the throttle matters. The tensor core operation
 
 The instruction `f16 × f16 → f16 accumulate` is a different instruction, and NVIDIA never throttled it. Neither did they throttle FP32 CUDA cores, INT8 tensor math, or NVFP4 on Blackwell.
 
-## Where the throttle actually lives
+## Where the throttle lives
 
 It isn't in the driver, and it isn't in the compiler. It's in two registers.
 
@@ -72,7 +72,7 @@ The registers aren't writable from the host because a second register guards the
 
 So the unlock has to do two things: raise the mask to `0xffffffff` and write the speed values. Both require code running at a privilege level you don't have.
 
-## How the door got opened
+## How the exploit works
 
 It's a hardware security story that happens to have a performance payoff.
 
@@ -180,11 +180,11 @@ Before you make it permanent, benchmark the thing you actually run, not a GEMM. 
 
 ## Bottom Line
 
-The unlock is real and the exploit is a good piece of work: a stack canary overflow in a signed firmware stage, a debug key NVIDIA left in the wild, and one 4-byte write that hands back the tensor rate a fuse withheld. On a 3090-class card it's worth roughly 15% on prefill and up to 80% on BF16 GEMM. On a 4090, up to 2× the instruction rate and 12 to 34% on real GEMMs.
+The numbers to remember are 15% on prefill, up to 80% on BF16 GEMM, and 12 to 34% on the FP16 GEMMs a diffusion or LoRA job calls. The 2x headline measures instruction issue rate, and almost nothing you run saturates it. That is a real gain on a card you already own, and it costs an afternoon plus some appetite for a boot that fails.
 
-The "2×" headlines measure a ceiling, not a room. The ceiling doubled. How much of it you reach depends on whether your kernel was compute-bound or waiting on memory, and the AI stack waits on memory more often than people think.
+Where I land: if a 3090 or 4090 sits in a box that exists to run inference or train small adapters, unlock it and keep a stock boot entry. If your workload is batch-1 chat, INT8 inference, or games, skip it. The measured gain rounds to zero and the failure mode is an unbootable card until you pull the power.
 
-The bigger story is that this is the end of the line. Blackwell moved the root of trust into ROM and removed the stage that made the exploit possible. Every generation since Hopper has shipped with it. So the 4090 and 3090 are the last consumer cards with a documented, reproducible way to buy the cheap SKU and run the expensive one's math, and that's a strange thing to have as a competitive advantage. It's also, for anyone building a local AI box on a budget, exactly the kind of arbitrage worth knowing about.
+What survives this story is the enforcement model. The same die left the fab with the same silicon and one different 4-bit field, and the boundary held only as long as the firmware that enforced it did. Blackwell closed that particular door. It did not close the pattern.
 
 ## Sources
 
