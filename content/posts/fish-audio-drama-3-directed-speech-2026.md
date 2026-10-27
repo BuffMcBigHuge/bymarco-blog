@@ -105,6 +105,18 @@ Two rules are worth knowing. A direction holds until the next one, so `[calm]` a
 
 The feature I'd actually pay for is multi-turn revision. Every other model makes you re-roll: change a word, lose the timing you liked, re-roll again. Drama 3 keeps the take and the note in context.
 
+### Hear it directed
+
+One take, straight out of ComfyUI, nothing edited. This is the exact script that went in:
+
+```text
+[calm, close, like the room is empty] Nine out of ten voice models read the line. [a beat, almost amused] This one waits for the direction. [drops to a half-whisper] And that's where <emphasis>everything</emphasis> changes.
+```
+
+{{< audio-sample title="Drama 3: three directions in one take" srcMp3="/images/audio/drama3-directed-speech/direction-shift.mp3" caption="7.9 seconds, one generation. The delivery shifts mid-take and the last line drops to a half-whisper, no re-roll." meta="Measured on the file: the first phrase sits at -25 dB RMS, the last at -34 dB. That 9 dB drop is the direction working, and it is why the scoped tag exists." notes="Loudness normalized to -17.5 LUFS with a -1.5 dBTP limiter for the web. No compression, EQ, or editing." >}}
+
+Listen for the beat at 0:02, where `[a beat, almost amused]` inserts about 1.3 seconds of nothing. That's the part most open TTS models refuse to do. They close the gap because a pause looks like a defect to a word-error metric, which is the whole argument from the previous section, audible in eight seconds.
+
 ## Running it locally in ComfyUI
 
 You have two paths.
