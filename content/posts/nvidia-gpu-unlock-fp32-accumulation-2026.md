@@ -1,6 +1,7 @@
 ---
 title: "NVIDIA Sells You Half a GPU: Inside the FP32 Accumulation Unlock"
 date: 2026-10-27T01:00:00-04:00
+lastmod: 2026-10-31T17:15:00-04:00
 draft: false
 description: "A 4-bit fuse halves tensor throughput on consumer RTX cards. Modders flipped it on Turing, Ampere and Ada. What it really buys, and why Blackwell resists."
 summary: "The gpu-unlock kernel modules lift NVIDIA's half-rate FP32 accumulation cap on RTX 20, 30 and 40 series cards. The instruction rate doubles, the real-world gain is 10 to 20 percent, and the 4090 is the last card this works on. How the exploit works, what the benchmarks actually say, and why Blackwell closes the door."
@@ -86,11 +87,21 @@ The result is a payload that performs one 4-byte write to an arbitrary address, 
 
 The whole thing is volatile on purpose. The value lives in the registers, so it survives a PCIe function-level reset and a driver reload, and it's gone when you power off. That's why the modules run from the initramfs on every boot, before `nvidia` binds the card.
 
-It started on mining cards. The CMP 170HX unlock used the same bug to turn the 8 GB and 10 GB variants into 64 GB and 40 GB parts. GeForce ports followed: [Turing-unlock](https://github.com/haohervchb/Turing-unlock) as a UEFI loader, [Zagitta/gpu-unlock](https://github.com/Zagitta/gpu-unlock) for Ampere as a kernel module, [JustAResearcher/gpu-unlock-ada](https://github.com/JustAResearcher/gpu-unlock-ada) for Ada.
-
 ![Dark technical diagram comparing two GPU boot chains: SEC2 boot ROM to signed HS Booter to GSP-RM on Turing, Ampere and Ada with the exploit marked at the Booter, versus FSP to FMC to GSP-RM on Hopper and Blackwell with no Booter stage](/images/nvidia-gpu-unlock-fp32/boot-chain.png)
 
 *The two boot chains. On the left, a signed firmware stage runs early enough and privileged enough to write the speed registers. On the right, that stage doesn't exist.*
+
+It started on mining cards. The CMP 170HX unlock used the same bug to turn the 8 GB and 10 GB variants into 64 GB and 40 GB parts. GeForce ports followed: [Turing-unlock](https://github.com/haohervchb/Turing-unlock) as a UEFI loader, [Zagitta/gpu-unlock](https://github.com/Zagitta/gpu-unlock) for Ampere as a kernel module, [JustAResearcher/gpu-unlock-ada](https://github.com/JustAResearcher/gpu-unlock-ada) for Ada.
+
+### One stick, three operating systems
+
+The kernel modules assume Linux. [nv-uefi-unlocker](https://github.com/physicsdolphin/nv-uefi-unlocker) is a Rust UEFI application that runs before any OS starts, so Windows, Linux and Hackintosh get the same unlock from the same FAT32 stick. 577 stars, GPL-2.0, and its [compatibility matrix](https://github.com/physicsdolphin/nv-uefi-unlocker/blob/main/docs/compatibility.en.md) lists evidence per board instead of per family: hardware-verified on the 4090, 4080, 4070 Ti Super, 4060 Ti, three laptop parts (4060, 4050, 3080 Ti), the 3080, 3060 Ti and 3060, and the 2070 and 2060 Super, with the rest of the 0x22xx and 0x24xx ranges routed by chip family.
+
+It credits its ancestors rather than pretending otherwise. Zagitta's module is the parent of the transaction chain, gpu-unlock-ada supplied the AD10x four-write sequence, cmp90hx-unlock the V67 payload, cmp170hx the privilege-level semantics.
+
+The prerequisites are real. Secure Boot off, or a self-signed EFI certificate the firmware trusts. A UEFI boot menu. On Turing, a one-time `enable-turing-unlock.ps1` to turn GSP firmware on before the stick will do anything. On Linux, RTD3 has to be handled or the runtime power-off wipes the unlock on handoff. Every cold boot replays the transaction, and powering off clears it, same as the kernel modules.
+
+Its headline numbers sit above the kernel modules': up to 2.6x on FP16/BF16/TF32 tensor throughput, 1.9x on FP8, 14 to 75% on image and video generation, up to 94% on DirectML kernels. Those are the project's own measurements across many boards, not a same-card A/B I ran, so read 2.6x as an upper bound rather than a typical result. Pascal, GA100 and Blackwell are unsupported, for the boot-chain reason above.
 
 ## What you actually get
 
@@ -174,7 +185,7 @@ The risk conversation around this has been sloppy in both directions, so let me 
 
 **The real risks are procedural.** You are running an exploit against signed firmware before your driver loads. If it fails halfway, you may be stuck until you power cycle. NVIDIA can change the firmware or burn anti-rollback fuses so the old Booter stops being accepted, which wouldn't damage anything, it would just close the door. And you're modifying boot behaviour on a machine you may depend on.
 
-My read: worth it on a dedicated inference or training box where you keep a stock boot entry and can afford an afternoon. Not worth it on your only workstation, not worth it on a laptop, and not worth it if your workload is batch-1 token generation or INT8 inference, because you'll measure zero.
+My read: worth it on a dedicated inference or training box where you keep a stock boot entry and can afford an afternoon. Not worth it on your only workstation, and not worth it if your workload is batch-1 token generation or INT8 inference, because you'll measure zero. Laptops are supported on the UEFI route with verified reports, but gains there are bounded by the thermal budget, so measure before you commit.
 
 Before you make it permanent, benchmark the thing you actually run, not a GEMM. Prefill a long prompt, train one LoRA step, render one video. If the number moves less than 10%, the unlock is a hobby, not an upgrade.
 
@@ -192,6 +203,7 @@ What survives this story is the enforcement model. The same die left the fab wit
 - Ampere module and the reverse-engineering writeup: [Zagitta/gpu-unlock](https://github.com/Zagitta/gpu-unlock), [How Ampere was unlocked](https://github.com/Zagitta/gpu-unlock/blob/main/docs/How%20Ampere%20was%20unlocked.md)
 - Ada module, with the 4090 and 4070 Ti SUPER same-card numbers: [JustAResearcher/gpu-unlock-ada](https://github.com/JustAResearcher/gpu-unlock-ada)
 - Turing module, with the 2080 Ti results and its own risk warnings: [haohervchb/Turing-unlock](https://github.com/haohervchb/Turing-unlock)
+- Cross-platform UEFI unlocker, per-board evidence: [physicsdolphin/nv-uefi-unlocker](https://github.com/physicsdolphin/nv-uefi-unlocker), [compatibility matrix](https://github.com/physicsdolphin/nv-uefi-unlocker/blob/main/docs/compatibility.en.md)
 - Device list and per-card evidence: [gpuunlock.com](https://gpuunlock.com/en), [benchmarks](https://gpuunlock.com/en/benchmarks)
 - Original bug: Jon Pry, "A Canary in the Crypto Mine: Defeating Stack Protection in a GPU Secure Coprocessor," June 2026
 - Boot-flow change, with the SEC2/Booter quote: [Linux kernel docs, FSP and Secure Boot](https://docs.kernel.org/gpu/nova/core/fsp.html)
